@@ -6,10 +6,7 @@ import SearchEngine from "../components/SearchEngine"
 
 const SearchScreen = (props) => {
     return(
-    
-            <SearchEngine />
-            
-        
+            <SearchEngine />     
     )
 }
 
