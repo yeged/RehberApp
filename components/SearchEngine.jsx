@@ -1,20 +1,49 @@
 import React from "react";
-import {View, TextInput, StyleSheet} from "react-native"
-import SearchScreen from "../screens/SearchScreen"
+import { View, TouchableNativeFeedback, StyleSheet, Dimensions, Text } from "react-native"
+import { Ionicons } from "@expo/vector-icons"
 
 function SearchEngine(props) {
-    return(
+    return (
+        <View style={styles.border}>
+        <TouchableNativeFeedback  onPress={props.onSelect}>
         <View style={styles.container}>
-            <TextInput placeholder="Konum,kent veya adres"></TextInput>
+            <View style={styles.row}>
+            <View style={styles.icon}>
+                <Ionicons name="ios-search" size={25} />
+            </View>
+                <Text style={styles.title}>Konum, kent simgesi veya adres</Text>
+            </View>
+        </View>
+        </TouchableNativeFeedback>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container:{
-        borderWidth:1,
-        borderRadius:20,
-        paddingHorizontal:30
+    border:{
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: "#ccc",
+        marginVertical:Dimensions.get("window").height * 0.04,
+        marginHorizontal: Dimensions.get("window").width * 0.05,
+        overflow: "hidden"
+    },
+    container: {
+        justifyContent: "center",
+        alignItems:"center",
+        width: Dimensions.get("window").width * 0.9,
+        height: Dimensions.get("window").height * 0.05,
+    },
+    row: {
+        flexDirection: "row",
+        alignItems: "center",
+        width: Dimensions.get("window").width * 0.85
+    },
+    icon:{
+        marginHorizontal: Dimensions.get("window").width * 0.025,  
+    },
+    title:{
+        opacity:0.5
     }
 })
 
