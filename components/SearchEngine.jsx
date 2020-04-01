@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#ccc",
         marginVertical:Dimensions.get("window").height * 0.04,
-        marginHorizontal: Dimensions.get("window").width * 0.05,
+        marginHorizontal: Dimensions.get("window").width * 0.03,
         overflow: "hidden"
     },
     container: {
