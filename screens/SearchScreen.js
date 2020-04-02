@@ -4,12 +4,13 @@ import { View, StyleSheet, Dimensions, ScrollView} from "react-native";
 import SearchEngine from "../components/SearchEngine"
 import DefaultTitle from "../components/DefaultTitle"
 import CategoryList from "../components/CategoryList"
+import CityList from "../components/CityList"
 
 
 const SearchScreen = (props) => {
     return (
         <View style={styles.screen}>
-            <SearchEngine />
+        <ScrollView>
             <View style={styles.headerContainer}>
                 <DefaultTitle style={styles.title}>Şehrin Rehberlerinden Benzersiz Etkinlikler</DefaultTitle>
             </View>
@@ -24,23 +25,51 @@ const SearchScreen = (props) => {
                     <CategoryList navigation={props.navigation} title="Gece Hayatı" img="https://neredekalinir.com/wp-content/uploads/2017/07/kiev.jpg"/>
                 </ScrollView>
             </View>
+            <View style={styles.headerContainer}>
+                <DefaultTitle style={styles.title}>Başka Şehirlerdeki Rehberler</DefaultTitle>
+                </View>
+            <View style={styles.categoryContainer}>
+            <ScrollView horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    pagingEnabled={true}
+                    snapToInterval={Dimensions.get("window").width * 0.434}>
+                <CityList city="Ankara" img="https://www.buseterim.com.tr/upload/default/2019/11/9/30agustostrkiye680.jpg"  navigation={props.navigation} />
+                <CityList city="istanbul" img="https://www.buseterim.com.tr/upload/default/2019/11/9/30agustostrkiye680.jpg" navigation={props.navigation} />
+                <CityList city="eskişehir" img="https://www.buseterim.com.tr/upload/default/2019/11/9/30agustostrkiye680.jpg" navigation={props.navigation} />
+                <CityList city="bursa" img="https://www.buseterim.com.tr/upload/default/2019/11/9/30agustostrkiye680.jpg" navigation={props.navigation} />
+                <CityList city="izmir" img="https://www.buseterim.com.tr/upload/default/2019/11/9/30agustostrkiye680.jpg" navigation={props.navigation} />
+                <CityList city="rize" img="https://www.buseterim.com.tr/upload/default/2019/11/9/30agustostrkiye680.jpg" navigation={props.navigation} />
+                </ScrollView>
+                </View>
+            </ScrollView>
         </View>
     )
 }
 
+SearchScreen.navigationOptions=(navData) => {
+    return{
+        headerTitle: () => <SearchEngine style={styles.search} navigation={navData.navigation} />
+    }
+}
+
+
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
+        backgroundColor: "#f5f5f5"
     },
+    search:{
+        marginHorizontal: Dimensions.get("window").width * 0.005,
+    },  
     categoryContainer:{
         paddingHorizontal: Dimensions.get("window").width * 0.01,
     },
     headerContainer: {
         alignItems: "center",
-        padding: Dimensions.get("window").width * 0.03
+        padding: Dimensions.get("window").width * 0.04
     },
     title: {
-        fontSize: Dimensions.get("window").width * 0.09
+        fontSize: Dimensions.get("window").width * 0.085
     }
 })
 

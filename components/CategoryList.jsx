@@ -13,7 +13,6 @@ const CategoryList = (props) => {
             <TouchableOpacity activeOpacity={0.65} onPress={() => {
                 props.navigation.navigate("Category")
             }}>
-
                 <View style={styles.header}>
                     <ImageBackground source={{ uri: props.img }} style={styles.image} >
                         <View style={styles.titleContainer}>
@@ -41,8 +40,8 @@ const styles = StyleSheet.create({
     categoryItem: {
         height: Dimensions.get("window").height * 0.37,
         width: Dimensions.get("window").width * 0.89,
-        marginVertical: Dimensions.get("window").height * 0.05,
-        marginHorizontal: Dimensions.get("window").height * 0.01,
+        marginVertical: Dimensions.get("window").height * 0.04,
+        marginHorizontal: Dimensions.get("window").height * 0.012,
         backgroundColor: "#f5f5f5",
         elevation: 3
     },
@@ -66,8 +65,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: "white",
-        textAlign: "center",
-
+        textAlign: "center"
     },
     text:{
         fontFamily: "open-sans"

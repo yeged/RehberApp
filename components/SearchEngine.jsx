@@ -4,8 +4,10 @@ import { Ionicons } from "@expo/vector-icons"
 
 function SearchEngine(props) {
     return (
-        <View style={styles.border}>
-        <TouchableNativeFeedback  onPress={props.onSelect}>
+        <View style={{...styles.border, ...props.style}}>
+        <TouchableNativeFeedback  onPress={() => {
+            
+        }}>
         <View style={styles.container}>
             <View style={styles.row}>
             <View style={styles.icon}>

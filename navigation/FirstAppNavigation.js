@@ -14,14 +14,18 @@ import DetailScreen from "../screens/DetailScreen"
 const FirstNavigator = createStackNavigator({
     Search: SearchScreen,
     Category: CategoryScreen,
-    Detail: DetailScreen
+    Detail: DetailScreen,
+    City: CityScreen
 },{
     defaultNavigationOptions:{
         headerStyle:{
-            backgroundColor: "blue"
+            backgroundColor: "#f5f5f5",
+            elevation: 5 
         },
-        headerTintColor: "white"
+        headerTintColor: "black"
     }
 })
+
+
 
 export default createAppContainer(FirstNavigator);
