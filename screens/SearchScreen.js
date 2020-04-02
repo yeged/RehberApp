@@ -11,6 +11,9 @@ const SearchScreen = (props) => {
     return (
         <View style={styles.screen}>
         <ScrollView>
+            <View style={styles.nameContainer}>
+                <DefaultTitle style={styles.name}>Uygulamanın İsmi</DefaultTitle>
+            </View>
             <View style={styles.headerContainer}>
                 <DefaultTitle style={styles.title}>Şehrin Rehberlerinden Benzersiz Etkinlikler</DefaultTitle>
             </View>
@@ -28,7 +31,7 @@ const SearchScreen = (props) => {
             <View style={styles.headerContainer}>
                 <DefaultTitle style={styles.title}>Başka Şehirlerdeki Rehberler</DefaultTitle>
                 </View>
-            <View style={styles.categoryContainer}>
+            <View style={styles.needSomePaddingforBottom}>
             <ScrollView horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     pagingEnabled={true}
@@ -63,6 +66,7 @@ const styles = StyleSheet.create({
     },  
     categoryContainer:{
         paddingHorizontal: Dimensions.get("window").width * 0.01,
+        paddingVertical:Dimensions.get("window").height * 0.035
     },
     headerContainer: {
         alignItems: "center",
@@ -70,6 +74,17 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: Dimensions.get("window").width * 0.085
+    },
+    nameContainer:{
+        padding: Dimensions.get("window").width * 0.04,
+        marginTop: Dimensions.get("window").height * 0.04
+    },
+    name:{
+        color: "grey"
+    },
+    needSomePaddingforBottom:{
+        paddingHorizontal: Dimensions.get("window").width * 0.01,
+        paddingBottom: Dimensions.get("window").height * 0.1
     }
 })
 
