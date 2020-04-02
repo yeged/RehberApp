@@ -14,8 +14,9 @@ import DetailScreen from "../screens/DetailScreen"
 const FirstNavigator = createStackNavigator({
     Search: SearchScreen,
     Category: CategoryScreen,
+    City: CityScreen,
     Detail: DetailScreen,
-    City: CityScreen
+    
 },{
     defaultNavigationOptions:{
         headerStyle:{
