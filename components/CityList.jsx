@@ -6,7 +6,7 @@ function CityList(props){
     return(
         <View style={styles.cityItem}>
             <TouchableOpacity activeOpacity={0.65} onPress={() => {
-                props.navigation.navigate("City")
+                requestAnimationFrame (() => props.navigation.navigate("City"))
             }}>
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>

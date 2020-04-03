@@ -7,7 +7,7 @@ function GuideList(props) {
     return (
         <View style={styles.cardContainer}>
             <TouchableOpacity activeOpacity={0.65} onPress={() => {
-                props.navigation.navigate("Detail")
+                requestAnimationFrame (() => props.navigation.navigate("Detail"))
             }}>
             <View style={styles.container}>
                 <View style={styles.imageContainer}>

@@ -11,7 +11,7 @@ const CategoryList = (props) => {
     return (
         <View style={styles.categoryItem}>
             <TouchableOpacity activeOpacity={0.65} onPress={() => {
-                props.navigation.navigate("Category")
+                requestAnimationFrame (() => props.navigation.navigate("Category"))
             }}>
                 <View style={styles.header}>
                     <ImageBackground source={{ uri: props.img }} style={styles.image} >
