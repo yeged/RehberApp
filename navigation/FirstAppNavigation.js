@@ -23,7 +23,7 @@ const defaultStackNavOptions = {
             backgroundColor: "#f5f5f5",
             elevation: 5
         },
-        headerTintColor: "black",        
+        headerTintColor: "black",
     }
 
 }
@@ -37,14 +37,16 @@ const SearchNavigator = createStackNavigator({
 }, defaultStackNavOptions)
 
 const ProfileNavigator = createStackNavigator({
-    Profile: {screen:ProfileScreen,
-        navigationOptions:{
-            headerShown:false
+    Profile: {
+        screen: ProfileScreen,
+        navigationOptions: {
+            headerShown: false
         }
     },
-    Info: {screen:InformationScreen},
-    BeGuide: {screen:LocalGuideScreen}
+    Info: { screen: InformationScreen },
+    BeGuide: { screen: LocalGuideScreen }
 }, defaultStackNavOptions)
+
 
 const FavoritesNavigator = createStackNavigator({
     Favorites: FavoritesScreen,
@@ -72,10 +74,11 @@ const TabNav = createBottomTabNavigator({
         screen: ProfileNavigator,
         navigationOptions: {
             tabBarIcon: tabInfo => {
-                return <Ionicons name="ios-person" size={25} color={tabInfo.tintColor}/>
+                return <Ionicons name="ios-person" size={25} color={tabInfo.tintColor} />
             }
         }
-    }
+    },
+
 }, {
     tabBarOptions: {
         activeTintColor: Colors.accentColor,
