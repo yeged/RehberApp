@@ -12,6 +12,7 @@ import CityScreen from "../screens/CityScreen"
 import FavoritesScreen from "../screens/FavoritesScreen"
 import ProfileScreen from "../screens/ProfileScreen"
 import DetailScreen from "../screens/DetailScreen"
+import Colors from "../constants/Colors"
 
 const defaultStackNavOptions = {
 
@@ -20,7 +21,7 @@ const defaultStackNavOptions = {
             backgroundColor: "#f5f5f5",
             elevation: 5
         },
-        headerTintColor: "black"
+        headerTintColor: "black",        
     }
 
 }
@@ -73,7 +74,7 @@ const TabNav = createBottomTabNavigator({
     }
 }, {
     tabBarOptions: {
-        activeTintColor: "orange",
+        activeTintColor: Colors.accentColor,
         inactiveTintColor: "black",
         barStyle: {
             backgroundColor: "white",

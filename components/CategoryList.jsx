@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet, Dimensions, Text, ImageBackground, ScrollView } from "react-native"
 import DefaultTitle from "./DefaultTitle"
-
+import Colors from "../constants/Colors"
 
 
 const CategoryList = (props) => {
@@ -25,7 +25,7 @@ const CategoryList = (props) => {
             </TouchableOpacity>
             <View style={styles.detail}>
                 <ScrollView>
-                    <DefaultTitle style={{ fontSize: 16 }}>{props.title}</DefaultTitle>
+                    <DefaultTitle style={{ fontSize: 16, color:Colors.accentColor }}>{props.title}</DefaultTitle>
                     <Text>{props.text}</Text>
                 </ScrollView>
             </View>

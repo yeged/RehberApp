@@ -8,8 +8,6 @@ import DefaultTitle from "../components/DefaultTitle"
 const CategoryScreen = (props) => {
     return (
         <View style={styles.screen}>
-
-
             <ScrollView contentContainerStyle={styles.container}>
                 <SearchEngine />
                 <View style={styles.textContainer}>
@@ -19,9 +17,7 @@ const CategoryScreen = (props) => {
                 <GuideList navigation={props.navigation} name="Galata Kulesi & Taksim Kültür Sanat ve Tarih Gezisi" time={4} price={250} target="Istanbul" img="https://gezilecekyerler.com/wp-content/uploads/2017/03/Galata-Kulesi.jpg" />
                 <GuideList navigation={props.navigation} name="Galata Kulesi & Taksim Kültür Sanat ve Tarih Gezisi" time={4} price={250} target="Ankara" img="https://gezilecekyerler.com/wp-content/uploads/2017/03/Galata-Kulesi.jpg" />
                 <GuideList navigation={props.navigation} name="Galata Kulesi & Taksim Kültür Sanat ve Tarih Gezisi" time={4} price={250} target="Eskişehir" img="https://gezilecekyerler.com/wp-content/uploads/2017/03/Galata-Kulesi.jpg" />
-
             </ScrollView>
-
         </View>
     )
 }
