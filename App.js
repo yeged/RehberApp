@@ -4,7 +4,7 @@ import * as Font from  "expo-font"
 import { enableScreens } from "react-native-screens"
 import { AppLoading } from "expo";
 
-import FirstAppNavigation from "./navigation/FirstAppNavigation"
+import TabNav from "./navigation/FirstAppNavigation"
 
 enableScreens(); //for better performance
 
@@ -24,7 +24,7 @@ export default function App() {
   }
 
   return (
-      <FirstAppNavigation />
+      <TabNav />
   );
 }
 
