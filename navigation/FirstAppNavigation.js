@@ -12,6 +12,8 @@ import CityScreen from "../screens/CityScreen"
 import FavoritesScreen from "../screens/FavoritesScreen"
 import ProfileScreen from "../screens/ProfileScreen"
 import DetailScreen from "../screens/DetailScreen"
+import InformationScreen from "../screens/InformationScreen"
+import LocalGuideScreen from "../screens/LocalGuideScreen"
 import Colors from "../constants/Colors"
 
 const defaultStackNavOptions = {
@@ -40,6 +42,8 @@ const ProfileNavigator = createStackNavigator({
             headerShown:false
         }
     },
+    Info: {screen:InformationScreen},
+    BeGuide: {screen:LocalGuideScreen}
 }, defaultStackNavOptions)
 
 const FavoritesNavigator = createStackNavigator({
