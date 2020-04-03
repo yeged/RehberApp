@@ -34,7 +34,12 @@ const SearchNavigator = createStackNavigator({
 }, defaultStackNavOptions)
 
 const ProfileNavigator = createStackNavigator({
-    Profile: ProfileScreen,
+    Profile: {screen:ProfileScreen,
+        navigationOptions:{
+            headerShown:false,
+
+        }
+    },
 }, defaultStackNavOptions)
 
 const FavoritesNavigator = createStackNavigator({
