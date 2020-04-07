@@ -3,8 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import * as Font from  "expo-font"
 import { enableScreens } from "react-native-screens"
 import { AppLoading } from "expo";
+import { Provider } from "react-redux"
+import { combineReducers, createStore } from "redux"
 
 import TabNav from "./navigation/FirstAppNavigation"
+import tourReducer from "./store/reducers/tour"
 
 enableScreens(); //for better performance
 
@@ -15,6 +18,12 @@ const fetchLayout = () => {
   })
 }
 
+const rootReducer = combineReducers({
+  tours: tourReducer
+})
+
+const store = createStore(rootReducer)
+
 export default function App() {
 
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -24,7 +33,9 @@ export default function App() {
   }
 
   return (
+    <Provider store={store}>
       <TabNav />
+      </Provider>
   );
 }
 
