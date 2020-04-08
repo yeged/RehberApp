@@ -1,6 +1,8 @@
 class Tour {
-    constructor(id, profileId, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, userComment, personalDetail) {
+    constructor(id,tCityId, tCategoryId, profileId, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, userComment, personalDetail) {
                 this.id = id, 
+                this.tCityId = tCityId,
+                this.tCategoryId = tCategoryId,
                 this.profileId = profileId, 
                 this.Image = Image, 
                 this.tourImage = tourImage, 

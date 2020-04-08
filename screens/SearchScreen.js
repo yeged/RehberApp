@@ -5,7 +5,6 @@ import SearchEngine from "../components/SearchEngine"
 import DefaultTitle from "../components/DefaultTitle"
 import CategoryList from "../components/CategoryList"
 import CityList from "../components/CityList"
-import { CATEGORIES, CITIES } from "../data/dummy-data"
 import { useSelector } from "react-redux"
 
 
@@ -19,13 +18,36 @@ const SearchScreen = (props) => {
 
     const categoryHandler = itemData => {
         return (
-            <CategoryList navigation={props.navigation} title={itemData.item.categoryLabel} text={itemData.item.categoryText} img={itemData.item.categoryPhoto} />
+            <CategoryList 
+            navigation={props.navigation} 
+            title={itemData.item.categoryLabel} 
+            text={itemData.item.categoryText} 
+            img={itemData.item.categoryPhoto}
+            onSelect={() => {
+                requestAnimationFrame (() => props.navigation.navigate({routeName: "Category", params: {
+                    catId: itemData.item.categoryId,
+                    catHeader: itemData.item.categoryLabel
+                }}))
+            }}
+             />
         )
     }
+    
+
 
     const cityHandler = itemData => {
         return (
-            <CityList city={itemData.item.cityLabel} img={itemData.item.cityPhoto} navigation={props.navigation} />
+            <CityList 
+            city={itemData.item.cityLabel} 
+            img={itemData.item.cityPhoto} 
+            onSelect={() => {
+                requestAnimationFrame (() => props.navigation.navigate("City", {
+                    provinceId: itemData.item.cityId, 
+                    cityHeader: itemData.item.cityLabel
+                }))
+            }}
+            navigation={props.navigation} 
+            />
         )
     }
 

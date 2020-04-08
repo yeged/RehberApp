@@ -1,30 +1,61 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
+import { View, StyleSheet, Dimensions, FlatList } from "react-native";
 import SearchEngine from "../components/SearchEngine"
 import GuideList from "../components/GuideList";
 import DefaultTitle from "../components/DefaultTitle"
+import { useSelector } from "react-redux"
+
+
 
 
 const CategoryScreen = (props) => {
+
+
+    const catId =   props.navigation.getParam("catId")
+    
+
+    const availableTours = useSelector(state => state.tours.tours)
+
+    const selectedCategory = availableTours.filter(tour => tour.tCategoryId.indexOf(catId) >= 0)
+
+    const toursHandler = (itemData) => {
+        return(
+            
+            <GuideList navigation={props.navigation} 
+            onSelect={() => {
+                requestAnimationFrame (() => props.navigation.navigate("Detail"))
+            }} 
+            name={itemData.item.tourName} 
+            time={itemData.item.time} 
+            price={itemData.item.price} 
+            target={itemData.item.city} 
+            img={itemData.item.Image} />
+        )
+    }
+
     return (
         <View style={styles.screen}>
-            <ScrollView contentContainerStyle={styles.container}>
-                <SearchEngine />
-                <View style={styles.textContainer}>
+            <SearchEngine />
+            <View style={styles.textContainer}>
                     <DefaultTitle style={styles.text}>Öne çıkan "Kültür" Gezintileri</DefaultTitle>
                 </View>
-                 <GuideList navigation={props.navigation} name="Galata Kulesi & Taksim Kültür Sanat ve Tarih Gezisi Tarih Gezisi Tarih Gezisi" time={4} price={250} target="Ankara" img="https://cdn1.ntv.com.tr/gorsel/VKEoxgDl5UyALbc91dZjKQ.jpg?width=1000&height=748&mode=crop&scale=both&v=20191015134847912" />
-                <GuideList navigation={props.navigation} name="Galata Kulesi & Taksim Kültür Sanat ve Tarih Gezisi" time={4} price={250} target="Istanbul" img="https://gezilecekyerler.com/wp-content/uploads/2017/03/Galata-Kulesi.jpg" />
-                <GuideList navigation={props.navigation} name="Galata Kulesi & Taksim Kültür Sanat ve Tarih Gezisi" time={4} price={250} target="Ankara" img="https://gezilecekyerler.com/wp-content/uploads/2017/03/Galata-Kulesi.jpg" />
-                <GuideList navigation={props.navigation} name="Galata Kulesi & Taksim Kültür Sanat ve Tarih Gezisi" time={4} price={250} target="Eskişehir" img="https://gezilecekyerler.com/wp-content/uploads/2017/03/Galata-Kulesi.jpg" />
-            </ScrollView>
+            <FlatList contentContainerStyle={styles.container}
+                data={selectedCategory}
+                renderItem={toursHandler}
+    
+                 
+            />
+            
         </View>
     )
 }
 
 CategoryScreen.navigationOptions = (navData) => {
+
+    const catHeader = navData.navigation.getParam("catHeader")
+
     return{
-        headerTitle: () => <DefaultTitle>"Kültür Gezintisi"</DefaultTitle>
+        headerTitle: catHeader
     }
 }
 
@@ -34,7 +65,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flexDirection: "row",
-        flexWrap: "wrap",
+        //flexWrap: "wrap",
         justifyContent: "space-between",
     },
     textContainer:{

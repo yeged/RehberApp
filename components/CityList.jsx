@@ -5,9 +5,7 @@ import { View, TouchableOpacity, StyleSheet, Dimensions, Text, Image, ScrollView
 function CityList(props){
     return(
         <View style={styles.cityItem}>
-            <TouchableOpacity activeOpacity={0.65} onPress={() => {
-                requestAnimationFrame (() => props.navigation.navigate("City"))
-            }}>
+            <TouchableOpacity activeOpacity={0.65} onPress={props.onSelect}>
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
                     <Image source={{uri: props.img}} style={styles.image} resizeMode="cover" />

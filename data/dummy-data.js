@@ -5,7 +5,9 @@ import Province from "../models/City"
 export const TOURS = [
     new Tour(
         "t1",
-        "p1",
+        ["p3"],
+        ["c2"],
+        "u1",
         "https://gezilecekyerler.com/wp-content/uploads/2017/03/Galata-Kulesi.jpg",
         "https://gezilecekyerler.com/wp-content/uploads/2017/03/Galata-Kulesi.jpg",
         "Galata Kulesi & Taksim Kültür Sanat ve Tarih Gezisi",
@@ -40,7 +42,9 @@ export const TOURS = [
     ),
     new Tour(
         "t2",
-        "p2",
+        ["p1"],
+        ["c1"],
+        "u2",
         "https://cdn1.ntv.com.tr/gorsel/VKEoxgDl5UyALbc91dZjKQ.jpg?width=1000&height=748&mode=crop&scale=both&v=20191015134847912",
         "https://cdn1.ntv.com.tr/gorsel/VKEoxgDl5UyALbc91dZjKQ.jpg?width=1000&height=748&mode=crop&scale=both&v=20191015134847912",
         "Galata Kulesi & Taksim Kültür Sanat ve Tarih Gezisi",
@@ -111,23 +115,23 @@ export const CITIES = [
     ),
     new Province(
         "p2",
+        "Çanakkale",
+        "https://gtr.oksijentravel.com/userfiles/Media/TourImages/large/1100_Canakkale-_Gelibolu_65762.jpg"
+    ),
+    new Province(
+        "p3",
         "Istanbul",
         "https://live.staticflickr.com/4716/39501131565_43654c86e3_b.jpg"
     ),
     new Province(
-        "p3",
+        "p4",
         "Sakarya",
         "https://seyyahdefteri.com/wp-content/uploads/2018/12/Sapanca-G%C3%B6l%C3%BC-Nerede-Nas%C4%B1l-Gidilir-Neler-Yap%C4%B1l%C4%B1r-700x420.jpg"
     ),
     new Province(
-        "p4",
+        "p5",
         "Antalya",
         "https://i.sozcu.com.tr/wp-content/uploads/2018/04/shutterstock_355370495.jpg"
-    ),
-    new Province(
-        "p5",
-        "Çanakkale",
-        "https://gtr.oksijentravel.com/userfiles/Media/TourImages/large/1100_Canakkale-_Gelibolu_65762.jpg"
     ),
     new Province(
         "p6",
