@@ -16,29 +16,31 @@ const CityScreen = (props) => {
 
     const toursHandler = itemData => {
         return (
-            <View>
-            <SearchEngine />
-            <View style={styles.textContainer}>
-                <DefaultTitle style={styles.text}>{itemData.item.city} İçin Öne Çıkan Rehberler</DefaultTitle>
-            </View>
-            <GuideList navigation={props.navigation} 
-            onSelect={() => {
-                requestAnimationFrame (() => props.navigation.navigate("Detail"))
-            }} 
-            name={itemData.item.tourName} 
-            time={itemData.item.time} 
-            price={itemData.item.price} 
-            target={itemData.item.category} 
-            img={itemData.item.Image} />
-            </View>
+
+
+            <GuideList navigation={props.navigation}
+                onSelect={() => {
+                    requestAnimationFrame(() => props.navigation.navigate("Detail"))
+                }}
+                name={itemData.item.tourName}
+                time={itemData.item.time}
+                price={itemData.item.price}
+                target={itemData.item.category}
+                img={itemData.item.Image} />
+
         )
     }
 
     return (
         <View style={styles.screen}>
-            <FlatList contentContainerStyle={styles.container}
+            <SearchEngine />
+            <View style={styles.textContainer}>
+                <DefaultTitle style={styles.text}>xd İçin Öne Çıkan Rehberler</DefaultTitle>
+            </View>
+            <FlatList
                 data={selectedCity}
                 renderItem={toursHandler}
+                numColumns={2}
             />
         </View>
     )
@@ -49,7 +51,7 @@ CityScreen.navigationOptions = navData => {
     const cityHeader = navData.navigation.getParam("cityHeader")
 
 
-    return({
+    return ({
         headerTitle: cityHeader
     })
 }
@@ -58,13 +60,9 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1
     },
-    container: {
-        flexDirection: "row",
-        //flexWrap: "wrap",
-        justifyContent: "space-between",
-    },
     textContainer: {
         paddingHorizontal: Dimensions.get("window").width * 0.05,
+        paddingBottom: Dimensions.get("window").height * 0.05
     },
     text: {
         fontSize: 24

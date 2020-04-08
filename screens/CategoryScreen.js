@@ -20,11 +20,8 @@ const CategoryScreen = (props) => {
 
     const toursHandler = (itemData) => {
         return (
-            <View>
-                <SearchEngine />
-                <View style={styles.textContainer}>
-                    <DefaultTitle style={styles.text}>{itemData.item.category} İçin Öne Çıkan Rehberler</DefaultTitle>
-                </View>
+            
+               
                 <GuideList navigation={props.navigation}
                     onSelect={() => {
                         requestAnimationFrame(() => props.navigation.navigate("Detail"))
@@ -34,15 +31,20 @@ const CategoryScreen = (props) => {
                     price={itemData.item.price}
                     target={itemData.item.city}
                     img={itemData.item.Image} />
-            </View>
+         
         )
     }
 
     return (
         <View style={styles.screen}>
-            <FlatList contentContainerStyle={styles.container}
+         <SearchEngine />
+                <View style={styles.textContainer}>
+                    <DefaultTitle style={styles.text}>xd İçin Öne Çıkan Rehberler</DefaultTitle>
+                </View>
+            <FlatList 
                 data={selectedCategory}
                 renderItem={toursHandler}
+                numColumns={2}
             />
         </View>
     )
@@ -61,13 +63,9 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1
     },
-    container: {
-        flexDirection: "row",
-        //flexWrap: "wrap",
-        justifyContent: "space-between",
-    },
     textContainer: {
         paddingHorizontal: Dimensions.get("window").width * 0.05,
+        paddingBottom: Dimensions.get("window").height * 0.05
     },
     text: {
         fontSize: 20
