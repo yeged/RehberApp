@@ -10,15 +10,16 @@ export const TOURS = [
         "u1",
         "https://gezilecekyerler.com/wp-content/uploads/2017/03/Galata-Kulesi.jpg",
         "https://gezilecekyerler.com/wp-content/uploads/2017/03/Galata-Kulesi.jpg",
-        "Galata Kulesi & Taksim Kültür Sanat ve Tarih Gezisi",
+        "Beşiktaş Dolmabahçe Sarayı ve Yıldız Sarayı Kültür ve Sanat Gezintisi",
         4,
         [
             "English",
-            "Turkish"
+            "Turkish",
+            "Spanish"
         ],
         "Istanbul",
         "Kültür Gezintisi",
-        250,
+        120,
         ['Cut the tomatoes and the onion into small pieces.',
         'Boil some water - add salt to it once it boils.',
         'Put the spaghetti into the boiling water - they should be done in about 10 to 12 minutes.',
@@ -26,7 +27,7 @@ export const TOURS = [
         'After 2 minutes, add the tomato pieces, salt, pepper and your other spices.',
         'The sauce will be done once the spaghetti are.',
         'Feel free to add some cheese on top of the finished dish.'],
-         4,
+         6.5,
          [
             'Butter one side of the white bread',
             'Layer ham, the pineapple and cheese on the white bread',

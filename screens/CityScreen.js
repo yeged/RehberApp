@@ -18,7 +18,9 @@ const CityScreen = (props) => {
         return (
             <GuideList navigation={props.navigation}
                 onSelect={() => {
-                    requestAnimationFrame(() => props.navigation.navigate("Detail"))
+                    requestAnimationFrame(() => props.navigation.navigate("Detail", {
+                        tourId: itemData.item.id
+                    }))
                 }}
                 name={itemData.item.tourName}
                 time={itemData.item.time}

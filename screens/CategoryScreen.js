@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { View, StyleSheet, Dimensions, FlatList, Animated } from "react-native";
+import { View, StyleSheet, Dimensions, FlatList} from "react-native";
 import SearchEngine from "../components/SearchEngine"
 import GuideList from "../components/GuideList";
 import DefaultTitle from "../components/DefaultTitle"
@@ -21,7 +21,9 @@ const CategoryScreen = (props) => {
         return ( 
                 <GuideList navigation={props.navigation}
                     onSelect={() => {
-                        requestAnimationFrame(() => props.navigation.navigate("Detail"))
+                        requestAnimationFrame(() => props.navigation.navigate("Detail", {
+                            tourId: itemData.item.id
+                        }))
                     }}
                     name={itemData.item.tourName}
                     time={itemData.item.time}
