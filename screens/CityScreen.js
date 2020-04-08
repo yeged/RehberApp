@@ -16,7 +16,11 @@ const CityScreen = (props) => {
 
     const toursHandler = itemData => {
         return (
-
+            <View>
+            <SearchEngine />
+            <View style={styles.textContainer}>
+                <DefaultTitle style={styles.text}>{itemData.item.city} İçin Öne Çıkan Rehberler</DefaultTitle>
+            </View>
             <GuideList navigation={props.navigation} 
             onSelect={() => {
                 requestAnimationFrame (() => props.navigation.navigate("Detail"))
@@ -26,23 +30,16 @@ const CityScreen = (props) => {
             price={itemData.item.price} 
             target={itemData.item.category} 
             img={itemData.item.Image} />
-
+            </View>
         )
     }
 
     return (
         <View style={styles.screen}>
-            <SearchEngine />
-            <View style={styles.textContainer}>
-                <DefaultTitle style={styles.text}>İstanbul'da" Öne çıkan Rehberler</DefaultTitle>
-            </View>
-
             <FlatList contentContainerStyle={styles.container}
                 data={selectedCity}
                 renderItem={toursHandler}
-
             />
-
         </View>
     )
 }
@@ -68,7 +65,6 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         paddingHorizontal: Dimensions.get("window").width * 0.05,
-        paddingBottom: Dimensions.get("window").height * 0.07
     },
     text: {
         fontSize: 24
