@@ -1,5 +1,5 @@
-import React from "react";
-import { View, StyleSheet, Dimensions, FlatList, ScrollView } from "react-native";
+import React, {useState} from "react";
+import { View, StyleSheet, Dimensions, FlatList, Animated } from "react-native";
 import SearchEngine from "../components/SearchEngine"
 import GuideList from "../components/GuideList";
 import DefaultTitle from "../components/DefaultTitle"
@@ -8,12 +8,10 @@ import { useSelector } from "react-redux"
 
 
 
-
 const CategoryScreen = (props) => {
-
+    
 
     const catId = props.navigation.getParam("catId")
-
 
     const availableTours = useSelector(state => state.tours.tours)
 
@@ -34,9 +32,7 @@ const CategoryScreen = (props) => {
     }
 
     const renderHeader = () => {
-
         const catHeader =  props.navigation.getParam("catHeader")
-
         return(
             <View>
             <SearchEngine />
@@ -74,7 +70,6 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         paddingHorizontal: Dimensions.get("window").width * 0.05,
-        paddingBottom: Dimensions.get("window").height * 0.05
     },
     text: {
         fontSize: 20

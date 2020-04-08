@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         paddingHorizontal: Dimensions.get("window").width * 0.05,
-        paddingBottom: Dimensions.get("window").height * 0.05
     },
     text: {
         fontSize: 24
