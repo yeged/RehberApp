@@ -16,8 +16,6 @@ const CityScreen = (props) => {
 
     const toursHandler = itemData => {
         return (
-
-
             <GuideList navigation={props.navigation}
                 onSelect={() => {
                     requestAnimationFrame(() => props.navigation.navigate("Detail"))
@@ -27,20 +25,31 @@ const CityScreen = (props) => {
                 price={itemData.item.price}
                 target={itemData.item.category}
                 img={itemData.item.Image} />
+        )
+    }
 
+    const renderHeader = () => {
+
+        const cityHeader = props.navigation.getParam("cityHeader")
+
+        return (
+            <View>
+                <SearchEngine />
+                <View style={styles.textContainer}>
+                    <DefaultTitle style={styles.text}>{cityHeader} İçin Öne Çıkan Rehberler</DefaultTitle>
+                </View>
+            </View>
         )
     }
 
     return (
         <View style={styles.screen}>
-            <SearchEngine />
-            <View style={styles.textContainer}>
-                <DefaultTitle style={styles.text}>xd İçin Öne Çıkan Rehberler</DefaultTitle>
-            </View>
+
             <FlatList
                 data={selectedCity}
                 renderItem={toursHandler}
                 numColumns={2}
+                ListHeaderComponent={renderHeader}
             />
         </View>
     )
@@ -49,7 +58,6 @@ const CityScreen = (props) => {
 CityScreen.navigationOptions = navData => {
 
     const cityHeader = navData.navigation.getParam("cityHeader")
-
 
     return ({
         headerTitle: cityHeader

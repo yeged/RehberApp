@@ -1,9 +1,10 @@
 import React from "react";
-import { View, StyleSheet, Dimensions, FlatList } from "react-native";
+import { View, StyleSheet, Dimensions, FlatList, ScrollView } from "react-native";
 import SearchEngine from "../components/SearchEngine"
 import GuideList from "../components/GuideList";
 import DefaultTitle from "../components/DefaultTitle"
 import { useSelector } from "react-redux"
+
 
 
 
@@ -19,9 +20,7 @@ const CategoryScreen = (props) => {
     const selectedCategory = availableTours.filter(tour => tour.tCategoryId.indexOf(catId) >= 0)
 
     const toursHandler = (itemData) => {
-        return (
-            
-               
+        return ( 
                 <GuideList navigation={props.navigation}
                     onSelect={() => {
                         requestAnimationFrame(() => props.navigation.navigate("Detail"))
@@ -31,20 +30,30 @@ const CategoryScreen = (props) => {
                     price={itemData.item.price}
                     target={itemData.item.city}
                     img={itemData.item.Image} />
-         
+        )
+    }
+
+    const renderHeader = () => {
+
+        const catHeader =  props.navigation.getParam("catHeader")
+
+        return(
+            <View>
+            <SearchEngine />
+            <View style={styles.textContainer}>
+                <DefaultTitle style={styles.text}>{catHeader} İçin Öne Çıkan Rehberler</DefaultTitle>
+            </View>
+            </View>
         )
     }
 
     return (
         <View style={styles.screen}>
-         <SearchEngine />
-                <View style={styles.textContainer}>
-                    <DefaultTitle style={styles.text}>xd İçin Öne Çıkan Rehberler</DefaultTitle>
-                </View>
             <FlatList 
                 data={selectedCategory}
                 renderItem={toursHandler}
                 numColumns={2}
+                ListHeaderComponent={renderHeader}
             />
         </View>
     )
