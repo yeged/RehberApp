@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, StyleSheet, Button, Dimensions, ImageBackground, Image, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Button, Dimensions, Image, ScrollView, TouchableNativeFeedback } from "react-native";
 import HeaderButton from "../components/HeaderButton"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { useSelector } from "react-redux"
@@ -8,7 +8,12 @@ import Colors from "../constants/Colors"
 import DefaultTitle from "../components/DefaultTitle"
 
 
+
+
 const DetailScreen = (props) => {
+
+    const [tourReadMore, setTourReadMore] = useState(true);
+    const [personReadMore, setPersonReadMore] = useState(true)
 
     const tourId = props.navigation.getParam("tourId")
 
@@ -16,6 +21,13 @@ const DetailScreen = (props) => {
 
     const selectedTour = availableTours.find(tour => tour.id === tourId)
 
+    const readMoreHandler = () => {
+        tourReadMore ? setTourReadMore(false) : setTourReadMore(true)
+    }
+
+    const pReadMoreHandler = () => {
+        personReadMore ? setPersonReadMore(false) : setPersonReadMore(true)
+    }
 
     return (
         <View style={styles.screen}>
@@ -27,7 +39,7 @@ const DetailScreen = (props) => {
 
 
                 </View>
-                <View style={styles.container}>
+                <View style={styles.topContainer}>
                     <View style={styles.tourDetailContainer}>
                         <DefaultTitle style={styles.categoryTitle}>{selectedTour.category}</DefaultTitle>
                         <DefaultTitle numberOfLines={4} style={styles.title}>{selectedTour.tourName}</DefaultTitle>
@@ -59,21 +71,33 @@ const DetailScreen = (props) => {
                     </View>
                 </View>
 
-                <View style={styles.tourRoute}>
-                    <DefaultTitle style={styles.routeTitle}>Neler Yapacaksınız</DefaultTitle>
-                    <Text style={styles.description}>{selectedTour.tourPlan}</Text>
-                </View>
-
-                <View>
-                    <DefaultTitle style={styles.tourTitle}>Ev Sahibiniz</DefaultTitle>
-                    <View style={styles.profileImage}>
-                        <Image style={styles.pImage} />
+                <View style={styles.bottomContainer}>
+                    <View style={styles.tourRoute}>
+                        <DefaultTitle style={styles.tourTitle}>Neler Yapacaksınız</DefaultTitle>
+                        <TouchableNativeFeedback useForeground onPress={readMoreHandler}>
+                            <View>
+                                <Text numberOfLines={tourReadMore ? 8 : null} style={styles.description}>{selectedTour.tourPlan}</Text>
+                                <Text style={styles.readMore}>{tourReadMore ? "Daha Fazla" : null}</Text>
+                            </View>
+                        </TouchableNativeFeedback>
                     </View>
-                    <DefaultTitle style={{ fontSize: 25 }}>Alice</DefaultTitle>
-                    <Text style={styles.description}>{selectedTour.personalDetail}</Text>
-                    <Button title="Ev sahibiyle iletişime geçin" />
-                </View>
 
+                    <View style={styles.tourPerson}>
+                        <DefaultTitle style={styles.tourTitle}>Rehberiniz</DefaultTitle>
+                        <View style={styles.profileImage}>
+                            <Image style={styles.pImage} source={{ uri: selectedTour.profileImg }} />
+                        </View>
+                        <DefaultTitle style={{ fontSize: 25, lineHeight: Dimensions.get("window").height * 0.1}}>Alice</DefaultTitle>
+                        <TouchableNativeFeedback useForeground onPress={pReadMoreHandler}>
+                            <View>
+                                <Text numberOfLines={personReadMore ? 8 : null} style={styles.description}>{selectedTour.personalDetail}</Text>
+                                <Text style={styles.readMore}>{personReadMore ? "Daha Fazla" : null}</Text>
+                            </View>
+                        </TouchableNativeFeedback>
+                        <Button title="Ev sahibiyle iletişime geçin" />
+
+                    </View>
+                </View>
             </ScrollView>
         </View>
     )
@@ -99,10 +123,10 @@ const styles = StyleSheet.create({
     headerStyle: {
         paddingHorizontal: Dimensions.get("window").width * 0.05
     },
-    container: {
+    topContainer: {
         width: "100%",
         paddingHorizontal: Dimensions.get("window").width * 0.05,
-        marginBottom: Dimensions.get("window").height * 0.08,
+        marginBottom: Dimensions.get("window").height * 0.04,
         backgroundColor: Colors.detailbgColor,
 
     },
@@ -114,16 +138,15 @@ const styles = StyleSheet.create({
 
     },
     categoryTitle: {
-        lineHeight: 30,
+        lineHeight: Dimensions.get("window").height * 0.06,
         color: "white"
     },
     title: {
-        lineHeight: 30,
-        fontSize: 22,
+        fontSize: 24,
         color: "white"
     },
     cityTitle: {
-        lineHeight: 30,
+        lineHeight: Dimensions.get("window").height * 0.06,
         fontFamily: "open-sans",
         color: Colors.accentColor
     },
@@ -134,27 +157,63 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
     },
-    tourInfo:{
-        paddingVertical: Dimensions.get("window").height * 0.04,
+    tourInfo: {
+        paddingVertical: Dimensions.get("window").height * 0.03,
     },
-    infoHeader:{
+    infoHeader: {
         color: Colors.accentColor
     },
-    infoText:{
-        color:"white",
+    infoText: {
+        color: "white",
         fontFamily: "open-sans"
-    },  
+    },
+
+
+    bottomContainer: {
+        width: "100%",
+        paddingHorizontal: Dimensions.get("window").width * 0.05,
+    },
+    tourRoute: {
+        paddingBottom: Dimensions.get("window").height * 0.06,
+        borderBottomWidth: 1,
+        borderBottomColor: "#ccc"
+    },
+    tourTitle: {
+        fontSize: 20,
+        lineHeight: Dimensions.get("window").height * 0.1,
+        color: Colors.detailbgColor
+    },
+    description: {
+        fontFamily: "open-sans",
+    },
+    readMore: {
+        lineHeight: Dimensions.get("window").height * 0.04,
+        color: Colors.accentColor
+    },
+    tourPerson:{
+        paddingVertical: Dimensions.get("window").height * 0.05
+    },
+
 
     imageContainer: {
-        width: "100%"
+        width: "100%",
+        backgroundColor: Colors.detailbgColor
     },
     image: {
         height: 300,
         width: "100%"
     },
+    profileImage:{
+        marginVertical: Dimensions.get("window").height * 0.024,
+        borderRadius: Dimensions.get("window").height * 0.5,
+        backgroundColor: "#505560",
+        width: Dimensions.get("window").width * 0.44,
+        height: Dimensions.get("window").height * 0.24,
+        overflow: "hidden"
+    },
     pImage: {
-        height: 300,
-        width: 300
+        height: "100%",
+        width: "100%"
     }
 
 })

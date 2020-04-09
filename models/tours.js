@@ -1,9 +1,10 @@
 class Tour {
-    constructor(id,tCityId, tCategoryId, profileId, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, userComment, personalDetail) {
+    constructor(id,tCityId, tCategoryId, profileId,profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, userComment, personalDetail) {
                 this.id = id, 
                 this.tCityId = tCityId,
                 this.tCategoryId = tCategoryId,
-                this.profileId = profileId, 
+                this.profileId = profileId,
+                this.profileImg = profileImg, 
                 this.Image = Image, 
                 this.tourImage = tourImage, 
                 this.tourName = tourName, 
