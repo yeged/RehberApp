@@ -15,7 +15,7 @@ export const TOURS = [
         [
             "English",
             "Turkish",
-            "Spanish"
+            "Spanish",
         ],
         "Istanbul",
         "Kültür Gezintisi",

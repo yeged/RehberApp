@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
         borderColor:"#f5f5f5",
         borderRadius:20,
         overflow: "hidden",
-        elevation:1
     },
     container:{
        

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Button, Dimensions, ImageBackground, Image, ScrollView } from "react-native";
 import HeaderButton from "../components/HeaderButton"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
-import {useSelector} from "react-redux"
+import { useSelector } from "react-redux"
 
 import Colors from "../constants/Colors"
 import DefaultTitle from "../components/DefaultTitle"
@@ -19,37 +19,43 @@ const DetailScreen = (props) => {
 
     return (
         <View style={styles.screen}>
-        <ScrollView contentContainerStyle={styles.container}>
-            
+            <ScrollView>
+
 
                 <View style={styles.imageContainer}>
-                    <ImageBackground style={styles.image}>
+                    <Image source={{ uri: selectedTour.tourImage }} style={styles.image} />
 
-                    </ImageBackground> 
+
                 </View>
+                <View style={styles.container}>
+                    <View style={styles.tourDetailContainer}>
+                        <DefaultTitle style={styles.categoryTitle}>{selectedTour.category}</DefaultTitle>
+                        <DefaultTitle numberOfLines={4} style={styles.title}>{selectedTour.tourName}</DefaultTitle>
+                        <Text style={styles.cityTitle}>{selectedTour.city}</Text>
+                    </View>
 
-                <View style={styles.tourDetailContainer}>
-                    <DefaultTitle style={styles.categoryTitle}>{selectedTour.category}</DefaultTitle>
-                    <DefaultTitle style={styles.title}>{selectedTour.tourName}</DefaultTitle>
-                    <Text style={styles.cityTitle}>{selectedTour.city}</Text>
-                </View>
+                    <View style={styles.tourInfoContainer}>
+                        <View >
+                            <View style={styles.tourInfo}>
+                                <DefaultTitle style={styles.infoHeader}>Süre</DefaultTitle>
+                                <Text style={styles.infoText}>{selectedTour.time} Saat</Text>
+                            </View>
+                            <View>
+                                <DefaultTitle style={styles.infoHeader}>Kişi Başı</DefaultTitle>
+                                <Text style={styles.infoText}>{selectedTour.price} ₺</Text>
 
-                <View style={styles.tourInfo}>
-                    <View>
-                        <DefaultTitle style={styles.timeText}>Süre</DefaultTitle>
-                        <Text style={styles.timeText2}>{selectedTour.time} Saat</Text>
-                    </View>
-                    <View>
-                        <DefaultTitle style={styles.group}>Grup Büyüklüğü</DefaultTitle>
-                        <Text style={styles.group2}>{selectedTour.groupSize} Kişiye kadar</Text>
-                    </View>
-                    <View>
-                        <DefaultTitle style={styles.price}>Kişi Başı</DefaultTitle>
-                        <Text style={styles.price2}>{selectedTour.price}₺</Text>
-                    </View>
-                    <View>
-                        <DefaultTitle style={styles.language}>Sunduğu Diller</DefaultTitle>
-                        {selectedTour.language.map(tour => <Text style={styles.language2}>{tour}</Text> )}
+                            </View>
+                        </View>
+                        <View >
+                            <View style={styles.tourInfo}>
+                                <DefaultTitle style={styles.infoHeader}>Grup Büyüklüğü</DefaultTitle>
+                                <Text style={styles.infoText}>{selectedTour.groupSize} Kişiye kadar</Text>
+                            </View>
+                            <View>
+                                <DefaultTitle style={styles.infoHeader}>Sunduğu Diller</DefaultTitle>
+                                {selectedTour.language.map(tour => <Text style={styles.infoText}>{tour},</Text>)}
+                            </View>
+                        </View>
                     </View>
                 </View>
 
@@ -63,12 +69,12 @@ const DetailScreen = (props) => {
                     <View style={styles.profileImage}>
                         <Image style={styles.pImage} />
                     </View>
-                    <DefaultTitle style={{fontSize:25}}>Alice</DefaultTitle>
+                    <DefaultTitle style={{ fontSize: 25 }}>Alice</DefaultTitle>
                     <Text style={styles.description}>{selectedTour.personalDetail}</Text>
-                    <Button title="Ev sahibiyle iletişime geçin"/>
+                    <Button title="Ev sahibiyle iletişime geçin" />
                 </View>
 
-                </ScrollView>
+            </ScrollView>
         </View>
     )
 }
@@ -77,10 +83,11 @@ DetailScreen.navigationOptions = navData => {
     return {
         headerTitle: () => null,
         headerStyle: {
-            backgroundColor: Colors.primaryColor
+            backgroundColor: Colors.detailbgColor
         },
+        headerTintColor: "white",
         headerRight: () => <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item iconName="ios-heart-empty" iconSize={25} style={styles.headerStyle} />
+            <Item iconName="ios-heart-empty" iconSize={25} style={styles.headerStyle} color="white" />
         </HeaderButtons>
     }
 }
@@ -92,13 +99,62 @@ const styles = StyleSheet.create({
     headerStyle: {
         paddingHorizontal: Dimensions.get("window").width * 0.05
     },
-    image:{
-        height:300,
-        width:300
+    container: {
+        width: "100%",
+        paddingHorizontal: Dimensions.get("window").width * 0.05,
+        marginBottom: Dimensions.get("window").height * 0.08,
+        backgroundColor: Colors.detailbgColor,
+
     },
-    pImage:{
-        height:300,
-        width:300
+
+    tourDetailContainer: {
+        paddingVertical: Dimensions.get("window").height * 0.04,
+        borderBottomWidth: 1,
+        borderBottomColor: "grey",
+
+    },
+    categoryTitle: {
+        lineHeight: 30,
+        color: "white"
+    },
+    title: {
+        lineHeight: 30,
+        fontSize: 22,
+        color: "white"
+    },
+    cityTitle: {
+        lineHeight: 30,
+        fontFamily: "open-sans",
+        color: Colors.accentColor
+    },
+
+
+    tourInfoContainer: {
+        paddingVertical: Dimensions.get("window").height * 0.06,
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    tourInfo:{
+        paddingVertical: Dimensions.get("window").height * 0.04,
+    },
+    infoHeader:{
+        color: Colors.accentColor
+    },
+    infoText:{
+        color:"white",
+        fontFamily: "open-sans"
+    },  
+
+    imageContainer: {
+        width: "100%"
+    },
+    image: {
+        height: 300,
+        width: "100%"
+    },
+    pImage: {
+        height: 300,
+        width: 300
     }
 
 })
