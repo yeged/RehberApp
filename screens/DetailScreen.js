@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux"
 import Colors from "../constants/Colors"
 import DefaultTitle from "../components/DefaultTitle"
 import { toggleFav } from "../store/actions/tour"
-
+import CustomButton from "../components/CustomButton"
 
 
 
@@ -142,15 +142,17 @@ const DetailScreen = (props) => {
                                 <Text style={styles.readMore}>{showMoreInfo && personReadMore ? "Daha Fazla" : null}</Text>
                             </View>
                         </TouchableNativeFeedback>
-                        <Button title="Ev sahibiyle iletişime geçin" />
+                        <CustomButton />
                     </View>
                 </View>
 
-                <View>
+
+
+                {/* <View>
                     <HeaderButtons HeaderButtonComponent={HeaderButton}>
                         <Item iconName={tourIsFav ? "ios-star" : "ios-star-outline"} iconSize={25} style={styles.headerStyle} color="white" onPress={favTourHandler} color="red" />
                     </HeaderButtons>
-                </View>
+                </View> */}
             </ScrollView>
         </View>
     )

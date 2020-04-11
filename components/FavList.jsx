@@ -33,8 +33,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: Dimensions.get("window").height * 0.4,
         marginVertical: Dimensions.get("window").height * 0.01,
-        paddingHorizontal: Dimensions.get("window").height * 0.015,     
-          
+        paddingHorizontal: Dimensions.get("window").height * 0.015,        
     },
     container:{
         borderWidth:1,
