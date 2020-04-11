@@ -2,10 +2,11 @@ import React, { useState, useCallback,useEffect } from "react";
 import { View, Text, StyleSheet, Button, Dimensions, Image, ScrollView, TouchableNativeFeedback } from "react-native";
 import HeaderButton from "../components/HeaderButton"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 
 import Colors from "../constants/Colors"
 import DefaultTitle from "../components/DefaultTitle"
+import toggleFav from "../store/actions/tour"
 
 
 
@@ -24,6 +25,8 @@ const DetailScreen = (props) => {
 
     const selectedTour = availableTours.find(tour => tour.id === tourId)
 
+
+    // READ MORE SECTION
     const onTextLayout = useCallback(e =>{
         setShowMore(e.nativeEvent.lines.length > 8);
       }, [showMore]);
@@ -44,7 +47,6 @@ const DetailScreen = (props) => {
         }
     }, [showMoreInfo])
 
-
      const readMoreHandler = () => {
          tourReadMore ? setTourReadMore(false) : setTourReadMore(true)
      }
@@ -52,6 +54,23 @@ const DetailScreen = (props) => {
     const pReadMoreHandler = () => {
         personReadMore ? setPersonReadMore(false) : setPersonReadMore(true)
     }
+    //////////////////////////////////
+
+    //REDUCER && ACTIONS
+
+    const dispatch = useDispatch()
+
+    const favTourHandler = useCallback(() => {
+        dispatch(toggleFav(tourId))
+    }, [toggleFav, tourId])
+
+    useEffect(() => {
+            props.navigation.setParams({
+                favTour: favTourHandler
+            })
+    }, [favTourHandler])
+
+
 
     return (
         <View style={styles.screen}>
@@ -127,7 +146,7 @@ const DetailScreen = (props) => {
 }
 
 DetailScreen.navigationOptions = navData => {
-
+    const favTour = navData.navigation.getParam("favTour")
     return {
         headerTitle: () => null,
         headerStyle: {
@@ -136,7 +155,7 @@ DetailScreen.navigationOptions = navData => {
         headerTintColor: "white",
         headerTransparent:false,
         headerRight: () => <HeaderButtons HeaderButtonComponent={HeaderButton} style={{backgroundColor:"black"}}>
-            <Item  iconName="ios-heart-empty" iconSize={25} style={styles.headerStyle} color="white" />
+            <Item  iconName="ios-heart-empty" iconSize={25} style={styles.headerStyle} color="white" onPress={favTour}/>
         </HeaderButtons>
     }
 }
