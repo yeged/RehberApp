@@ -17,12 +17,16 @@ const CategoryScreen = (props) => {
 
     const selectedCategory = availableTours.filter(tour => tour.tCategoryId.indexOf(catId) >= 0)
 
+    const favTours = useSelector(state => state.tours.favorites)
+
     const toursHandler = (itemData) => {
+        const isFavorite = favTours.some(tour => tour.id === itemData.item.id)
         return ( 
                 <GuideList navigation={props.navigation}
                     onSelect={() => {
                         requestAnimationFrame(() => props.navigation.navigate("Detail", {
-                            tourId: itemData.item.id
+                            tourId: itemData.item.id,
+                            isFav: isFavorite
                         }))
                     }}
                     name={itemData.item.tourName}

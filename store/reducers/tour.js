@@ -18,10 +18,10 @@ const tourReducer = (state = initialState, actions) => {
                 const updateItem = [...state.favorites]
                 updateItem.splice(existingItem, 1)
                 return{...state, favorites:updateItem}
-            }
+            } 
             else{
-                const tour = state.tours.find(tour => tour.id === tourId)
-                return{...state, favorites:state.favorites.concat(tour)}
+                const tours = state.tours.find(tour => tour.id === actions.tourId)
+                return{...state, favorites:state.favorites.concat(tours)}
             }
         default:
             return state;

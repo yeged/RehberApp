@@ -1,4 +1,4 @@
-import React, { useState, useCallback,useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { View, Text, StyleSheet, Button, Dimensions, Image, ScrollView, TouchableNativeFeedback } from "react-native";
 import HeaderButton from "../components/HeaderButton"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import Colors from "../constants/Colors"
 import DefaultTitle from "../components/DefaultTitle"
-import toggleFav from "../store/actions/tour"
+import { toggleFav } from "../store/actions/tour"
 
 
 
@@ -19,6 +19,8 @@ const DetailScreen = (props) => {
     const [showMoreInfo, setShowMoreInfo] = useState()
 
 
+    const tourIsFav = useSelector(state => state.tours.favorites.some(tour => tour.id === tourId))
+
     const tourId = props.navigation.getParam("tourId")
 
     const availableTours = useSelector(state => state.tours.tours)
@@ -27,29 +29,29 @@ const DetailScreen = (props) => {
 
 
     // READ MORE SECTION
-    const onTextLayout = useCallback(e =>{
+    const onTextLayout = useCallback(e => {
         setShowMore(e.nativeEvent.lines.length > 8);
-      }, [showMore]);
+    }, [showMore]);
 
     const onTextLayoutInfo = useCallback(e => {
         setShowMoreInfo(e.nativeEvent.lines.length > 8)
     }, [showMoreInfo])
 
     useEffect(() => {
-        if(showMore){
-           return setTourReadMore(true)
+        if (showMore) {
+            return setTourReadMore(true)
         }
-    }, [showMore]) 
-    
+    }, [showMore])
+
     useEffect(() => {
-        if(showMoreInfo){
+        if (showMoreInfo) {
             return setPersonReadMore(true)
         }
     }, [showMoreInfo])
 
-     const readMoreHandler = () => {
-         tourReadMore ? setTourReadMore(false) : setTourReadMore(true)
-     }
+    const readMoreHandler = () => {
+        tourReadMore ? setTourReadMore(false) : setTourReadMore(true)
+    }
 
     const pReadMoreHandler = () => {
         personReadMore ? setPersonReadMore(false) : setPersonReadMore(true)
@@ -65,16 +67,20 @@ const DetailScreen = (props) => {
     }, [toggleFav, tourId])
 
     useEffect(() => {
-            props.navigation.setParams({
-                favTour: favTourHandler
-            })
+        props.navigation.setParams({
+            favTour: favTourHandler
+        })
     }, [favTourHandler])
 
-
+    useEffect(() => {
+        props.navigation.setParams({
+            isFav: tourIsFav
+        })
+    }, [tourIsFav])
 
     return (
         <View style={styles.screen}>
-            <ScrollView>  
+            <ScrollView>
                 <View style={styles.imageContainer}>
                     <Image source={{ uri: selectedTour.tourImage }} style={styles.image} />
 
@@ -119,7 +125,7 @@ const DetailScreen = (props) => {
                             <View>
                                 <Text onTextLayout={onTextLayout} numberOfLines={tourReadMore ? 8 : null} style={styles.description}>{selectedTour.tourPlan}</Text>
                                 <Text style={styles.readMore}>{showMore && tourReadMore ? "Daha Fazla" : null}</Text>
-                                
+
                             </View>
                         </TouchableNativeFeedback>
                     </View>
@@ -129,7 +135,7 @@ const DetailScreen = (props) => {
                         <View style={styles.profileImage}>
                             <Image style={styles.pImage} source={{ uri: selectedTour.profileImg }} />
                         </View>
-                        <DefaultTitle style={{ fontSize: 25, lineHeight: Dimensions.get("window").height * 0.1}}>Alice</DefaultTitle>
+                        <DefaultTitle style={{ fontSize: 25, lineHeight: Dimensions.get("window").height * 0.1 }}>Morgan</DefaultTitle>
                         <TouchableNativeFeedback useForeground onPress={pReadMoreHandler}>
                             <View>
                                 <Text onTextLayout={onTextLayoutInfo} numberOfLines={personReadMore ? 8 : null} style={styles.description}>{selectedTour.personalDetail}</Text>
@@ -137,8 +143,13 @@ const DetailScreen = (props) => {
                             </View>
                         </TouchableNativeFeedback>
                         <Button title="Ev sahibiyle iletişime geçin" />
-
                     </View>
+                </View>
+
+                <View>
+                    <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                        <Item iconName={tourIsFav ? "ios-star" : "ios-star-outline"} iconSize={25} style={styles.headerStyle} color="white" onPress={favTourHandler} color="red" />
+                    </HeaderButtons>
                 </View>
             </ScrollView>
         </View>
@@ -147,16 +158,17 @@ const DetailScreen = (props) => {
 
 DetailScreen.navigationOptions = navData => {
     const favTour = navData.navigation.getParam("favTour")
+    const isFav = navData.navigation.getParam("isFav")
     return {
         headerTitle: () => null,
         headerStyle: {
             backgroundColor: Colors.detailbgColor
         },
         headerTintColor: "white",
-        headerTransparent:false,
-        headerRight: () => <HeaderButtons HeaderButtonComponent={HeaderButton} style={{backgroundColor:"black"}}>
-            <Item  iconName="ios-heart-empty" iconSize={25} style={styles.headerStyle} color="white" onPress={favTour}/>
-        </HeaderButtons>
+        headerTransparent: false,
+        headerRight: () => (<HeaderButtons HeaderButtonComponent={HeaderButton}>
+            <Item iconName={isFav ? "ios-star" : "ios-star-outline"} iconSize={25} style={styles.headerStyle} color="white" onPress={favTour} />
+        </HeaderButtons>)
     }
 }
 
@@ -235,7 +247,7 @@ const styles = StyleSheet.create({
         lineHeight: Dimensions.get("window").height * 0.04,
         color: Colors.accentColor
     },
-    tourPerson:{
+    tourPerson: {
         paddingVertical: Dimensions.get("window").height * 0.05
     },
 
@@ -244,15 +256,15 @@ const styles = StyleSheet.create({
         height: Dimensions.get("window").height * 0.65,
         width: "100%",
         backgroundColor: Colors.detailbgColor,
-        
-        
+
+
     },
     image: {
         height: "100%",
         width: "100%",
-        
+
     },
-    profileImage:{
+    profileImage: {
         marginVertical: Dimensions.get("window").height * 0.024,
         borderRadius: Dimensions.get("window").height * 0.5,
         backgroundColor: "#505560",

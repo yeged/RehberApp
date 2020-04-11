@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from "rea
 
 import DefaultTitle from "./DefaultTitle"
 
-function GuideList(props) {
+function Favlist(props) {
     return (
         <View style={styles.cardContainer}>
             <TouchableOpacity activeOpacity={0.65} onPress={props.onSelect}>
@@ -14,7 +14,7 @@ function GuideList(props) {
                 <View style={styles.textContainer}>
                 <DefaultTitle style={styles.target}>{props.target}</DefaultTitle>
                 <View style={styles.nameContainer}>
-                    <Text style={styles.name} numberOfLines={3}>{props.name}</Text>
+                    <Text style={styles.name} numberOfLines={1}>{props.name}</Text>
                 </View>
                 <View style={styles.priceContainer}>
                     <Text style={styles.price} numberOfLines={1} >{props.price.toFixed(2)} ₺/kişi'den itibaren </Text>
@@ -30,17 +30,17 @@ function GuideList(props) {
 const styles = StyleSheet.create({
     cardContainer: {
         backgroundColor: "#f5f5f5",
-        width: Dimensions.get("window").width * 0.44,
-        height: Dimensions.get("window").height * 0.57,
-        marginVertical: Dimensions.get("window").height * 0.04,
-        marginHorizontal: Dimensions.get("window").height * 0.015,
+        width: "100%",
+        height: Dimensions.get("window").height * 0.4,
+        marginVertical: Dimensions.get("window").height * 0.01,
+        paddingHorizontal: Dimensions.get("window").height * 0.015,     
+          
+    },
+    container:{
         borderWidth:1,
         borderColor:"#f5f5f5",
         borderRadius:20,
         overflow: "hidden",
-    },
-    container:{
-       
     },  
     image: {
         width: "100%",
@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
     textContainer:{
         height:"38%",
         paddingVertical:Dimensions.get("window").height * 0.02,
-        marginHorizontal: 8
+        marginHorizontal: 8,
+        alignItems: "center"
     },
     nameContainer:{
         marginVertical:6,
@@ -75,4 +76,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default GuideList;
+export default Favlist;
