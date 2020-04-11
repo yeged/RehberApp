@@ -25,8 +25,17 @@ const defaultStackNavOptions = {
         },
         headerTintColor: "black",
     }
-
 }
+function getTabBarVisible(route) {
+    const routeName = route.state
+      ?  route.state.routes[route.state.index].name
+      : route.params?.screen || 'Home';
+  
+    if (routeName === 'Detail') {
+      return false;
+    }
+    return true;
+  }
 
 const SearchNavigator = createStackNavigator({
     Search: SearchScreen,
@@ -53,13 +62,14 @@ const FavoritesNavigator = createStackNavigator({
     Detail: DetailScreen
 }, defaultStackNavOptions)
 
+
 const TabNav = createBottomTabNavigator({
     Keşfet: {
         screen: SearchNavigator,
         navigationOptions: {
             tabBarIcon: tabInfo => {
                 return <Ionicons name="ios-search" size={25} color={tabInfo.tintColor} />
-            }
+            },
         }
     },
     Beğenilenler: {
@@ -67,7 +77,7 @@ const TabNav = createBottomTabNavigator({
         navigationOptions: {
             tabBarIcon: tabInfo => {
                 return <Ionicons name="ios-heart-empty" size={25} color={tabInfo.tintColor} />
-            }
+            },
         }
     },
     Profil: {
@@ -75,7 +85,8 @@ const TabNav = createBottomTabNavigator({
         navigationOptions: {
             tabBarIcon: tabInfo => {
                 return <Ionicons name="ios-person" size={25} color={tabInfo.tintColor} />
-            }
+            },
+            
         }
     },
 

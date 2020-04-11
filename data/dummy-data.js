@@ -21,26 +21,14 @@ export const TOURS = [
         "Istanbul",
         "Kültür Gezintisi",
         120,
-        ['Cut the tomatoes and the onion into small pieces.',
-        'Boil some water - add salt to it once it boils.',
-        'Put the spaghetti into the boiling water - they should be done in about 10 to 12 minutes.',
-        'In the meantime, heaten up some olive oil and add the cut onion.',
-        'After 2 minutes, add the tomato pieces, salt, pepper and your other spices.',
-        'The sauce will be done once the spaghetti are.',
-        'Feel free to add some cheese on top of the finished dish.'],
+        "Cut the tomatoes and the onion into small pieces.\nBoil some water - add salt to it once it boils.\nPut the spaghetti into the boiling water - they should be done in about 10 to 12 minutes.\nIn the meantime, heaten up some olive oil and add the cut onion.\nAfter 2 minutes, add the tomato pieces, salt, pepper and your other spices.\nThe sauce will be done once the spaghetti are.\nFeel free to add some cheese on top of the finished dish.",
          6.5,
          [
             'Butter one side of the white bread',
             'Layer ham, the pineapple and cheese on the white bread',
             'Bake the toast for round about 10 minutes in the oven at 200Â°C'
          ],
-         [
-            'Form 2 patties',
-            'Fry the patties for c. 4 minutes on each side',
-            'Quickly fry the buns for c. 1 minute on each side',
-            'Bruch buns with ketchup',
-            'Serve burger with tomato, cucumber and onion'
-         ]
+         "Crawling in my skin\r\nThese wounds, they will not heal\r\n\n\nFear is how I fall\r\nConfusing what is real\r\nThere's something inside me that pulls beneath the surface\r\nConsuming, confusing\r\nThis lack of self control I fear is never ending\r\nControlling\r\nI can't seem\r\nTo find myself again\r\nMy walls are closing in\r\n(Without a sense of confidence I'm convinced\r\nThat there's just too much pressure to take)\r\nI've felt this way before\r\nSo insecure\r\nCrawling in my skin\r\nThese wounds, they will not heal\r\nFear is how I fall\r\nConfusing what is real\r\nDiscomfort, endlessly has pulled itself upon me\r\nDistracting, reacting\r\nAgainst my will I stand beside my own reflection\r\nIt's haunting how I can't seem\r\nTo find myself again\r\nMy walls are closing in\r\n(Without a sense of confidence I'm convinced\r\nThat there's just…",
     ),
     new Tour(
         "t2",
@@ -59,18 +47,14 @@ export const TOURS = [
         "Ankara",
         "Doğa Gezintisi",
         250,
-        ["İstanbul'da mükemmel fotoğraflar,harika yerler bulmak için çok zaman harcadım.Birkaç ay sonra bölgeyi çok iyi tanıyorum ve istanbul'da insta için mükemmel olağanüstü fotoğraflar için en iyi yerlerin nerede olduğunu biliyorum",
-    "Moda fotoğrafçılığında nasıl poz verileceğini, kameraya nasıl bakılacağını ve doğal olarak nasıl etkileşime gireceğini öğrendim.",
-    "farklı kıyafetler getirebilir ve sürgünler arasında geçiş yapabilrisiniz. sanaa bazı şeyler öğreteceğim."],
+        "İstanbul'da mükemmel fotoğraflar,harika yerler bulmak için çok zaman harcadım.Birkaç ay sonra bölgeyi çok iyi tanıyorum ve istanbul'da insta için mükemmel olağanüstü fotoğraflar için en iyi yerlerin nerede olduğunu biliyorum\nModa fotoğrafçılığında nasıl poz verileceğini, kameraya nasıl bakılacağını ve doğal olarak nasıl etkileşime gireceğini öğrendim.\nfarklı kıyafetler getirebilir ve sürgünler arasında geçiş yapabilrisiniz. sanaa bazı şeyler öğreteceğim.",
          4,
          [
             'Butter one side of the white bread',
             'Layer ham, the pineapple and cheese on the white bread',
             'Bake the toast for round about 10 minutes in the oven at 200Â°C'
          ],
-         [
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Facilisis gravida neque convallis a cras. Duis at tellus at urna condimentum. Est lorem ipsum dolor sit amet. Nisi est sit amet facilisis magna etiam. Convallis aenean et tortor at. Nisl vel pretium lectus quam. Faucibus vitae aliquet nec ullamcorper sit. Nisi quis eleifend quam adipiscing. Elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Sed lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi tincidunt. Etiam non quam lacus suspendisse faucibus interdum posuere. Faucibus in ornare quam viverra orci sagittis eu volutpat. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit. Sit amet venenatis urna cursus eget nunc scelerisque viverra. Enim ut tellus elementum sagittis. Pharetra magna ac placerat vestibulum lectus mauris. Laoreet non curabitur gravida arcu ac tortor dignissim convallis aenean. Purus semper eget duis at tellus at. Duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam."
-         ]
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Facilisis gravida neque convallis a cras. Duis at tellus at urna condimentum. Est lorem ipsum dolor sit amet. Nisi est sit amet facilisis magna etiam. Convallis aenean et tortor at. Nisl vel pretium lectus quam. Faucibus vitae aliquet nec ullamcorper sit. Nisi quis eleifend quam adipiscing. Elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Sed lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi tincidunt. Etiam non quam lacus suspendisse faucibus interdum posuere. Faucibus in ornare quam viverra orci sagittis eu volutpat. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit. Sit amet venenatis urna cursus eget nunc scelerisque viverra. Enim ut tellus elementum sagittis. Pharetra magna ac placerat vestibulum lectus mauris. Laoreet non curabitur gravida arcu ac tortor dignissim convallis aenean. Purus semper eget duis at tellus at. Duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam."
     ),
     
 ]

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback,useEffect } from "react";
 import { View, Text, StyleSheet, Button, Dimensions, Image, ScrollView, TouchableNativeFeedback } from "react-native";
 import HeaderButton from "../components/HeaderButton"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
@@ -12,8 +12,11 @@ import DefaultTitle from "../components/DefaultTitle"
 
 const DetailScreen = (props) => {
 
-    const [tourReadMore, setTourReadMore] = useState(true);
-    const [personReadMore, setPersonReadMore] = useState(true)
+    const [tourReadMore, setTourReadMore] = useState();
+    const [personReadMore, setPersonReadMore] = useState()
+    const [showMore, setShowMore] = useState()
+    const [showMoreInfo, setShowMoreInfo] = useState()
+
 
     const tourId = props.navigation.getParam("tourId")
 
@@ -21,9 +24,30 @@ const DetailScreen = (props) => {
 
     const selectedTour = availableTours.find(tour => tour.id === tourId)
 
-    const readMoreHandler = () => {
-        tourReadMore ? setTourReadMore(false) : setTourReadMore(true)
-    }
+    const onTextLayout = useCallback(e =>{
+        setShowMore(e.nativeEvent.lines.length > 8);
+      }, [showMore]);
+
+    const onTextLayoutInfo = useCallback(e => {
+        setShowMoreInfo(e.nativeEvent.lines.length > 8)
+    }, [showMoreInfo])
+
+    useEffect(() => {
+        if(showMore){
+           return setTourReadMore(true)
+        }
+    }, [showMore]) 
+    
+    useEffect(() => {
+        if(showMoreInfo){
+            return setPersonReadMore(true)
+        }
+    }, [showMoreInfo])
+
+
+     const readMoreHandler = () => {
+         tourReadMore ? setTourReadMore(false) : setTourReadMore(true)
+     }
 
     const pReadMoreHandler = () => {
         personReadMore ? setPersonReadMore(false) : setPersonReadMore(true)
@@ -31,9 +55,7 @@ const DetailScreen = (props) => {
 
     return (
         <View style={styles.screen}>
-            <ScrollView>
-
-
+            <ScrollView>  
                 <View style={styles.imageContainer}>
                     <Image source={{ uri: selectedTour.tourImage }} style={styles.image} />
 
@@ -76,8 +98,9 @@ const DetailScreen = (props) => {
                         <DefaultTitle style={styles.tourTitle}>Neler Yapacaksınız</DefaultTitle>
                         <TouchableNativeFeedback useForeground onPress={readMoreHandler}>
                             <View>
-                                <Text numberOfLines={tourReadMore ? 8 : null} style={styles.description}>{selectedTour.tourPlan}</Text>
-                                <Text style={styles.readMore}>{tourReadMore ? "Daha Fazla" : null}</Text>
+                                <Text onTextLayout={onTextLayout} numberOfLines={tourReadMore ? 8 : null} style={styles.description}>{selectedTour.tourPlan}</Text>
+                                <Text style={styles.readMore}>{showMore && tourReadMore ? "Daha Fazla" : null}</Text>
+                                
                             </View>
                         </TouchableNativeFeedback>
                     </View>
@@ -90,8 +113,8 @@ const DetailScreen = (props) => {
                         <DefaultTitle style={{ fontSize: 25, lineHeight: Dimensions.get("window").height * 0.1}}>Alice</DefaultTitle>
                         <TouchableNativeFeedback useForeground onPress={pReadMoreHandler}>
                             <View>
-                                <Text numberOfLines={personReadMore ? 8 : null} style={styles.description}>{selectedTour.personalDetail}</Text>
-                                <Text style={styles.readMore}>{personReadMore ? "Daha Fazla" : null}</Text>
+                                <Text onTextLayout={onTextLayoutInfo} numberOfLines={personReadMore ? 8 : null} style={styles.description}>{selectedTour.personalDetail}</Text>
+                                <Text style={styles.readMore}>{showMoreInfo && personReadMore ? "Daha Fazla" : null}</Text>
                             </View>
                         </TouchableNativeFeedback>
                         <Button title="Ev sahibiyle iletişime geçin" />
@@ -104,14 +127,16 @@ const DetailScreen = (props) => {
 }
 
 DetailScreen.navigationOptions = navData => {
+
     return {
         headerTitle: () => null,
         headerStyle: {
             backgroundColor: Colors.detailbgColor
         },
         headerTintColor: "white",
-        headerRight: () => <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item iconName="ios-heart-empty" iconSize={25} style={styles.headerStyle} color="white" />
+        headerTransparent:false,
+        headerRight: () => <HeaderButtons HeaderButtonComponent={HeaderButton} style={{backgroundColor:"black"}}>
+            <Item  iconName="ios-heart-empty" iconSize={25} style={styles.headerStyle} color="white" />
         </HeaderButtons>
     }
 }
@@ -132,9 +157,10 @@ const styles = StyleSheet.create({
     },
 
     tourDetailContainer: {
-        paddingVertical: Dimensions.get("window").height * 0.04,
+        paddingTop: Dimensions.get("window").height * 0.04,
+        paddingBottom: Dimensions.get("window").height * 0.02,
         borderBottomWidth: 1,
-        borderBottomColor: "grey",
+        borderBottomColor: Colors.primaryColor,
 
     },
     categoryTitle: {
@@ -148,12 +174,12 @@ const styles = StyleSheet.create({
     cityTitle: {
         lineHeight: Dimensions.get("window").height * 0.06,
         fontFamily: "open-sans",
-        color: Colors.accentColor
+        color: Colors.accent
     },
 
 
     tourInfoContainer: {
-        paddingVertical: Dimensions.get("window").height * 0.06,
+        paddingBottom: Dimensions.get("window").height * 0.05,
         flexDirection: "row",
         justifyContent: "space-between",
     },
@@ -161,7 +187,7 @@ const styles = StyleSheet.create({
         paddingVertical: Dimensions.get("window").height * 0.03,
     },
     infoHeader: {
-        color: Colors.accentColor
+        color: Colors.accent
     },
     infoText: {
         color: "white",
@@ -196,12 +222,16 @@ const styles = StyleSheet.create({
 
 
     imageContainer: {
+        height: Dimensions.get("window").height * 0.65,
         width: "100%",
-        backgroundColor: Colors.detailbgColor
+        backgroundColor: Colors.detailbgColor,
+        
+        
     },
     image: {
-        height: 300,
-        width: "100%"
+        height: "100%",
+        width: "100%",
+        
     },
     profileImage:{
         marginVertical: Dimensions.get("window").height * 0.024,
