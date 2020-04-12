@@ -107,7 +107,8 @@ const styles = StyleSheet.create({
     },
     categoryContainer: {
         paddingHorizontal: Dimensions.get("window").width * 0.01,
-        paddingVertical: Dimensions.get("window").height * 0.035
+        paddingVertical: Dimensions.get("window").height * 0.035,
+        
     },
     headerContainer: {
         alignItems: "center",

@@ -19,9 +19,9 @@ const DetailScreen = (props) => {
     const [showMoreInfo, setShowMoreInfo] = useState()
 
 
-    const tourIsFav = useSelector(state => state.tours.favorites.some(tour => tour.id === tourId))
-
     const tourId = props.navigation.getParam("tourId")
+    
+    const tourIsFav = useSelector(state => state.tours.favorites.some(tour => tour.id === tourId))
 
     const availableTours = useSelector(state => state.tours.tours)
 
@@ -142,17 +142,9 @@ const DetailScreen = (props) => {
                                 <Text style={styles.readMore}>{showMoreInfo && personReadMore ? "Daha Fazla" : null}</Text>
                             </View>
                         </TouchableNativeFeedback>
-                        <CustomButton />
+                        <CustomButton title="Ev sahibiyle iletişime geçin"/>
                     </View>
                 </View>
-
-
-
-                {/* <View>
-                    <HeaderButtons HeaderButtonComponent={HeaderButton}>
-                        <Item iconName={tourIsFav ? "ios-star" : "ios-star-outline"} iconSize={25} style={styles.headerStyle} color="white" onPress={favTourHandler} color="red" />
-                    </HeaderButtons>
-                </View> */}
             </ScrollView>
         </View>
     )
@@ -169,7 +161,7 @@ DetailScreen.navigationOptions = navData => {
         headerTintColor: "white",
         headerTransparent: false,
         headerRight: () => (<HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item iconName={isFav ? "ios-star" : "ios-star-outline"} iconSize={25} style={styles.headerStyle} color="white" onPress={favTour} />
+            <Item iconName={isFav ? "ios-heart" : "ios-heart-empty"} iconSize={25} style={styles.headerStyle} color="white" onPress={favTour} />
         </HeaderButtons>)
     }
 }

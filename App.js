@@ -6,7 +6,7 @@ import { AppLoading } from "expo";
 import { Provider } from "react-redux"
 import { combineReducers, createStore } from "redux"
 
-import TabNav from "./navigation/FirstAppNavigation"
+import MainNavigator from "./navigation/FirstAppNavigation"
 import tourReducer from "./store/reducers/tour"
 
 enableScreens(); //for better performance
@@ -34,7 +34,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <TabNav />
+      <MainNavigator />
       </Provider>
   );
 }

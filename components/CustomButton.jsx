@@ -9,7 +9,7 @@ const CustomButton = props => {
         <View style={styles.screen}>
         <TouchableNativeFeedback useForeground onPress={props.onSelect}>
             <View style={styles.container}>
-                <Text style={styles.text}>Ev sahibiyle iletişime geçin</Text>
+                <Text style={styles.text}>{props.title}</Text>
             </View>
         </TouchableNativeFeedback>
         </View>
@@ -18,7 +18,7 @@ const CustomButton = props => {
 
 const styles = StyleSheet.create({
     screen:{
-        paddingVertical:Dimensions.get("window").height * 0.07
+        paddingVertical:Dimensions.get("window").height * 0.055
     },
     container: {
         alignItems: "center",

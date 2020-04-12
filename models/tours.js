@@ -1,5 +1,5 @@
 class Tour {
-    constructor(id,tCityId, tCategoryId, profileId,profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, userComment, personalDetail) {
+    constructor(id,tCityId, tCategoryId, profileId,profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, userComment, personalDetail, isNatural, isCultural, isPhotography, isNightlife) {
                 this.id = id, 
                 this.tCityId = tCityId,
                 this.tCategoryId = tCategoryId,
@@ -16,7 +16,12 @@ class Tour {
                 this.tourPlan = tourPlan, 
                 this.groupSize = groupSize, 
                 this.userComment = userComment, 
-                this.personalDetail = personalDetail
+                this.personalDetail = personalDetail,
+                this.isNatural = isNatural,
+                this.isCultural = isCultural,
+                this.isPhotography = isPhotography,
+                this.isNightlife = isNightlife
     }
 }
 export default Tour
+

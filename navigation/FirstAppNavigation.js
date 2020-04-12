@@ -2,6 +2,7 @@ import React from "react"
 
 import { createAppContainer } from "react-navigation"
 import { createStackNavigator } from "react-navigation-stack"
+import {createDrawerNavigator} from "react-navigation-drawer"
 import { createBottomTabNavigator } from "react-navigation-tabs" // FOR IOS UPDATES LATER
 import { Ionicons } from "@expo/vector-icons"
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs"
@@ -14,6 +15,7 @@ import ProfileScreen from "../screens/ProfileScreen"
 import DetailScreen from "../screens/DetailScreen"
 import InformationScreen from "../screens/InformationScreen"
 import LocalGuideScreen from "../screens/LocalGuideScreen"
+import FilterScreen from "../screens/FilterScreen"
 import Colors from "../constants/Colors"
 
 const defaultStackNavOptions = {
@@ -101,4 +103,24 @@ const TabNav = createBottomTabNavigator({
     }
 })
 
-export default createAppContainer(TabNav);
+const FilterNavigator = createStackNavigator({
+    Filters: FilterScreen
+}, defaultStackNavOptions)
+
+const MainNavigator = createDrawerNavigator({
+    Tours:{screen:TabNav,
+    navigationOptions:{
+        drawerLabel:"Tours"
+    }},
+    Filters: FilterNavigator
+},
+{
+    contentOptions:{
+        activeTintColor: Colors.accentColor,
+        labelStyle:{
+            fontFamily:"open-sans-bold"
+        }
+    }
+})
+
+export default createAppContainer(MainNavigator);

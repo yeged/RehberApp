@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
         marginVertical: Dimensions.get("window").height * 0.04,
         marginHorizontal: Dimensions.get("window").height * 0.012,
         backgroundColor: "#f5f5f5",
-        elevation: 3
+        elevation: 3,
+        overflow: "hidden"
     },
     image: {
         width: Dimensions.get("window").width * 1,
