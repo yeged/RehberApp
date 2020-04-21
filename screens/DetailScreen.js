@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { View, Text, StyleSheet, Button, Dimensions, Image, ScrollView, TouchableNativeFeedback } from "react-native";
+import { View, Text, StyleSheet, Button, Dimensions, Image, ScrollView, TouchableNativeFeedback, TouchableOpacity } from "react-native";
 import HeaderButton from "../components/HeaderButton"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { useSelector, useDispatch } from "react-redux"
@@ -8,6 +8,7 @@ import Colors from "../constants/Colors"
 import DefaultTitle from "../components/DefaultTitle"
 import { toggleFav } from "../store/actions/tour"
 import CustomButton from "../components/CustomButton"
+
 
 
 
@@ -161,7 +162,7 @@ DetailScreen.navigationOptions = navData => {
         headerTintColor: "white",
         headerTransparent: false,
         headerRight: () => (<HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item iconName={isFav ? "ios-heart" : "ios-heart-empty"} iconSize={25} style={styles.headerStyle} color="white" onPress={favTour} />
+            <Item iconName={isFav ? "ios-heart" : "ios-heart-empty"} iconSize={25} style={styles.headerStyle} color="white" onPress={favTour}  />
         </HeaderButtons>)
     }
 }

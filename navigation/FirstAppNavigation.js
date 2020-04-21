@@ -15,6 +15,8 @@ import ProfileScreen from "../screens/ProfileScreen"
 import DetailScreen from "../screens/DetailScreen"
 import InformationScreen from "../screens/InformationScreen"
 import LocalGuideScreen from "../screens/LocalGuideScreen"
+import UserInputScreen from "../screens/UserInputScreen"
+import EditTourScreen from "../screens/EditTourScreen"
 import FilterScreen from "../screens/FilterScreen"
 import Colors from "../constants/Colors"
 
@@ -28,10 +30,21 @@ const defaultStackNavOptions = {
         headerTintColor: "black",
     }
 }
-function getTabBarVisible(route) {
+const SearchNavigator = createStackNavigator({
+    Search: SearchScreen,
+    Category: CategoryScreen,
+    City: CityScreen,
+    Detail: {screen:DetailScreen,
+    navigationOptions:{
+        tabBarVisible:false
+    }},
+
+}, defaultStackNavOptions)
+
+const getTabBarVisible = (route) => {
     const routeName = route.state
       ?  route.state.routes[route.state.index].name
-      : route.params?.screen || 'Home';
+      : route.params?.screen || 'Search';
   
     if (routeName === 'Detail') {
       return false;
@@ -39,13 +52,6 @@ function getTabBarVisible(route) {
     return true;
   }
 
-const SearchNavigator = createStackNavigator({
-    Search: SearchScreen,
-    Category: CategoryScreen,
-    City: CityScreen,
-    Detail: DetailScreen,
-
-}, defaultStackNavOptions)
 
 const ProfileNavigator = createStackNavigator({
     Profile: {
@@ -55,7 +61,9 @@ const ProfileNavigator = createStackNavigator({
         }
     },
     Info: { screen: InformationScreen },
-    BeGuide: { screen: LocalGuideScreen }
+    BeGuide: { screen: LocalGuideScreen },
+    UserInput: {screen:UserInputScreen},
+    EditTour: {screen:EditTourScreen}
 }, defaultStackNavOptions)
 
 
@@ -87,8 +95,7 @@ const TabNav = createBottomTabNavigator({
         navigationOptions: {
             tabBarIcon: tabInfo => {
                 return <Ionicons name="ios-person" size={25} color={tabInfo.tintColor} />
-            },
-            
+            },            
         }
     },
 
