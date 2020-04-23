@@ -17,7 +17,7 @@ function GuideList(props) {
                     <Text style={styles.name} numberOfLines={3}>{props.name}</Text>
                 </View>
                 <View style={styles.priceContainer}>
-                    <Text style={styles.price} numberOfLines={1} >{props.price.toFixed(2)} ₺/kişi'den itibaren </Text>
+                    <Text style={styles.price} numberOfLines={1} >{props.price} ₺/kişi'den itibaren </Text>
                 </View>
                 <Text style={styles.time}>{props.time} Saat </Text>
                 </View>
