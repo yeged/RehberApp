@@ -2,7 +2,7 @@ import React from "react"
 import {View, TextInput, StyleSheet, Text} from "react-native"
 
 
-const EditTourScreen = props => {
+const MyToursScreen = props => {
     return(
         <View>
             <Text>Saa</Text>
@@ -14,4 +14,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default EditTourScreen;
+export default MyToursScreen;

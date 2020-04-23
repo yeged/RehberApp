@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from "react-nati
 import { Ionicons } from "@expo/vector-icons"
 
 import DefaultTitle from "../components/DefaultTitle"
-import EditList from "../components/EditList"
+import AccountSettingsList from "../components/AccountSettingsList"
 
 
 const ProfileScreen = (props) => {
@@ -20,9 +20,9 @@ const ProfileScreen = (props) => {
             <View style={styles.settingsContainer}>
                 <Text style={styles.settings}>HESAP AYARLARI</Text>
             </View>
-            <EditList title="Kişisel Bilgiler" icon="ios-person" onSelect={() => {requestAnimationFrame(() => props.navigation.navigate("Info"))}}/>
-            <EditList title="Rehber Ol" icon="ios-home" onSelect={() => {requestAnimationFrame(() => props.navigation.navigate("BeGuide"))}}/>
-            <EditList style={styles.title} title="Çıkış Yap" />
+            <AccountSettingsList title="Kişisel Bilgiler" icon="ios-person" onSelect={() => {requestAnimationFrame(() => props.navigation.navigate("Info"))}}/>
+            <AccountSettingsList title="Rehber Ol" icon="ios-home" onSelect={() => {requestAnimationFrame(() => props.navigation.navigate("BeGuide"))}}/>
+            <AccountSettingsList style={styles.title} title="Çıkış Yap" />
         </View>
     )
 }

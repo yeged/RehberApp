@@ -1,18 +1,14 @@
-import {CATEGORIES, CITIES, TOURS} from "../../data/dummy-data"
-import {SET_FILTER } from "../actions/tour"
+import {TOURS} from "../../data/dummy-data"
+import {SET_FILTER } from "../actions/filter"
 
 
 
 const initialState = {
     tours: TOURS,
-    userTour: TOURS.filter(tour => tour.ownerId === "u1"),
-    category: CATEGORIES,
-    city: CITIES,
     filters:TOURS
-    //Profile:
 }
 
-const tourReducer = (state = initialState, actions) => {
+const filterReducer = (state = initialState, actions) => {
     switch(actions.type){
         case SET_FILTER:
             const appliedFilters = actions.filters
@@ -37,4 +33,4 @@ const tourReducer = (state = initialState, actions) => {
     }
 }
 
-export default tourReducer;
+export default filterReducer;

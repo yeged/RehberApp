@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-nati
 import { Ionicons } from "@expo/vector-icons"
 import Colors from "../constants/Colors"
 
-function EditList(props) {
+function AccountSettingsList(props) {
     return (
         <View>
             <View style={styles.container}>
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default EditList;
+export default AccountSettingsList;

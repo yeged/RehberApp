@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import Colors from "../constants/Colors"
 import DefaultTitle from "../components/DefaultTitle"
-import { toggleFav } from "../store/actions/tour"
+import { toggleFav } from "../store/actions/favorites"
 import CustomButton from "../components/CustomButton"
 
 
@@ -22,7 +22,7 @@ const DetailScreen = (props) => {
 
     const tourId = props.navigation.getParam("tourId")
     
-    const tourIsFav = useSelector(state => state.tours.favorites.some(tour => tour.id === tourId))
+    const tourIsFav = useSelector(state => state.favorites.favorites.some(tour => tour.id === tourId))
 
     const availableTours = useSelector(state => state.tours.tours)
 

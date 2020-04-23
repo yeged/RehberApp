@@ -4,7 +4,7 @@ import SearchEngine from "../components/SearchEngine"
 import GuideList from "../components/GuideList";
 import DefaultTitle from "../components/DefaultTitle"
 import { useSelector, useDispatch } from "react-redux"
-import {toggleFilter} from "../store/actions/tour"
+import {toggleFilter} from "../store/actions/filter"
 import Colors from "../constants/Colors"
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton"
@@ -22,11 +22,11 @@ const CityScreen = (props) => {
 
     const provinceId = props.navigation.getParam("provinceId")
 
-    const availableCity = useSelector(state => state.tours.filters)
+    const availableCity = useSelector(state => state.filters.filters)
 
     const selectedCity = availableCity.filter(city => city.tCityId.indexOf(provinceId) >= 0)
 
-    const favTours = useSelector(state => state.tours.favorites)
+    const favTours = useSelector(state => state.favorites.favorites)
 
     const {navigation} = props
 

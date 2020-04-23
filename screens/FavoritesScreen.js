@@ -7,7 +7,7 @@ import Favlist from "../components/FavList"
 
 const FavoritesScreen = (props) => {
 
-    const favTours = useSelector(state => state.tours.favorites)
+    const favTours = useSelector(state => state.favorites.favorites)
 
     const renderFavList = itemData => {
         return(

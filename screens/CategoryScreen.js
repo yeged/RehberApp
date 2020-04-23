@@ -17,7 +17,7 @@ const CategoryScreen = (props) => {
 
     const selectedCategory = availableTours.filter(tour => tour.tCategoryId.indexOf(catId) >= 0)
 
-    const favTours = useSelector(state => state.tours.favorites)
+    const favTours = useSelector(state => state.favorites.favorites)
 
     const toursHandler = (itemData) => {
         const isFavorite = favTours.some(tour => tour.id === itemData.item.id)

@@ -1,10 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { View, StyleSheet, Dimensions, FlatList, Platform, Text, Switch, Button } from "react-native";
-import SearchEngine from "../components/SearchEngine"
-import GuideList from "../components/GuideList";
-import DefaultTitle from "../components/DefaultTitle"
+import { View, StyleSheet, Dimensions, Platform, Text, Switch } from "react-native";
 import { useSelector, useDispatch } from "react-redux"
-import { toggleFilter } from "../store/actions/tour"
+import { toggleFilter } from "../store/actions/filter"
 import Colors from "../constants/Colors"
 import CustomButton from "../components/CustomButton"
 

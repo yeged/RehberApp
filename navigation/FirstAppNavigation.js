@@ -16,7 +16,7 @@ import DetailScreen from "../screens/DetailScreen"
 import InformationScreen from "../screens/InformationScreen"
 import LocalGuideScreen from "../screens/LocalGuideScreen"
 import UserInputScreen from "../screens/UserInputScreen"
-import EditTourScreen from "../screens/EditTourScreen"
+import MyToursScreen from "../screens/MyToursScreen"
 import FilterScreen from "../screens/FilterScreen"
 import Colors from "../constants/Colors"
 
@@ -63,7 +63,7 @@ const ProfileNavigator = createStackNavigator({
     Info: { screen: InformationScreen },
     BeGuide: { screen: LocalGuideScreen },
     UserInput: {screen:UserInputScreen},
-    EditTour: {screen:EditTourScreen}
+    MyTours: {screen:MyToursScreen}
 }, defaultStackNavOptions)
 
 
@@ -95,7 +95,8 @@ const TabNav = createBottomTabNavigator({
         navigationOptions: {
             tabBarIcon: tabInfo => {
                 return <Ionicons name="ios-person" size={25} color={tabInfo.tintColor} />
-            },            
+            },
+            tabBarVisible: false //not good for Ios            
         }
     },
 

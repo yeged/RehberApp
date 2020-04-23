@@ -8,6 +8,8 @@ import { combineReducers, createStore } from "redux"
 
 import MainNavigator from "./navigation/FirstAppNavigation"
 import tourReducer from "./store/reducers/tour"
+import favoritesReducer from "./store/reducers/favorites"
+import filterReducer from './store/reducers/filter';
 
 enableScreens(); //for better performance
 
@@ -19,7 +21,9 @@ const fetchLayout = () => {
 }
 
 const rootReducer = combineReducers({
-  tours: tourReducer
+  tours: tourReducer,
+  favorites: favoritesReducer,
+  filters: filterReducer
 })
 
 const store = createStore(rootReducer)

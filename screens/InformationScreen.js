@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput, Dimensions, TouchableOpacity, Picker, DatePickerAndroidOpenReturn } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
+import NameInput from "../components/NameInput"
 
-const NameInput = (props) => {
-    return (
-        <TextInput {...props} style={{ ...styles.input, ...props.style }} />
-    )
-}
+
 
 const InformationScreen = (props) => {
     const [selectedSex, setSelectedSex] = useState("")
@@ -69,10 +66,6 @@ const styles = StyleSheet.create({
         width: "100%",
         paddingHorizontal: Dimensions.get("window").width * 0.08,
         paddingTop: Dimensions.get("window").height * 0.04,
-    },
-    input: {
-        borderBottomColor: "#ccc",
-        borderBottomWidth: 1
     },
     titleContainer: {
         paddingBottom: Dimensions.get("window").height * 0.06

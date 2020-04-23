@@ -16,7 +16,7 @@ const LocalGuideScreen = (props) => {
             }} title="Yeni Tur Oluştur" />
             <CustomButton onSelect={() => {
                 requestAnimationFrame(() => {
-                    props.navigation.navigate("EditTour")
+                    props.navigation.navigate("MyTours")
                 })
             }} title="Turları Düzenle" />
         </View>
