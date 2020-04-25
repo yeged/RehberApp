@@ -7,23 +7,24 @@ import { useSelector, useDispatch } from "react-redux"
 import * as tourActions from "../store/actions/tour"
 
 import Colors from "../constants/Colors"
-import { set } from "react-native-reanimated"
 
-const UserInputScreen = props => {
+const EditTourScreen = props => {
 
-    const [City, setCity] = useState("")
-    const [Cat, setCat] = useState("")
-    const [TourName, setTourName] = useState("")
-    const [isNameValid, setIsNameValid] = useState(false)
-    const [ProfileImg, setProfileImg] = useState("")
-    const [HeaderImage, setHeaderImage] = useState("")
-    const [Images, setImages] = useState("")
-    const [Hours, setHours] = useState("")
-    const [Price, setPrice] = useState("")
-    const [GroupSize, setGroupSize] = useState("")
-    const [Language, setLanguage] = useState([])
-    const [PersonalInfo, setPersonalInfo] = useState("")
-    const [Details, setDetails] = useState("")
+    const dispatch = useDispatch()
+
+    const tourId = props.navigation.getParam("tid")
+    const editedTour = useSelector(state => state.tours.userTour.find(tour => tour.id === tourId))
+
+    const [TourName, setTourName] = useState(editedTour.tourName)
+    const [ProfileImg, setProfileImg] = useState(editedTour.profileImg)
+    const [HeaderImage, setHeaderImage] = useState(editedTour.Image)
+    const [Images, setImages] = useState(editedTour.tourImage)
+    const [Hours, setHours] = useState(editedTour.time.toString())
+    const [Price, setPrice] = useState(editedTour.price.toString())
+    const [GroupSize, setGroupSize] = useState(editedTour.groupSize.toString())
+    const [Language, setLanguage] = useState([...editedTour.language])
+    const [PersonalInfo, setPersonalInfo] = useState(editedTour.personalDetail)
+    const [Details, setDetails] = useState(editedTour.tourPlan)
     const [Natural, setNatural] = useState(false)
     const [Cultural, setCultural] = useState(false)
     const [Photography, setPhotography] = useState(false)
@@ -31,37 +32,12 @@ const UserInputScreen = props => {
     
 
 
-    const availableCity = useSelector(state => state.tours.city)
-    const availableCat = useSelector(state => state.tours.category)
-    const tourss= useSelector(state => state.tours.tours)
-
-    const selectedCity = availableCity.find(city => city.cityId === City)
-    const selectedCat = availableCat.find(cat => cat.categoryId === Cat)
-
-    let cityLabel = ""
-    let catLabel = ""
-
-    if(selectedCity){
-        cityLabel = selectedCity.cityLabel
-    }
-    if(selectedCat){
-        catLabel = selectedCat.categoryLabel
-    }
-
-
-
-
-    const dispatch = useDispatch()
-
     const submitHandler = useCallback(() => {
-        if(!isNameValid){
-            Alert.alert("Wrong Input", "Please Check The Errors In The Form", [{text : "Okay!"}])
-            return;
-        }
-        dispatch(tourActions.createTour(City, Cat, ProfileImg, ProfileImg, HeaderImage, Images, TourName,
-             Hours, Language, cityLabel, catLabel, Price, Details, GroupSize, PersonalInfo, Natural, Cultural, Photography, Nightlife))
-    }, [dispatch, City, Cat, ProfileImg, ProfileImg, HeaderImage, Images, TourName,
-        Hours, Language, cityLabel, catLabel, Price, Details, GroupSize, PersonalInfo, Natural, Cultural, Photography, Nightlife, isNameValid])
+        dispatch(tourActions.updateTour(tourId, ProfileImg, HeaderImage, Images, TourName,
+             Hours, Language, Price, Details, GroupSize, PersonalInfo, Natural, Cultural, Photography, Nightlife))
+        props.navigation.goBack()
+    }, [dispatch, tourId, ProfileImg, HeaderImage, Images, TourName,
+        Hours, Language, Price, Details, GroupSize, PersonalInfo, Natural, Cultural, Photography, Nightlife])
 
     // useEffect(() => {
     //     props.navigation.setParams({
@@ -69,49 +45,19 @@ const UserInputScreen = props => {
     //     },[submitHandler])
     // })
 
-    const nameChangeHandler = (text) => {
-        if(text.trim().length === 0){
-            setIsNameValid(false)
-        }
-        else{
-            setIsNameValid(true)
-        }
-        setTourName(text)
-    }
 
     return (
         <ScrollView>
             <View style={styles.form}>
                 <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Tur İsmi </DefaultTitle>
+                    <DefaultTitle style={styles.label}>- Tur İsmi  </DefaultTitle>
                     <NameInput
                         blurOnSubmit
                         autoCorrect={true}
                         autoCapitalize="words"
-                        onChangeText={nameChangeHandler}
+                        onChangeText={(text) => setTourName(text)}
+                        value={TourName}
                     />
-                </View>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Şehir</DefaultTitle>
-                    <View style={styles.picker}>
-                        <View style={styles.pickerContainer} >
-                            <Picker selectedValue={City} onValueChange={(itemValue, itemPosition) => { setCity(itemValue) }} prompt="Şehir">
-                                <Picker.Item label="Şehir Seçiniz " value={null} />
-                                {availableCity.map(tour => <Picker.Item label={tour.cityLabel} value={tour.cityId} />)}
-                            </Picker>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Kategori</DefaultTitle>
-                    <View style={styles.picker}>
-                        <View style={styles.pickerContainer} >
-                            <Picker selectedValue={Cat} onValueChange={(itemValue, itemPosition) => { setCat(itemValue) }} prompt="Kategori">
-                                <Picker.Item label="Kategori Seçiniz " value={null} />
-                                {availableCat.map(tour => <Picker.Item  label={tour.categoryLabel} value={tour.categoryId} />)}
-                            </Picker>
-                        </View>
-                    </View>
                 </View>
                 <View style={styles.fromControl}>
                     <DefaultTitle style={styles.label}>- Kapak Fotoğrafı</DefaultTitle>
@@ -120,6 +66,7 @@ const UserInputScreen = props => {
                         autoCorrect={true}
                         autoCapitalize="words"
                         onChangeText={(text) => {setHeaderImage(text) }}
+                        value={HeaderImage}
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -129,6 +76,7 @@ const UserInputScreen = props => {
                         autoCorrect={true}
                         autoCapitalize="words"
                         onChangeText={(text) => { setImages(text)}}
+                        value={Images}
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -138,6 +86,7 @@ const UserInputScreen = props => {
                         autoCorrect={true}
                         autoCapitalize="words"
                         onChangeText={() => { }}
+                        value={ProfileImg}
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -168,7 +117,7 @@ const UserInputScreen = props => {
                     <DefaultTitle style={styles.label}>- Grup Büyüklüğü</DefaultTitle>
                     <NameInput
                         keyboardType="number-pad"
-                        maxLength={2}
+                        maxLength={3}
                         blurOnSubmit
                         autoCorrect={true}
                         autoCapitalize="words"
@@ -199,6 +148,7 @@ const UserInputScreen = props => {
                         returnKeyType="next"
                         onEndEditing={(text) => setLanguage(Language.concat(text.nativeEvent.text))}
                         onSubmitEditing={() => console.log("onSubmitEditing")}
+                        value={Language}
                         
                     />
                 </View>
@@ -211,6 +161,7 @@ const UserInputScreen = props => {
                         autoCapitalize="words"
                         onChangeText={(text) => {setPersonalInfo(text) }}
                         multiline={true}
+                        value={PersonalInfo}
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -222,17 +173,18 @@ const UserInputScreen = props => {
                         autoCapitalize="words"
                         onChangeText={(text) => { setDetails(text)}}
                         multiline={true}
+                        value={Details}
                     />
                 </View>
                 <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>
-                <TouchableOpacity style={{ padding: 10 }} onPress={() => console.log(tourss)}><Text>Kaydet</Text></TouchableOpacity>
+                <TouchableOpacity style={{ padding: 10 }} onPress={() => console.log(editedTour)}><Text>Kaydet</Text></TouchableOpacity>
                
             </View>
         </ScrollView>
     )
 }
 
-UserInputScreen.navigationOptions = (navData) => {
+EditTourScreen.navigationOptions = (navData) => {
     const submitFn = navData.navigation.getParam('submit');
     return {
         headerRight: () => <TouchableOpacity style={{ padding: 10 }} onPress={submitFn}><Text>Kaydet</Text></TouchableOpacity>
@@ -265,4 +217,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default UserInputScreen;
+export default EditTourScreen;

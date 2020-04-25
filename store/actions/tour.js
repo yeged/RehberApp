@@ -19,9 +19,13 @@ export const deleteTour = (tourId) => {
     }
 }
 
-export const updateTour = () => {
+export const updateTour = (id, profileImg, Image, tourImage, tourName, time, language, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife) => {
     return{
         type: UPDATE_TOUR,
+        tid: id,
+        tourData:{
+           profileImg, Image, tourImage, tourName, time, language, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife
+        }
         
     }
 }

@@ -17,6 +17,7 @@ import InformationScreen from "../screens/InformationScreen"
 import LocalGuideScreen from "../screens/LocalGuideScreen"
 import UserInputScreen from "../screens/UserInputScreen"
 import MyToursScreen from "../screens/MyToursScreen"
+import EditTourScreen from "../screens/EditTourScreen"
 import FilterScreen from "../screens/FilterScreen"
 import Colors from "../constants/Colors"
 
@@ -63,7 +64,8 @@ const ProfileNavigator = createStackNavigator({
     Info: { screen: InformationScreen },
     BeGuide: { screen: LocalGuideScreen },
     UserInput: {screen:UserInputScreen},
-    MyTours: {screen:MyToursScreen}
+    MyTours: {screen:MyToursScreen},
+    EditTour: {screen: EditTourScreen}
 }, defaultStackNavOptions)
 
 

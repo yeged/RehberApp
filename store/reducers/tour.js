@@ -40,6 +40,50 @@ const tourReducer = (state = initialState, actions) => {
                 tours: state.tours.concat(newTour),
                 userTour:  state.userTour.concat(newTour)
             }
+        case UPDATE_TOUR:
+            const tourIndex = state.userTour.findIndex(tour => tour.id === actions.tid)
+            const updatedTour = new Tour(
+                actions.tid,
+                state.userTour[tourIndex].tCityId,
+                state.userTour[tourIndex].tCategoryId,
+                state.userTour[tourIndex].ownerId,
+                actions.tourData.profileImg,
+                actions.tourData.Image,
+                actions.tourData.tourImage,
+                actions.tourData.tourName,
+                actions.tourData.time,
+                actions.tourData.language,
+                state.userTour[tourIndex].city,
+                state.userTour[tourIndex].category,
+                actions.tourData.price,
+                actions.tourData.tourPlan,
+                actions.tourData.groupSize,
+                actions.tourData.userComment,
+                actions.tourData.personalDetail,
+                actions.tourData.isNatural,
+                actions.tourData.isCultural,
+                actions.tourData.isPhotography,
+                actions.tourData.isNightLife
+            )
+            const updatedUserTour = [...state.userTour]
+            updatedUserTour[tourIndex] = updatedTour
+
+            const updatedTourIndex = state.tours.findIndex(tour => tour.id === actions.tid)
+            const updatedGeneralTour = [...state.tours]
+            updatedGeneralTour[updatedTourIndex] = updatedTour
+
+            return{
+                ...state,
+                tours:updatedGeneralTour,
+                userTour:updatedUserTour
+            }
+
+        case DELETE_TOUR:
+            return{
+                ...state,
+                tours: state.tours.filter(tour => tour.id !== actions.tid),
+                userTour: state.userTour.filter(tour => tour.id !== actions.tid)
+            }
 
 
         default:

@@ -6,7 +6,7 @@ import DefaultTitle from "./DefaultTitle"
 function Favlist(props) {
     return (
         <View style={styles.cardContainer}>
-            <TouchableOpacity activeOpacity={0.65} onPress={props.onSelect}>
+            <TouchableOpacity activeOpacity={0.65} onPress={props.onSelect} >
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
                     <Image source={{ uri: props.img }} style={styles.image} />
@@ -28,16 +28,16 @@ function Favlist(props) {
 }
 
 const styles = StyleSheet.create({
-    cardContainer: {
-        backgroundColor: "#f5f5f5",
-        width: "100%",
+    cardContainer: {  
         height: Dimensions.get("window").height * 0.4,
         marginVertical: Dimensions.get("window").height * 0.01,
-        paddingHorizontal: Dimensions.get("window").height * 0.015,        
+        marginHorizontal: Dimensions.get("window").height * 0.02,
+        borderRadius:20,
+        elevation: 5,
+        backgroundColor: 'white'        
     },
     container:{
-        borderWidth:1,
-        borderColor:"#f5f5f5",
+        
         borderRadius:20,
         overflow: "hidden",
     },  
@@ -46,7 +46,11 @@ const styles = StyleSheet.create({
         height: "100%"
     },
     imageContainer:{
-        height: "62%"
+        width: "100%",
+        height: "62%",
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        overflow: 'hidden'
     },
     textContainer:{
         height:"38%",
@@ -55,7 +59,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     nameContainer:{
-        marginVertical:6,
+        marginVertical:Dimensions.get("window").height * 0.005,
     },
     time:{
         color:"grey"
