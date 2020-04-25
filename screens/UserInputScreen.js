@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react"
-import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity } from "react-native"
+import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity,Alert } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
@@ -14,13 +14,14 @@ const UserInputScreen = props => {
     const [City, setCity] = useState("")
     const [Cat, setCat] = useState("")
     const [TourName, setTourName] = useState("")
+    const [isNameValid, setIsNameValid] = useState(false)
     const [ProfileImg, setProfileImg] = useState("")
     const [HeaderImage, setHeaderImage] = useState("")
     const [Images, setImages] = useState("")
     const [Hours, setHours] = useState("")
     const [Price, setPrice] = useState("")
     const [GroupSize, setGroupSize] = useState("")
-    const [Language, setLanguage] = useState("")
+    const [Language, setLanguage] = useState([])
     const [PersonalInfo, setPersonalInfo] = useState("")
     const [Details, setDetails] = useState("")
     const [Natural, setNatural] = useState(false)
@@ -48,9 +49,15 @@ const UserInputScreen = props => {
     }
 
 
+
+
     const dispatch = useDispatch()
 
     const submitHandler = useCallback(() => {
+        if(!isNameValid){
+            Alert.alert("Wrong Input", "Please Check The Errors In The Form", [{text : "Okay!"}])
+            return;
+        }
         dispatch(tourActions.createTour(City, Cat, ProfileImg, ProfileImg, HeaderImage, Images, TourName,
              Hours, Language, cityLabel, catLabel, Price, Details, GroupSize, PersonalInfo, Natural, Cultural, Photography, Nightlife))
     }, [dispatch, City, Cat, ProfileImg, ProfileImg, HeaderImage, Images, TourName,
@@ -61,6 +68,17 @@ const UserInputScreen = props => {
     //         submit:submitHandler
     //     },[submitHandler])
     // })
+
+    const nameChangeHandler = (text) => {
+        if(text.trim().length === 0){
+            setIsNameValid(false)
+        }
+        else{
+            setIsNameValid(true)
+        }
+        setTourName(text)
+    }
+
     return (
         <ScrollView>
             <View style={styles.form}>
@@ -70,7 +88,7 @@ const UserInputScreen = props => {
                         blurOnSubmit
                         autoCorrect={true}
                         autoCapitalize="words"
-                        onChangeText={(text) => {setTourName(text)}}
+                        onChangeText={nameChangeHandler}
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -142,7 +160,7 @@ const UserInputScreen = props => {
                         blurOnSubmit
                         autoCorrect={true}
                         autoCapitalize="words"
-                        onChangeText={(textInput) => { setPrice(textInput.replace(/[^0-9]/g, "")); }}
+                        onChangeText={(textInput) => { setPrice(textInput.replace(/[^0-9&,]/g, "")); }}
                         value={Price}
                     />
                 </View>
@@ -164,9 +182,22 @@ const UserInputScreen = props => {
                         blurOnSubmit
                         autoCorrect={true}
                         autoCapitalize="words"
-                        onChangeText={(text) => {setLanguage(text) }}
+                        //onChangeText={(text) => {setLanguage(Language.concat(text)) }}
                         returnKeyType="next"
-                        onEndEditing={() => console.log("onEndEditing")}
+                        onEndEditing={(text) => setLanguage(Language.concat(text.nativeEvent.text))}
+                        onSubmitEditing={() => console.log("onSubmitEditing")}
+                        
+                    />
+                </View>
+                <View style={styles.fromControl}>
+                    <DefaultTitle style={styles.label}>- Diller</DefaultTitle>
+                    <NameInput
+                        blurOnSubmit
+                        autoCorrect={true}
+                        autoCapitalize="words"
+                        //onChangeText={(text) => {setLanguage(Language.concat([text])) }}
+                        returnKeyType="next"
+                        onEndEditing={(text) => setLanguage(Language.concat(text.nativeEvent.text))}
                         onSubmitEditing={() => console.log("onSubmitEditing")}
                         
                     />

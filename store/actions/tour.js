@@ -6,7 +6,7 @@ export const createTour = (tCityId, tCategoryId, ownerId, profileImg, Image, tou
     return{
         type: CREATE_TOUR,
         tourData:{
-            tCityId, tCategoryId, ownerId,profileImg, Image, tourImage, tourName, time, language:[], city, category, price, tourPlan, groupSize, userComment, personalDetail, isNatural, isCultural, isPhotography, isNightlife
+            tCityId, tCategoryId, ownerId,profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, userComment, personalDetail, isNatural, isCultural, isPhotography, isNightlife
         }
 
     }
