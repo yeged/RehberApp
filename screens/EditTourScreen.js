@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react"
-import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity,Alert } from "react-native"
+import React, { useState, useEffect, useCallback, useReducer } from "react"
+import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
@@ -8,6 +8,31 @@ import * as tourActions from "../store/actions/tour"
 
 import Colors from "../constants/Colors"
 
+const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"
+
+const formReducer = (state, action) => {
+    if (action.type === FORM_INPUT_UPDATE) {
+        const updatedValues = {
+            ...state.inputValues,
+            [action.input]: action.value
+        }
+        const updatedValidities = {
+            ...state.inputValidities,
+            [action.input]: action.isValid
+        }
+        let updatedFormIsValid = true
+        for(const key in updatedValidities){
+            updatedFormIsValid = updatedFormIsValid && updatedValidities[key]
+        }
+
+        return{
+            formIsValid:updatedFormIsValid,
+            inputValidities: updatedValidities,
+            inputValues:updatedValues
+        }
+    }
+}
+
 const EditTourScreen = props => {
 
     const dispatch = useDispatch()
@@ -15,29 +40,47 @@ const EditTourScreen = props => {
     const tourId = props.navigation.getParam("tid")
     const editedTour = useSelector(state => state.tours.userTour.find(tour => tour.id === tourId))
 
-    const [TourName, setTourName] = useState(editedTour.tourName)
-    const [ProfileImg, setProfileImg] = useState(editedTour.profileImg)
-    const [HeaderImage, setHeaderImage] = useState(editedTour.Image)
-    const [Images, setImages] = useState(editedTour.tourImage)
-    const [Hours, setHours] = useState(editedTour.time.toString())
-    const [Price, setPrice] = useState(editedTour.price.toString())
-    const [GroupSize, setGroupSize] = useState(editedTour.groupSize.toString())
-    const [Language, setLanguage] = useState([...editedTour.language])
-    const [PersonalInfo, setPersonalInfo] = useState(editedTour.personalDetail)
-    const [Details, setDetails] = useState(editedTour.tourPlan)
-    const [Natural, setNatural] = useState(false)
-    const [Cultural, setCultural] = useState(false)
-    const [Photography, setPhotography] = useState(false)
-    const [Nightlife, setNightlife] = useState(false)
-    
+
+    const [formState, dispatchFormState] = useReducer(formReducer, {
+        inputValues: {
+            tourName: editedTour.tourName,
+            profileImg: editedTour.profileImg,
+            headerImage: editedTour.Image,
+            images: editedTour.tourImage,
+            hours: editedTour.time.toString(),
+            price: editedTour.price.toString(),
+            groupSize: editedTour.groupSize.toString(),
+            language: editedTour.language,
+            personalInfo: editedTour.personalDetail,
+            details: editedTour.tourPlan,
+            natural: false,
+            cultural: false,
+            photography: false,
+            nightlife: false,
+        },
+        inputValidities: {
+            tourName: true,
+            profileImg: true,
+            headerImage: true,
+            images: true,
+            hours: true,
+            price: true,
+            groupSize: true,
+            language: true,
+            personalInfo: true,
+            details: true,
+        },
+        formIsValid : true
+    })
 
 
     const submitHandler = useCallback(() => {
-        dispatch(tourActions.updateTour(tourId, ProfileImg, HeaderImage, Images, TourName,
-             Hours, Language, Price, Details, GroupSize, PersonalInfo, Natural, Cultural, Photography, Nightlife))
+        dispatch(tourActions.updateTour(tourId, formState.inputValues.profileImg, formState.inputValues.headerImage, formState.inputValues.images, formState.inputValues.tourName,
+            formState.inputValues.hours, formState.inputValues.language, formState.inputValues.price, formState.inputValues.details, 
+            formState.inputValues.groupSize, formState.inputValues.personalInfo, 
+            formState.inputValues.natural, formState.inputValues.cultural, formState.inputValues.photography, formState.inputValues.nightlife))
         props.navigation.goBack()
-    }, [dispatch, tourId, ProfileImg, HeaderImage, Images, TourName,
-        Hours, Language, Price, Details, GroupSize, PersonalInfo, Natural, Cultural, Photography, Nightlife])
+    }, [dispatch, tourId, formState])
 
     // useEffect(() => {
     //     props.navigation.setParams({
@@ -45,6 +88,18 @@ const EditTourScreen = props => {
     //     },[submitHandler])
     // })
 
+    const textChangeHandler = (inputIdentifier, text) => {
+        let isValid = false
+        if (text.trim().length > 0) {
+            isValid = true
+        }
+        dispatchFormState({
+            type: FORM_INPUT_UPDATE,
+            input: inputIdentifier,
+            value: text,
+            isValid: isValid
+        })
+    }
 
     return (
         <ScrollView>
@@ -55,8 +110,9 @@ const EditTourScreen = props => {
                         blurOnSubmit
                         autoCorrect={true}
                         autoCapitalize="words"
-                        onChangeText={(text) => setTourName(text)}
-                        value={TourName}
+                        value={formState.inputValues.tourName}
+                        onChangeText={textChangeHandler.bind(this, "tourName")}
+                        
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -65,8 +121,9 @@ const EditTourScreen = props => {
                         blurOnSubmit
                         autoCorrect={true}
                         autoCapitalize="words"
-                        onChangeText={(text) => {setHeaderImage(text) }}
-                        value={HeaderImage}
+                        value={formState.inputValues.headerImage}
+                        onChangeText={textChangeHandler.bind(this, "headerImage")}
+                       
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -75,8 +132,9 @@ const EditTourScreen = props => {
                         blurOnSubmit
                         autoCorrect={true}
                         autoCapitalize="words"
-                        onChangeText={(text) => { setImages(text)}}
-                        value={Images}
+                        value={formState.inputValues.images}
+                        onChangeText={textChangeHandler.bind(this, "images")}
+                        
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -85,20 +143,22 @@ const EditTourScreen = props => {
                         blurOnSubmit
                         autoCorrect={true}
                         autoCapitalize="words"
-                        onChangeText={() => { }}
-                        value={ProfileImg}
+                        value={formState.inputValues.profileImg}
+                        onChangeText={textChangeHandler.bind(this, "profileImg")}
+                        
                     />
                 </View>
                 <View style={styles.fromControl}>
                     <DefaultTitle style={styles.label}>- Saat</DefaultTitle>
                     <NameInput
                         keyboardType="number-pad"
-                        maxLength={1} // IF REHBER WANTS TO 10 HOURS TOUR THEN I WILL CHANGE THIS 
+                        maxLength={1} 
                         blurOnSubmit
                         autoCorrect={true}
                         autoCapitalize="words"
-                        onChangeText={(textInput) => { setHours(textInput.replace(/[^0-9]/g, "")); }}
-                        value={Hours}
+                        value={formState.inputValues.hours}
+                        onChangeText={textChangeHandler.bind(this, "hours")}
+                        
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -109,8 +169,9 @@ const EditTourScreen = props => {
                         blurOnSubmit
                         autoCorrect={true}
                         autoCapitalize="words"
-                        onChangeText={(textInput) => { setPrice(textInput.replace(/[^0-9&,]/g, "")); }}
-                        value={Price}
+                        value={formState.inputValues.price}
+                        onChangeText={textChangeHandler.bind(this, "price")}
+                        
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -121,8 +182,9 @@ const EditTourScreen = props => {
                         blurOnSubmit
                         autoCorrect={true}
                         autoCapitalize="words"
-                        onChangeText={(textInput) => { setGroupSize(textInput.replace(/[^0-9]/g, "")); }}
-                        value={GroupSize}
+                        value={formState.inputValues.groupSize}
+                        onChangeText={textChangeHandler.bind(this, "groupSize")}
+                        
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -131,25 +193,12 @@ const EditTourScreen = props => {
                         blurOnSubmit
                         autoCorrect={true}
                         autoCapitalize="words"
+                        value={formState.inputValues.language}
                         //onChangeText={(text) => {setLanguage(Language.concat(text)) }}
                         returnKeyType="next"
-                        onEndEditing={(text) => setLanguage(Language.concat(text.nativeEvent.text))}
+                        onEndEditing={textChangeHandler.bind(this, "language")}
                         onSubmitEditing={() => console.log("onSubmitEditing")}
-                        
-                    />
-                </View>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Diller</DefaultTitle>
-                    <NameInput
-                        blurOnSubmit
-                        autoCorrect={true}
-                        autoCapitalize="words"
-                        //onChangeText={(text) => {setLanguage(Language.concat([text])) }}
-                        returnKeyType="next"
-                        onEndEditing={(text) => setLanguage(Language.concat(text.nativeEvent.text))}
-                        onSubmitEditing={() => console.log("onSubmitEditing")}
-                        value={Language}
-                        
+
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -159,9 +208,10 @@ const EditTourScreen = props => {
                         blurOnSubmit={false}
                         autoCorrect={true}
                         autoCapitalize="words"
-                        onChangeText={(text) => {setPersonalInfo(text) }}
+                        value={formState.inputValues.personalInfo}
+                        onChangeText={textChangeHandler.bind(this, "personalInfo")}
                         multiline={true}
-                        value={PersonalInfo}
+                        
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -171,14 +221,15 @@ const EditTourScreen = props => {
                         blurOnSubmit={false}
                         autoCorrect={true}
                         autoCapitalize="words"
-                        onChangeText={(text) => { setDetails(text)}}
+                        value={formState.inputValues.details}
+                        onChangeText={textChangeHandler.bind(this, "details")}
                         multiline={true}
-                        value={Details}
+                        
                     />
                 </View>
                 <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>
                 <TouchableOpacity style={{ padding: 10 }} onPress={() => console.log(editedTour)}><Text>Kaydet</Text></TouchableOpacity>
-               
+
             </View>
         </ScrollView>
     )
