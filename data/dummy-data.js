@@ -38,7 +38,7 @@ export const TOURS = [
         "t2",
         ["p1"],
         ["c1"],
-        "u2" ,
+        "u2",
         "https://pbs.twimg.com/profile_images/990954136140120065/meJKt50X_400x400.jpg",
         "https://cdn1.ntv.com.tr/gorsel/VKEoxgDl5UyALbc91dZjKQ.jpg?width=1000&height=748&mode=crop&scale=both&v=20191015134847912",
         "https://cdn1.ntv.com.tr/gorsel/VKEoxgDl5UyALbc91dZjKQ.jpg?width=1000&height=748&mode=crop&scale=both&v=20191015134847912",
