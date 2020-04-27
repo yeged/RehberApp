@@ -88,145 +88,146 @@ const EditTourScreen = props => {
     //     },[submitHandler])
     // })
 
-    const textChangeHandler = (inputIdentifier, text) => {
-        let isValid = false
-        if (text.trim().length > 0) {
-            isValid = true
-        }
+    const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
         dispatchFormState({
             type: FORM_INPUT_UPDATE,
             input: inputIdentifier,
-            value: text,
-            isValid: isValid
+            value: inputValue,
+            isValid: inputValidity
         })
-    }
+    }, [dispatchFormState])
 
     return (
         <ScrollView>
             <View style={styles.form}>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Tur İsmi  </DefaultTitle>
-                    <NameInput
-                        blurOnSubmit
-                        autoCorrect={true}
-                        autoCapitalize="words"
-                        value={formState.inputValues.tourName}
-                        onChangeText={textChangeHandler.bind(this, "tourName")}
-                        
-                    />
-                </View>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Kapak Fotoğrafı</DefaultTitle>
-                    <NameInput
-                        blurOnSubmit
-                        autoCorrect={true}
-                        autoCapitalize="words"
-                        value={formState.inputValues.headerImage}
-                        onChangeText={textChangeHandler.bind(this, "headerImage")}
-                       
-                    />
-                </View>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Detay Photos</DefaultTitle>
-                    <NameInput
-                        blurOnSubmit
-                        autoCorrect={true}
-                        autoCapitalize="words"
-                        value={formState.inputValues.images}
-                        onChangeText={textChangeHandler.bind(this, "images")}
-                        
-                    />
-                </View>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Profil Fotoğrafı</DefaultTitle>
-                    <NameInput
-                        blurOnSubmit
-                        autoCorrect={true}
-                        autoCapitalize="words"
-                        value={formState.inputValues.profileImg}
-                        onChangeText={textChangeHandler.bind(this, "profileImg")}
-                        
-                    />
-                </View>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Saat</DefaultTitle>
-                    <NameInput
-                        keyboardType="number-pad"
-                        maxLength={1} 
-                        blurOnSubmit
-                        autoCorrect={true}
-                        autoCapitalize="words"
-                        value={formState.inputValues.hours}
-                        onChangeText={textChangeHandler.bind(this, "hours")}
-                        
-                    />
-                </View>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Fiyat</DefaultTitle>
-                    <NameInput
-                        keyboardType="decimal-pad"
-                        maxLength={5}
-                        blurOnSubmit
-                        autoCorrect={true}
-                        autoCapitalize="words"
-                        value={formState.inputValues.price}
-                        onChangeText={textChangeHandler.bind(this, "price")}
-                        
-                    />
-                </View>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Grup Büyüklüğü</DefaultTitle>
-                    <NameInput
-                        keyboardType="number-pad"
-                        maxLength={3}
-                        blurOnSubmit
-                        autoCorrect={true}
-                        autoCapitalize="words"
-                        value={formState.inputValues.groupSize}
-                        onChangeText={textChangeHandler.bind(this, "groupSize")}
-                        
-                    />
-                </View>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Diller</DefaultTitle>
-                    <NameInput
-                        blurOnSubmit
-                        autoCorrect={true}
-                        autoCapitalize="words"
-                        value={formState.inputValues.language}
-                        //onChangeText={(text) => {setLanguage(Language.concat(text)) }}
-                        returnKeyType="next"
-                        onEndEditing={textChangeHandler.bind(this, "language")}
-                        onSubmitEditing={() => console.log("onSubmitEditing")}
+            <NameInput
+                    id="tourName"
+                    label="- Tur İsmi"
+                    errorText="Please enter a valid title"
+                    autoCapitalize="words"
+                    autoCorrect={true}
+                    keyboardType="default"
+                    returnKeyType="next"
+                    onInputChange={inputChangeHandler}
+                    required
+                    initialValue={editedTour.tourName}
+                    initiallyValid={!!editedTour}
+                />
+                <NameInput
+                    id="headerImage"
+                    label="- Kapak Fotoğrafı"
+                    errorText="Please enter a valid URL"
+                    keyboardType="default"
+                    returnKeyType="next"
+                    onInputChange={inputChangeHandler}
+                    required
+                    initialValue={editedTour.Image}
+                    initiallyValid={!!editedTour}
+                />
+                <NameInput
+                    id="images"
+                    label="- Detay Photos"
+                    errorText="Please enter a valid URL"
+                    keyboardType="default"
+                    returnKeyType="next"
+                    onInputChange={inputChangeHandler}
+                    initialValue={editedTour.tourImage}
+                    initiallyValid={!!editedTour}
+                />
+                <NameInput
+                    id="profileImg"
+                    label="- Profil Fotoğrafı"
+                    errorText="Please enter a valid URL"
+                    keyboardType="default"
+                    returnKeyType="next"
+                    onInputChange={inputChangeHandler}
+                    initialValue={editedTour.profileImg}
+                    initiallyValid={!!editedTour}
+                />
+                <NameInput
+                    id="hours"
+                    label="- Saat"
+                    errorText="Please enter a valid hour"
+                    keyboardType="number-pad"
+                    returnKeyType="next"
+                    onInputChange={inputChangeHandler}
+                    required
+                    min={1}
+                    max={24}
+                    initialValue={editedTour.time.toString()}
+                    initiallyValid={!!editedTour}
+                />
+                <NameInput
+                    id="price"
+                    label="- Fiyat"
+                    errorText="Please enter a valid price"
+                    keyboardType="decimal-pad"
+                    returnKeyType="next"
+                    onInputChange={inputChangeHandler}
+                    required
+                    min={1}
+                    max={9999}
+                    minLength={1}
+                    initialValue={editedTour.price.toString()}
+                    initiallyValid={!!editedTour}
+           
+                />
+                <NameInput
+                    id="groupSize"
+                    label="- Grup Büyüklüğü"
+                    errorText="Please enter a valid size"
+                    keyboardType="number-pad"
+                    returnKeyType="next"
+                    onInputChange={inputChangeHandler}
+                    required
+                    min={1}
+                    max={20}
+                    minLength={1}
+                    initialValue={editedTour.groupSize.toString()}
+                    initiallyValid={!!editedTour}
+                />
+                <NameInput
+                    id="language"
+                    label="- Diller"
+                    errorText="Please enter a valid language"
+                    autoCapitalize="words"
+                    autoCorrect={true}
+                    keyboardType="default"
+                    returnKeyType="next"
+                    onInputChange={inputChangeHandler}
+                    required
+                    initialValue={editedTour.language}
+                    initiallyValid={!!editedTour}
+                />
+                <NameInput
+                    id="personalInfo"
+                    label="- Kişisel Bilgiler"
+                    errorText="Please enter a valid information"
+                    autoCapitalize="sentences"
+                    autoCorrect={true}
+                    keyboardType="default"
+                    returnKeyType="next"
+                    onInputChange={inputChangeHandler}
+                    required
+                    multiline={true}
+                    initialValue={editedTour.personalDetail}
+                    initiallyValid={!!editedTour}
+                />
 
-                    />
-                </View>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Kişisel Bilgiler</DefaultTitle>
-                    <TextInput
-                        style={styles.input}
-                        blurOnSubmit={false}
-                        autoCorrect={true}
-                        autoCapitalize="words"
-                        value={formState.inputValues.personalInfo}
-                        onChangeText={textChangeHandler.bind(this, "personalInfo")}
-                        multiline={true}
-                        
-                    />
-                </View>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Yapılacaklar</DefaultTitle>
-                    <TextInput
-                        style={styles.input}
-                        blurOnSubmit={false}
-                        autoCorrect={true}
-                        autoCapitalize="words"
-                        value={formState.inputValues.details}
-                        onChangeText={textChangeHandler.bind(this, "details")}
-                        multiline={true}
-                        
-                    />
-                </View>
+                <NameInput
+                    id="details"
+                    label="- Yapılacaklar"
+                    errorText="Please enter a valid details"
+                    autoCapitalize="sentences"
+                    autoCorrect={true}
+                    keyboardType="default"
+                    returnKeyType="next"
+                    onInputChange={inputChangeHandler}
+                    required
+                    multiline={true}
+                    initialValue={editedTour.tourPlan}
+                    initiallyValid={!!editedTour}
+                />
                 <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>
                 <TouchableOpacity style={{ padding: 10 }} onPress={() => console.log(editedTour)}><Text>Kaydet</Text></TouchableOpacity>
 
