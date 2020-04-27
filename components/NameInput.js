@@ -34,21 +34,25 @@ const NameInput = (props) => {
 
     const textChangeHandler = text => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const numberRegex = /[0-9]/g
         let isValid = true;
         if (props.required && text.trim().length === 0) {
-            isValid = false;
+            isValid = false
         }
         if (props.email && !emailRegex.test(text.toLowerCase())) {
-            isValid = false;
+            isValid = false
         }
         if (props.min != null && +text < props.min) {
-            isValid = false;
+            isValid = false
         }
         if (props.max != null && +text > props.max) {
-            isValid = false;
+            isValid = false
         }
         if (props.minLength != null && text.length < props.minLength) {
-            isValid = false;
+            isValid = false
+        }
+        if(props.onlyNumber && !numberRegex.test(text)){
+            isValid = false
         }
         dispatch({
             type: INPUT_CHANGE,
@@ -82,7 +86,7 @@ const NameInput = (props) => {
                 onChangeText={textChangeHandler}
                 onBlur={lostFocusHandler}  
             />
-            {!inputState.isValid && (<Text>{props.errorText}</Text>)}
+            {!inputState.isValid && inputState.touched && (<View style={styles.errorContainer}><Text style={styles.errorText}>{props.errorText}</Text></View>)}
         </View>
     )
 }
@@ -98,6 +102,14 @@ const styles = StyleSheet.create({
     },
     label: {
         marginVertical: 4 // SONRA HALLET AMK
+    },
+    errorContainer:{
+        marginVertical:5,
+    },
+    errorText:{
+        fontFamily: "open-sans",
+        color: "red",
+        fontSize:13
     }
 })
 

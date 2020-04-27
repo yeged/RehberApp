@@ -33,7 +33,7 @@ const tourReducer = (state = initialState, actions) => {
                 actions.tourData.isNatural,
                 actions.tourData.isCultural,
                 actions.tourData.isPhotography,
-                actions.tourData.isNightLife        
+                actions.tourData.isNightlife        
             )
             return{
                 ...state,

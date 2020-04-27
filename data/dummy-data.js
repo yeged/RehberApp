@@ -73,25 +73,41 @@ export const CATEGORIES = [
         "c1",
         "Doğa Gezintisi",
         "https://i4.hurimg.com/i/hurriyet/75/750x0/5da995ee2269a21f783e80c8",
-        "Size aileden biri gibi davranan rehberlerle doğa gezintisinin keyfini çıkartın."
+        "Size aileden biri gibi davranan rehberlerle doğa gezintisinin keyfini çıkartın.",
+        true,
+        false,
+        false,
+        false
     ),
     new Category(
         "c2",
         "Kültür Gezintisi",
         "https://cdn2.enuygun.com/media/lib/825x620/uploads/image/efes-17431.jpeg",
-        "Size aileden biri gibi davranan rehberlerle doğa gezintisinin keyfini çıkartın."
+        "Size aileden biri gibi davranan rehberlerle doğa gezintisinin keyfini çıkartın.",
+        false,
+        true,
+        false,
+        false
     ),
     new Category(
         "c3",
         "Fotoğraf Gezintisi",
         "https://cdn.kadin.com/images/posts/9/0/1/620x400/ruyada-fotograf-cekmek-ne-anlama-gelir-1567338116.jpg",
-        "Size aileden biri gibi davranan rehberlerle doğa gezintisinin keyfini çıkartın."
+        "Size aileden biri gibi davranan rehberlerle doğa gezintisinin keyfini çıkartın.",
+        false,
+        false,
+        true,
+        false
     ),
     new Category(
         "c4",
         "Gece Hayatı",
         "https://neredekalinir.com/wp-content/uploads/2017/07/kiev.jpg",
-        "Size aileden biri gibi davranan rehberlerle doğa gezintisinin keyfini çıkartın."
+        "Size aileden biri gibi davranan rehberlerle doğa gezintisinin keyfini çıkartın.",
+        false,
+        false,
+        false,
+        true,
     )
 ]
 

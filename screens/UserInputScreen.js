@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useReducer } from "react"
-import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert } from "react-native"
+import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert,KeyboardAvoidingView } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
@@ -53,10 +53,6 @@ const UserInputScreen = props => {
             language: "",
             personalInfo: "",
             details: "",
-            natural: false,
-            cultural: false,
-            photography: false,
-            nightlife: false,
         },
         inputValidities: {
             city: false,
@@ -85,6 +81,7 @@ const UserInputScreen = props => {
 
     let cityLabel = ""
     let catLabel = ""
+    
 
     if (selectedCity) {
         cityLabel = selectedCity.cityLabel
@@ -101,7 +98,7 @@ const UserInputScreen = props => {
         dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat, formState.inputValues.profileImg, formState.inputValues.headerImage, formState.inputValues.images,
             formState.inputValues.tourName, +formState.inputValues.hours, formState.inputValues.language, cityLabel, catLabel, +formState.inputValues.price,
             formState.inputValues.details, +formState.inputValues.groupSize, formState.inputValues.personalInfo,
-            formState.inputValues.natural, formState.inputValues.cultural, formState.inputValues.photography, formState.inputValues.nightlife))
+            selectedCat.isNatural, selectedCat.isCultural, selectedCat.isPhotography, selectedCat.isNightlife))
     }, [dispatch, formState, cityLabel, catLabel])
 
     useEffect(() => {
@@ -120,6 +117,7 @@ const UserInputScreen = props => {
     }, [dispatchFormState])
 
     return (
+        <KeyboardAvoidingView style={{flex: 1}} keyboardVerticalOffset={500}>
         <ScrollView>
             <View style={styles.form}>
                 <NameInput
@@ -191,6 +189,7 @@ const UserInputScreen = props => {
                     required
                     min={1}
                     max={24}
+                    onlyNumber
                 />
                 <NameInput
                     id="price"
@@ -203,7 +202,7 @@ const UserInputScreen = props => {
                     min={1}
                     max={9999}
                     minLength={1}
-                //onChangeText={(textInput) => { setPrice(textInput.replace(/[^0-9&,]/g, "")); }}
+                    onlyNumber
                 />
                 <NameInput
                     id="groupSize"
@@ -216,7 +215,8 @@ const UserInputScreen = props => {
                     min={1}
                     max={20}
                     minLength={1}
-                //onChangeText={(textInput) => { setGroupSize(textInput.replace(/[^0-9]/g, "")); }}
+                    onlyNumber
+                
                 />
                 <NameInput
                     id="language"
@@ -255,10 +255,11 @@ const UserInputScreen = props => {
                     multiline={true}
                 />
                 <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>
-                <TouchableOpacity style={{ padding: 10 }} onPress={() => console.log(formState.inputValues)}><Text>Kaydet</Text></TouchableOpacity>
+                <TouchableOpacity style={{ padding: 10 }} onPress={() => console.log(tourss)}><Text>Kaydet</Text></TouchableOpacity>
 
             </View>
         </ScrollView>
+        </KeyboardAvoidingView>
     )
 }
 

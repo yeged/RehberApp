@@ -98,6 +98,7 @@ const EditTourScreen = props => {
     }, [dispatchFormState])
 
     return (
+        <KeyboardAvoidingView style={{flex: 1}} keyboardVerticalOffset={500}>
         <ScrollView>
             <View style={styles.form}>
             <NameInput
@@ -233,6 +234,7 @@ const EditTourScreen = props => {
 
             </View>
         </ScrollView>
+        </KeyboardAvoidingView>
     )
 }
 

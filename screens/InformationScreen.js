@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, Dimensions, TouchableOpacity, Picker, DatePickerAndroidOpenReturn } from "react-native"
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Picker, } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
