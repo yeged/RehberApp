@@ -22,15 +22,15 @@ const formReducer = (state, action) => {
             [action.input]: action.isValid
         }
         let updatedFormIsValid = true
-        for(const key in updatedValidities){
+        for (const key in updatedValidities) {
             updatedFormIsValid = updatedFormIsValid && updatedValidities[key]
         }
-        return{
-            formIsValid:updatedFormIsValid,
+        return {
+            formIsValid: updatedFormIsValid,
             inputValidities: updatedValidities,
-            inputValues:updatedValues
+            inputValues: updatedValues
         }
-    }   
+    }
     return state;
 
 }
@@ -98,17 +98,17 @@ const UserInputScreen = props => {
             Alert.alert("Wrong Input", "Please Check The Errors In The Form", [{ text: "Okay!" }])
             return;
         }
-        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat, formState.inputValues.profileImg, formState.inputValues.headerImage, formState.inputValues.images, 
-            formState.inputValues.tourName, formState.inputValues.hours, formState.inputValues.language, cityLabel, catLabel, +formState.inputValues.price, 
-            formState.inputValues.details, formState.inputValues.groupSize, formState.inputValues.personalInfo, 
+        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat, formState.inputValues.profileImg, formState.inputValues.headerImage, formState.inputValues.images,
+            formState.inputValues.tourName, formState.inputValues.hours, formState.inputValues.language, cityLabel, catLabel, +formState.inputValues.price,
+            formState.inputValues.details, formState.inputValues.groupSize, formState.inputValues.personalInfo,
             formState.inputValues.natural, formState.inputValues.cultural, formState.inputValues.photography, formState.inputValues.nightlife))
     }, [dispatch, formState, cityLabel, catLabel])
 
-    // useEffect(() => {
-    //     props.navigation.setParams({
-    //         submit:submitHandler
-    //     },[submitHandler])
-    // })
+    useEffect(() => {
+        props.navigation.setParams({
+            submit: submitHandler
+        })
+    }, [submitHandler])
 
     const textChangeHandler = (inputIdentifier, text) => {
         let isValid = false
@@ -116,8 +116,8 @@ const UserInputScreen = props => {
             isValid = true
         }
         dispatchFormState({
-            type:FORM_INPUT_UPDATE,
-            value:text,
+            type: FORM_INPUT_UPDATE,
+            value: text,
             isValid: isValid,
             input: inputIdentifier
         })
@@ -126,16 +126,14 @@ const UserInputScreen = props => {
     return (
         <ScrollView>
             <View style={styles.form}>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Tur İsmi </DefaultTitle>
-                    <NameInput
-                        blurOnSubmit
-                        autoCorrect={true}
-                        autoCapitalize="words"
-                        value={formState.inputValues.tourName}
-                        onChangeText={textChangeHandler.bind(this, "tourName")}
-                    />
-                </View>
+                <NameInput 
+                    label="- Tur İsmi"
+                    errorText="Please enter a valid title"
+                    autoCapitalize="words"
+                    autoCorrect={true}
+                    keyboardType="default"
+                    returnKeyType="next"
+                />
                 <View style={styles.fromControl}>
                     <DefaultTitle style={styles.label}>- Şehir</DefaultTitle>
                     <View style={styles.picker}>
@@ -198,8 +196,8 @@ const UserInputScreen = props => {
                         autoCapitalize="words"
                         value={formState.inputValues.hours}
                         onChangeText={textChangeHandler.bind(this, "hours")}
-                        //onChangeText={(textInput) => { setHours(textInput.replace(/[^0-9]/g, "")); }}
-                        
+                    //onChangeText={(textInput) => { setHours(textInput.replace(/[^0-9]/g, "")); }}
+
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -212,8 +210,8 @@ const UserInputScreen = props => {
                         autoCapitalize="words"
                         value={formState.inputValues.price}
                         onChangeText={textChangeHandler.bind(this, "price")}
-                        //onChangeText={(textInput) => { setPrice(textInput.replace(/[^0-9&,]/g, "")); }}
-                        
+                    //onChangeText={(textInput) => { setPrice(textInput.replace(/[^0-9&,]/g, "")); }}
+
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -226,8 +224,8 @@ const UserInputScreen = props => {
                         autoCapitalize="words"
                         value={formState.inputValues.groupSize}
                         onChangeText={textChangeHandler.bind(this, "groupSize")}
-                        //onChangeText={(textInput) => { setGroupSize(textInput.replace(/[^0-9]/g, "")); }}
-                        
+                    //onChangeText={(textInput) => { setGroupSize(textInput.replace(/[^0-9]/g, "")); }}
+
                     />
                 </View>
                 <View style={styles.fromControl}>
@@ -270,8 +268,8 @@ const UserInputScreen = props => {
                 <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>
                 <TouchableOpacity style={{ padding: 10 }} onPress={() => console.log(formState.inputValues)}><Text>Kaydet</Text></TouchableOpacity>
 
-            </View>
-        </ScrollView>
+            </View >
+        </ScrollView >
     )
 }
 
@@ -287,13 +285,6 @@ const styles = StyleSheet.create({
         width: "100%",
         paddingHorizontal: Dimensions.get("window").width * 0.08,
         paddingTop: Dimensions.get("window").height * 0.04,
-    },
-    fromControl: {
-        width: "100%",
-        paddingBottom: Dimensions.get("window").height * 0.04
-    },
-    label: {
-        marginVertical: 4 // SONRA HALLET AMK
     },
     input: {
         borderBottomColor: "#ccc",
