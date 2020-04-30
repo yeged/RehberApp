@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons"
 
 import DefaultTitle from "../components/DefaultTitle"
 import AccountSettingsList from "../components/AccountSettingsList"
+import ImgPicker from "../components/ImagePicker"
 
 
 const ProfileScreen = (props) => {
@@ -23,6 +24,7 @@ const ProfileScreen = (props) => {
             <AccountSettingsList title="Kişisel Bilgiler" icon="ios-person" onSelect={() => {requestAnimationFrame(() => props.navigation.navigate("Info"))}}/>
             <AccountSettingsList title="Rehber Ol" icon="ios-home" onSelect={() => {requestAnimationFrame(() => props.navigation.navigate("BeGuide"))}}/>
             <AccountSettingsList style={styles.title} title="Çıkış Yap" />
+            <ImgPicker />
         </View>
     )
 }
