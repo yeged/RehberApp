@@ -4,7 +4,8 @@ import * as Font from  "expo-font"
 import { enableScreens } from "react-native-screens"
 import { AppLoading } from "expo";
 import { Provider } from "react-redux"
-import { combineReducers, createStore } from "redux"
+import { combineReducers, createStore, applyMiddleware } from "redux"
+import ReduxThunk from "redux-thunk"
 
 import MainNavigator from "./navigation/FirstAppNavigation"
 import tourReducer from "./store/reducers/tour"
@@ -26,7 +27,7 @@ const rootReducer = combineReducers({
   filters: filterReducer
 })
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
 
 export default function App() {
 
