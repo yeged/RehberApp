@@ -1,21 +1,23 @@
-import React, {useEffect} from "react";
-import { View, StyleSheet, Dimensions, FlatList} from "react-native";
+import React, {useEffect, useState, useCallback} from "react";
+import { View, StyleSheet, Dimensions, FlatList, Text, Button, ActivityIndicator} from "react-native";
 import SearchEngine from "../components/SearchEngine"
 import GuideList from "../components/GuideList";
 import DefaultTitle from "../components/DefaultTitle"
 import { useSelector, useDispatch } from "react-redux"
 import * as tourActions from "../store/actions/tour"
+import Colors from "../constants/Colors";
 
 
 
 
 const CategoryScreen = (props) => {
     
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState()
+
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(tourActions.setTour())
-    }, [dispatch])
+
  
     const catId = props.navigation.getParam("catId")
 
@@ -24,6 +26,29 @@ const CategoryScreen = (props) => {
     const selectedCategory = availableTours.filter(tour => tour.tCategoryId.indexOf(catId) >= 0)
 
     const favTours = useSelector(state => state.favorites.favorites)
+
+    const loadTour = useCallback( async () => {
+        setError(null)
+        setIsLoading(true)
+        try{
+            await dispatch(tourActions.setTour())
+        }catch(err){
+            setError(err.message)
+        }
+        setIsLoading(false)
+    }, [dispatch, setError, setIsLoading])
+
+    useEffect(() => {
+        const willFocusSub = props.navigation.addListener("willFocus", loadTour)
+        
+        return () => {
+            willFocusSub.remove()
+        }
+    }, [loadTour])
+
+    useEffect(() => {
+        loadTour()
+    }, [dispatch, loadTour])
 
     const toursHandler = (itemData) => {
         const isFavorite = favTours.some(tour => tour.id === itemData.item.id)
@@ -51,6 +76,32 @@ const CategoryScreen = (props) => {
             <View style={styles.textContainer}>
                 <DefaultTitle style={styles.text}>{catHeader} İçin Öne Çıkan Rehberler</DefaultTitle>
             </View>
+            </View>
+        )
+    }
+
+    
+
+    if(error){
+        return(
+            <View style={styles.centered}>
+                <Text>An Error Occured!</Text>
+            </View>
+        )
+    }
+
+    if(isLoading){
+        return(
+            <View style={styles.centered}>
+                <ActivityIndicator size="large" color={Colors.detailbgColor} />
+            </View>
+        )
+    }
+
+    if(!isLoading && selectedCategory.length===0){
+        return(
+            <View style={styles.centered}>
+                 <Text>No Tour Here </Text>
             </View>
         )
     }
@@ -85,6 +136,11 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 20
+    },
+    centered:{
+        flex:1,
+        justifyContent:"center",
+        alignItems:"center"
     }
 })
 

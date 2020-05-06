@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { FlatList, Button, Alert, ActivityIndicator, StyleSheet, View, Text } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -17,20 +17,29 @@ const MyToursScreen = props => {
   const dispatch = useDispatch();
 
 
-  const loadTours = useCallback( async () => {
+  const loadTour = useCallback(async () => {
     setError(null)
     setIsLoading(true)
-    try{
+    try {
       await dispatch(tourActions.setTour())
-    }catch(err){
+    } catch (err) {
       setError(err.message)
     }
     setIsLoading(false)
   }, [dispatch, setError, setIsLoading])
 
   useEffect(() => {
-    loadTours()
-  }, [dispatch, loadTours])
+    const willFocusSub = props.navigation.addListener("willFocus", loadTour)
+
+    return () => {
+      willFocusSub.remove()
+    }
+  }, [loadTour])
+
+
+  useEffect(() => {
+    loadTour()
+  }, [dispatch, loadTour])
 
 
   const editProductHandler = id => {
@@ -50,25 +59,25 @@ const MyToursScreen = props => {
     ]);
   };
 
-  if(error){
-    return(
+  if (error) {
+    return (
       <View style={styles.centered}>
         <Text>An error occured!</Text>
-        <Button title="try again" onPress={loadTours}/>
+        <Button title="try again" onPress={loadTours} />
       </View>
     )
   }
 
-  if(isLoading){
-    return(
+  if (isLoading) {
+    return (
       <View style={styles.centered}>
         <ActivityIndicator size="large" color={Colors.detailbgColor} />
       </View>
     )
   }
 
-  if(!isLoading && userTours.length === 0) {
-    return(
+  if (!isLoading && userTours.length === 0) {
+    return (
       <View style={styles.centered}>
         <Text>No Tour Here </Text>
       </View>
@@ -108,8 +117,8 @@ const MyToursScreen = props => {
 };
 
 const styles = StyleSheet.create({
-  centered:{
-    flex:1,
+  centered: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center"
   }
