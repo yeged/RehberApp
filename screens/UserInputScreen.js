@@ -99,6 +99,7 @@ const UserInputScreen = props => {
             formState.inputValues.tourName, +formState.inputValues.hours, formState.inputValues.language, cityLabel, catLabel, +formState.inputValues.price,
             formState.inputValues.details, +formState.inputValues.groupSize, formState.inputValues.personalInfo,
             selectedCat.isNatural, selectedCat.isCultural, selectedCat.isPhotography, selectedCat.isNightlife))
+            props.navigation.goBack()
     }, [dispatch, formState, cityLabel, catLabel])
 
     useEffect(() => {

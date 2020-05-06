@@ -41,7 +41,6 @@ const MyToursScreen = props => {
     loadTour()
   }, [dispatch, loadTour])
 
-
   const editProductHandler = id => {
     props.navigation.navigate('EditTour', { tid: id });
   };
@@ -52,8 +51,15 @@ const MyToursScreen = props => {
       {
         text: 'Yes',
         style: 'destructive',
-        onPress: () => {
-          dispatch(tourActions.deleteTour(id));
+        onPress: async () => {
+          setError(null)
+          setIsLoading(true)
+          try{
+            await dispatch(tourActions.deleteTour(id));
+          }catch(err){
+            setError(err.message)
+          }
+          setIsLoading(false)
         }
       }
     ]);
@@ -63,7 +69,7 @@ const MyToursScreen = props => {
     return (
       <View style={styles.centered}>
         <Text>An error occured!</Text>
-        <Button title="try again" onPress={loadTours} />
+        <Button title="try again" onPress={loadTour} />
       </View>
     )
   }

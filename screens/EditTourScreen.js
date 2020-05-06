@@ -35,6 +35,9 @@ const formReducer = (state, action) => {
 
 const EditTourScreen = props => {
 
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState()
+
     const dispatch = useDispatch()
 
     const tourId = props.navigation.getParam("tid")
@@ -73,13 +76,26 @@ const EditTourScreen = props => {
         formIsValid : true
     })
 
+    useEffect(() => {
+        if(error){
+            Alert.alert("an error occured !", error, [{text: "Okay"}])
+        }
+    }, [error])
 
-    const submitHandler = useCallback(() => {
-        dispatch(tourActions.updateTour(tourId, formState.inputValues.profileImg, formState.inputValues.headerImage, formState.inputValues.images, formState.inputValues.tourName,
-            formState.inputValues.hours, formState.inputValues.language, formState.inputValues.price, formState.inputValues.details, 
-            formState.inputValues.groupSize, formState.inputValues.personalInfo, 
-            formState.inputValues.natural, formState.inputValues.cultural, formState.inputValues.photography, formState.inputValues.nightlife))
-        props.navigation.goBack()
+    const submitHandler = useCallback(async () => {
+        setError(null)
+        setIsLoading(true)
+        try{
+            await dispatch(tourActions.updateTour(tourId, formState.inputValues.profileImg, formState.inputValues.headerImage, formState.inputValues.images, formState.inputValues.tourName,
+                formState.inputValues.hours, formState.inputValues.language, formState.inputValues.price, formState.inputValues.details, 
+                formState.inputValues.groupSize, formState.inputValues.personalInfo, 
+                formState.inputValues.natural, formState.inputValues.cultural, formState.inputValues.photography, formState.inputValues.nightlife))
+            props.navigation.goBack()
+        }catch(err){
+            setError(err.message)
+        }
+        setIsLoading(false) 
+
     }, [dispatch, tourId, formState])
 
     // useEffect(() => {

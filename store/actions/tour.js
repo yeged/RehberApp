@@ -65,9 +65,13 @@ export const createTour = (tCityId, tCategoryId, profileImg, Image, tourImage, t
 export const deleteTour = (tourId) => {
 
     return async dispatch => {
-        await fetch(`https://rehber-2e983.firebaseio.com/tours/${tourId}.json`, {
+        const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${tourId}.json`, {
             method: "DELETE",
         })
+
+        if (!response.ok) {
+            throw new Error("Something went wrong!")
+        }
         dispatch({
             type: DELETE_TOUR,
             tid: tourId
@@ -80,7 +84,7 @@ export const updateTour = (id, profileImg, Image, tourImage, tourName, time, lan
 
     return async dispatch => {
 
-        await fetch(`https://rehber-2e983.firebaseio.com/tours/${id}.json`, {
+        const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${id}.json`, {
             method: "PATCH",
             header: {
                 "Content-Type": "application/json",
@@ -89,7 +93,9 @@ export const updateTour = (id, profileImg, Image, tourImage, tourName, time, lan
                 profileImg, Image, tourImage, tourName, time, language, price, tourPlan, groupSize, personalDetail
             })
         })
-
+        if (!response.ok) {
+            throw new Error("Something went wrong!")
+        }
         dispatch({
             type: UPDATE_TOUR,
             tid: id,
