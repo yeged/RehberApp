@@ -11,6 +11,7 @@ import * as tourActions from "../store/actions/tour"
 const MyToursScreen = props => {
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const [error, setError] = useState()
 
   const userTours = useSelector(state => state.tours.userTour);
@@ -19,13 +20,13 @@ const MyToursScreen = props => {
 
   const loadTour = useCallback(async () => {
     setError(null)
-    setIsLoading(true)
+    setIsRefreshing(true)
     try {
       await dispatch(tourActions.setTour())
     } catch (err) {
       setError(err.message)
     }
-    setIsLoading(false)
+    setIsRefreshing(false)
   }, [dispatch, setError, setIsLoading])
 
   useEffect(() => {
@@ -38,7 +39,10 @@ const MyToursScreen = props => {
 
 
   useEffect(() => {
-    loadTour()
+    setIsLoading(true)
+    loadTour().then(() => {
+      setIsLoading(false)
+    })
   }, [dispatch, loadTour])
 
   const editProductHandler = id => {
@@ -92,6 +96,8 @@ const MyToursScreen = props => {
 
   return (
     <FlatList
+      onRefresh={loadTour}
+      refreshing={isRefreshing}
       data={userTours}
       keyExtractor={item => item.id}
       renderItem={itemData => (
