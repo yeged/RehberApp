@@ -13,6 +13,7 @@ import Colors from "../constants/Colors";
 const CategoryScreen = (props) => {
     
     const [isLoading, setIsLoading] = useState(false)
+    const [isRefreshing, setIsRefreshing] = useState(false)
     const [error, setError] = useState()
 
     const dispatch = useDispatch()
@@ -29,13 +30,13 @@ const CategoryScreen = (props) => {
 
     const loadTour = useCallback( async () => {
         setError(null)
-        setIsLoading(true)
+        setIsRefreshing(true)
         try{
             await dispatch(tourActions.setTour())
         }catch(err){
             setError(err.message)
         }
-        setIsLoading(false)
+        setIsRefreshing(false)
     }, [dispatch, setError, setIsLoading])
 
     useEffect(() => {
@@ -47,7 +48,10 @@ const CategoryScreen = (props) => {
     }, [loadTour])
 
     useEffect(() => {
-        loadTour()
+        setIsLoading(true)
+        loadTour().then(() => {
+            setIsLoading(false)
+        })
     }, [dispatch, loadTour])
 
     const toursHandler = (itemData) => {
@@ -109,6 +113,8 @@ const CategoryScreen = (props) => {
     return (
         <View style={styles.screen}>
             <FlatList 
+                onRefresh={loadTour}
+                refreshing={isRefreshing}
                 data={selectedCategory}
                 renderItem={toursHandler}
                 numColumns={2}
