@@ -1,5 +1,5 @@
 import {CATEGORIES, CITIES, TOURS} from "../../data/dummy-data"
-import {CREATE_TOUR, DELETE_TOUR, UPDATE_TOUR} from "../actions/tour"
+import {CREATE_TOUR, DELETE_TOUR, UPDATE_TOUR, SET_TOUR} from "../actions/tour"
 import Tour from "../../models/tours"
 
 const initialState = {
@@ -11,6 +11,11 @@ const initialState = {
 
 const tourReducer = (state = initialState, actions) => {
     switch(actions.type){
+        case SET_TOUR:
+            return{
+                tours:actions.availableTours,
+                userTour:actions.availableTours.filter(tour => tour.ownerId === "u1")
+            }
         case CREATE_TOUR:
             const newTour = new Tour(
                 actions.tourData.id,

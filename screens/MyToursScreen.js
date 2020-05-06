@@ -1,14 +1,37 @@
-import React from 'react';
-import { FlatList, Button, Platform, Alert } from 'react-native';
+import React, {useEffect, useState, useCallback} from 'react';
+import { FlatList, Button, Alert, ActivityIndicator, StyleSheet, View, Text } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import UserTourItem from "../components/UserTourItem"
 import Colors from "../constants/Colors";
 import * as tourActions from "../store/actions/tour"
 
+
+
 const MyToursScreen = props => {
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState()
+
   const userTours = useSelector(state => state.tours.userTour);
   const dispatch = useDispatch();
+
+
+  const loadTours = useCallback( async () => {
+    setError(null)
+    setIsLoading(true)
+    try{
+      await dispatch(tourActions.setTour())
+    }catch(err){
+      setError(err.message)
+    }
+    setIsLoading(false)
+  }, [dispatch, setError, setIsLoading])
+
+  useEffect(() => {
+    loadTours()
+  }, [dispatch, loadTours])
+
 
   const editProductHandler = id => {
     props.navigation.navigate('EditTour', { tid: id });
@@ -26,6 +49,31 @@ const MyToursScreen = props => {
       }
     ]);
   };
+
+  if(error){
+    return(
+      <View style={styles.centered}>
+        <Text>An error occured!</Text>
+        <Button title="try again" onPress={loadTours}/>
+      </View>
+    )
+  }
+
+  if(isLoading){
+    return(
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.detailbgColor} />
+      </View>
+    )
+  }
+
+  if(!isLoading && userTours.length === 0) {
+    return(
+      <View style={styles.centered}>
+        <Text>No Tour Here </Text>
+      </View>
+    )
+  }
 
   return (
     <FlatList
@@ -58,5 +106,13 @@ const MyToursScreen = props => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  centered:{
+    flex:1,
+    justifyContent: "center",
+    alignItems: "center"
+  }
+})
 
 export default MyToursScreen;

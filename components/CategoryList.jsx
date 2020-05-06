@@ -1,13 +1,13 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { View, TouchableOpacity, StyleSheet, Dimensions, Text, ImageBackground, ScrollView } from "react-native"
 import DefaultTitle from "./DefaultTitle"
 import Colors from "../constants/Colors"
+import {useDispatch} from "react-redux"
 
 
 const CategoryList = (props) => {
 
- 
- 
+
     return (
         <View style={styles.categoryItem}>
             <TouchableOpacity activeOpacity={0.65} onPress={props.onSelect}>

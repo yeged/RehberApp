@@ -1,16 +1,22 @@
-import React, {useState} from "react";
+import React, {useEffect} from "react";
 import { View, StyleSheet, Dimensions, FlatList} from "react-native";
 import SearchEngine from "../components/SearchEngine"
 import GuideList from "../components/GuideList";
 import DefaultTitle from "../components/DefaultTitle"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import * as tourActions from "../store/actions/tour"
 
 
 
 
 const CategoryScreen = (props) => {
     
+    const dispatch = useDispatch()
 
+    useEffect(() => {
+        dispatch(tourActions.setTour())
+    }, [dispatch])
+ 
     const catId = props.navigation.getParam("catId")
 
     const availableTours = useSelector(state => state.tours.tours)
