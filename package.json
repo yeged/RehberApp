@@ -8,13 +8,18 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@babel/runtime": "^7.9.6",
     "@expo/vector-icons": "^10.0.6",
     "@react-native-community/masked-view": "0.1.6",
+    "events": "^3.1.0",
     "expo": "~37.0.3",
     "expo-font": "~8.1.0",
+    "expo-image-picker": "~8.1.0",
+    "expo-permissions": "~8.1.0",
+    "express": "^4.17.1",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.0.tar.gz",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-paper": "^3.6.0",
     "react-native-reanimated": "~1.7.0",
@@ -30,12 +35,24 @@
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "expo-image-picker": "~8.1.0",
-    "expo-permissions": "~8.1.0"
+    "watchman": "^1.0.0"
   },
   "devDependencies": {
     "babel-preset-expo": "~8.1.0",
     "@babel/core": "^7.8.6"
   },
-  "private": true
+  "private": true,
+  "name": "rehberapp",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yeged/RehberApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yeged/RehberApp/issues"
+  },
+  "homepage": "https://github.com/yeged/RehberApp#readme",
+  "description": ""
 }

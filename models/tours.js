@@ -21,6 +21,8 @@ class Tour {
                 this.isCultural = isCultural,
                 this.isPhotography = isPhotography,
                 this.isNightlife = isNightlife
+                
+
     }
 }
 export default Tour

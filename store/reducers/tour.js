@@ -13,7 +13,7 @@ const tourReducer = (state = initialState, actions) => {
     switch(actions.type){
         case CREATE_TOUR:
             const newTour = new Tour(
-                new Date().toString(),
+                actions.tourData.id,
                 actions.tourData.tCityId,
                 actions.tourData.tCategoryId,
                 "u1",

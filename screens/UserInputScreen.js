@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux"
 import * as tourActions from "../store/actions/tour"
 
 import Colors from "../constants/Colors"
-import { set } from "react-native-reanimated"
+import ImgPicker from "../components/ImagePicker"
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"
 
@@ -116,6 +116,11 @@ const UserInputScreen = props => {
         })
     }, [dispatchFormState])
 
+    const imageTakenHandler = imagePath => {
+
+        
+    }
+
     return (
         <KeyboardAvoidingView style={{flex: 1}} keyboardVerticalOffset={500}>
         <ScrollView>
@@ -153,6 +158,7 @@ const UserInputScreen = props => {
                         </View>
                     </View>
                 </View>
+                
                 <NameInput
                     id="headerImage"
                     label="- Kapak Fotoğrafı"
@@ -162,7 +168,7 @@ const UserInputScreen = props => {
                     onInputChange={inputChangeHandler}
                     required
                 />
-                <NameInput
+                <NameInput  
                     id="images"
                     label="- Detay Photos"
                     errorText="Please enter a valid URL"
