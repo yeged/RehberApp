@@ -1,6 +1,6 @@
 import React from "react"
 
-import { createAppContainer } from "react-navigation"
+import { createAppContainer, createSwitchNavigator } from "react-navigation"
 import { createStackNavigator } from "react-navigation-stack"
 import {createDrawerNavigator} from "react-navigation-drawer"
 import { createBottomTabNavigator } from "react-navigation-tabs" // FOR IOS UPDATES LATER
@@ -19,6 +19,7 @@ import UserInputScreen from "../screens/UserInputScreen"
 import MyToursScreen from "../screens/MyToursScreen"
 import EditTourScreen from "../screens/EditTourScreen"
 import FilterScreen from "../screens/FilterScreen"
+import AuthScreen from "../screens/AuthScreen"
 import Colors from "../constants/Colors"
 
 const defaultStackNavOptions = {
@@ -133,4 +134,14 @@ const MainNavigator = createDrawerNavigator({
     }
 })
 
-export default createAppContainer(MainNavigator);
+const AuthNavigator = createStackNavigator({
+    Auth: AuthScreen
+}, defaultStackNavOptions)
+
+const MNavigator = createSwitchNavigator({
+    Auth:AuthNavigator,
+    Main: MainNavigator
+})
+
+
+export default createAppContainer(MNavigator);

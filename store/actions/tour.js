@@ -1,14 +1,21 @@
-
+import Tour from "../../models/tours"
+import Category from "../../models/Category"
+import Province from "../../models/City"
 
 export const CREATE_TOUR = "CREATE_TOUR"
 export const DELETE_TOUR = "DELETE_TOUR"
 export const UPDATE_TOUR = "UPDATE_TOUR"
 export const SET_TOUR = "SET_TOUR"
-import Tour from "../../models/tours"
+export const CREATE_CAT = "CREATE_CAT"
+export const SET_CAT = "SET_CAT"
+export const CREATE_CITY = "CREATE_CITY"
+export const SET_CITY = "SET_CITY"
+
+
+
 
 export const setTour = () => {
     return async dispatch => {
-
         const response = await fetch("https://rehber-2e983.firebaseio.com/tours.json")
         try {
 
@@ -23,7 +30,6 @@ export const setTour = () => {
                     resData[key].groupSize, resData[key].userComment, resData[key].personalDetail, resData[key].isNatural, resData[key].isCultural, resData[key].isPhotography, resData[key].isNightlife
                 ))
             }
-
             dispatch({
                 type: SET_TOUR,
                 availableTours: loadedTours
@@ -31,7 +37,6 @@ export const setTour = () => {
         } catch (err) {
             throw err;
         }
-
     }
 }
 
@@ -76,7 +81,6 @@ export const deleteTour = (tourId) => {
             type: DELETE_TOUR,
             tid: tourId
         })
-
     }
 }
 
@@ -105,5 +109,83 @@ export const updateTour = (id, profileImg, Image, tourImage, tourName, time, lan
 
         })
     }
+}
 
+export const setCat = () => {
+    return async dispatch => {
+        const response = await fetch("https://rehber-2e983.firebaseio.com/categories.json")
+        try {
+            if (!response.ok) {
+                throw new Error("Something went wrong!")
+            }
+            const resData = await response.json()
+            loadedCat = []
+            for (const key in resData) {
+                loadedCat.push(new Category(resData[key].categoryId, resData[key].categoryLabel, resData[key].categoryPhoto, resData[key].categoryText,
+                    resData[key].isNatural, resData[key].isCultural, resData[key].isPhotography, resData[key].isNightlife))
+            }
+            dispatch({
+                type: SET_CAT,
+                availableCat: loadedCat
+            })
+        } catch (err) {
+            throw err
+        }
+    }
+}
+
+export const createCat = (categoryId, categoryLabel, categoryPhoto, categoryText, isNatural, isCultural, isPhotography, isNightlife) => {
+    return async dispatch => {
+        const response = await fetch("https://rehber-2e983.firebaseio.com/categories.json", {
+            method: "POST",
+            header: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                categoryId, categoryLabel, categoryPhoto, categoryText, isNatural, isCultural, isPhotography, isNightlife
+            })
+        })
+        const resData = await response.json();
+
+        if (!response.ok) {
+            throw new Error("Something went wrong!")
+        }
+
+        dispatch({
+            type: CREATE_CAT,
+            id: resData.name,
+            tourData: {
+                categoryId,
+                categoryLabel,
+                categoryPhoto,
+                categoryText,
+                isNatural,
+                isCultural,
+                isPhotography,
+                isNightlife
+            }
+        })
+    }
+}
+
+export const setCity = () => {
+    return async dispatch => {
+        const response = await fetch("https://rehber-2e983.firebaseio.com/cities.json")
+        try {
+            if (!response.ok) {
+                throw new Error("Something went wrong!")
+            }
+            const resData = await response.json()
+            loadedCity = []
+            for (const key in resData) {
+                loadedCity.push(new Province(resData[key].cityId, resData[key].cityLabel, resData[key].cityPhoto))
+            }
+            dispatch({
+                type: SET_CITY,
+                availableCity: loadedCity
+            })
+        } catch (err) {
+            throw err
+        }
+    }
 }

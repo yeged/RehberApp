@@ -1,53 +1,106 @@
-import React from "react";
-import { View, StyleSheet, Dimensions, ScrollView, FlatList } from "react-native";
+import React, { useEffect, useCallback, useState } from "react";
+import { View, StyleSheet, Dimensions, ScrollView, FlatList, ActivityIndicator } from "react-native";
 
 import SearchEngine from "../components/SearchEngine"
 import DefaultTitle from "../components/DefaultTitle"
 import CategoryList from "../components/CategoryList"
 import CityList from "../components/CityList"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import * as tourActions from "../store/actions/tour"
+import Colors from "../constants/Colors"
 
 
 
 const SearchScreen = (props) => {
+
+    const [isLoading, setIsLoading] = useState(false)
+    const [isRefreshing, setIsRefreshing] = useState(false)
+    const [error, setError] = useState()
+
 
     const availableCategories = useSelector(state => state.tours.category)
 
     const availableCity = useSelector(state => state.tours.city)
 
 
+
+    const dispatch = useDispatch()
+
+    const loadCity = useCallback(async () => {
+        try {
+            await dispatch(tourActions.setCity())
+        } catch (err) {
+            throw err
+        }
+    }, [dispatch])
+
+
+    const loadCat = useCallback(async () => {
+        try {
+            await dispatch(tourActions.setCat())
+
+        } catch (err) {
+            throw err
+        }
+    }, [dispatch])
+
+    useEffect(() => {
+        setIsLoading(true)
+        loadCat().then(() => {
+            setIsLoading(false)
+        })
+    }, [dispatch, loadCat])
+
+
+    useEffect(() => {
+        setIsLoading(true)
+        loadCity().then(() => {
+            setIsLoading(false)
+        })
+    }, [dispatch, loadCity])
     const categoryHandler = itemData => {
         return (
-            <CategoryList 
-            navigation={props.navigation} 
-            title={itemData.item.categoryLabel} 
-            text={itemData.item.categoryText} 
-            img={itemData.item.categoryPhoto}
-            onSelect={() => {
-                requestAnimationFrame (() => props.navigation.navigate({routeName: "Category", params: {
-                    catId: itemData.item.categoryId,
-                    catHeader: itemData.item.categoryLabel
-                }}))
-            }}
-             />
+            <CategoryList
+                navigation={props.navigation}
+                title={itemData.item.categoryLabel}
+                text={itemData.item.categoryText}
+                img={itemData.item.categoryPhoto}
+                onSelect={() => {
+                    requestAnimationFrame(() => props.navigation.navigate({
+                        routeName: "Category", params: {
+                            catId: itemData.item.categoryId,
+                            catHeader: itemData.item.categoryLabel
+                        }
+                    }))
+                }}
+            />
         )
     }
-    
+
 
 
     const cityHandler = itemData => {
         return (
-            <CityList 
-            city={itemData.item.cityLabel} 
-            img={itemData.item.cityPhoto} 
-            onSelect={() => {
-                requestAnimationFrame (() => props.navigation.navigate("City", {
-                    provinceId: itemData.item.cityId, 
-                    cityHeader: itemData.item.cityLabel
-                }))
-            }}
-            navigation={props.navigation} 
+            <CityList
+                city={itemData.item.cityLabel}
+                img={itemData.item.cityPhoto}
+                onSelect={() => {
+                    requestAnimationFrame(() => props.navigation.navigate("City", {
+                        provinceId: itemData.item.cityId,
+                        cityHeader: itemData.item.cityLabel
+                    }))
+                }}
+                navigation={props.navigation}
             />
+        )
+    }
+
+
+    if (isLoading) {
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size="large" color={Colors.detailbgColor} />
+            </View>
         )
     }
 
@@ -62,6 +115,8 @@ const SearchScreen = (props) => {
                 </View>
                 <View style={styles.categoryContainer}>
                     <FlatList
+                        onRefresh={loadCat}
+                        refreshing={isRefreshing}
                         keyExtractor={item => item.categoryId}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
@@ -76,6 +131,8 @@ const SearchScreen = (props) => {
                 </View>
                 <View style={styles.needSomePaddingforBottom}>
                     <FlatList
+                        onRefresh={loadCity}
+                        refreshing={isRefreshing}
                         keyExtractor={item => item.cityId}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
@@ -108,7 +165,7 @@ const styles = StyleSheet.create({
     categoryContainer: {
         paddingHorizontal: Dimensions.get("window").width * 0.01,
         paddingVertical: Dimensions.get("window").height * 0.035,
-        
+
     },
     headerContainer: {
         alignItems: "center",
@@ -127,7 +184,12 @@ const styles = StyleSheet.create({
     needSomePaddingforBottom: {
         paddingHorizontal: Dimensions.get("window").width * 0.01,
         paddingBottom: Dimensions.get("window").height * 0.1
-    }
+    },
+    centered: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+      }
 })
 
 export default SearchScreen;
