@@ -4,8 +4,8 @@ import Tour from "../../models/tours"
 import Category from "../../models/Category"
 
 const initialState = {
-    tours: TOURS,
-    userTour: TOURS.filter(tour => tour.ownerId === "u1"),
+    tours: [],
+    userTour: [],
     category: [],
     city: [],
 }
@@ -15,14 +15,14 @@ const tourReducer = (state = initialState, actions) => {
         case SET_TOUR:
             return {
                 tours: actions.availableTours,
-                userTour: actions.availableTours.filter(tour => tour.ownerId === "u1")
+                userTour: actions.userTour
             }
         case CREATE_TOUR:
             const newTour = new Tour(
                 actions.tourData.id,
                 actions.tourData.tCityId,
                 actions.tourData.tCategoryId,
-                "u1",
+                actions.tourData.ownerId,
                 actions.tourData.profileImg,
                 actions.tourData.Image,
                 actions.tourData.tourImage,
@@ -66,10 +66,10 @@ const tourReducer = (state = initialState, actions) => {
                 actions.tourData.groupSize,
                 actions.tourData.userComment,
                 actions.tourData.personalDetail,
-                actions.tourData.isNatural,
-                actions.tourData.isCultural,
-                actions.tourData.isPhotography,
-                actions.tourData.isNightLife
+                state.userTour[tourIndex].isNatural,
+                state.userTour[tourIndex].isCultural,
+                state.userTour[tourIndex].isPhotography,
+                state.userTour[tourIndex].isNightLife
             )
             const updatedUserTour = [...state.userTour]
             updatedUserTour[tourIndex] = updatedTour

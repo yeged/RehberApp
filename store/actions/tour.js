@@ -15,7 +15,8 @@ export const SET_CITY = "SET_CITY"
 
 
 export const setTour = () => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const userId = getState().auth.userId
         const response = await fetch("https://rehber-2e983.firebaseio.com/tours.json")
         try {
 
@@ -25,14 +26,15 @@ export const setTour = () => {
             const resData = await response.json();
             const loadedTours = []
             for (const key in resData) {
-                loadedTours.push(new Tour(key, resData[key].tCategoryId, resData[key].tCityId, "u1", resData[key].profileImg, resData[key].Image, resData[key].tourImage,
+                loadedTours.push(new Tour(key, resData[key].tCategoryId, resData[key].tCityId, resData[key].ownerId, resData[key].profileImg, resData[key].Image, resData[key].tourImage,
                     resData[key].tourName, resData[key].time, resData[key].language, resData[key].city, resData[key].category, resData[key].price, resData[key].tourPlan,
                     resData[key].groupSize, resData[key].userComment, resData[key].personalDetail, resData[key].isNatural, resData[key].isCultural, resData[key].isPhotography, resData[key].isNightlife
                 ))
             }
             dispatch({
                 type: SET_TOUR,
-                availableTours: loadedTours
+                availableTours: loadedTours,
+                userTour: loadedTours.filter(tour => tour.ownerId === userId)
             })
         } catch (err) {
             throw err;
@@ -43,13 +45,14 @@ export const setTour = () => {
 export const createTour = (tCityId, tCategoryId, profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token
+        const userId = getState().auth.userId
         const response = await fetch(`https://rehber-2e983.firebaseio.com/tours.json?auth=${token}`, {
             method: "POST",
             header: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                tCityId, tCategoryId, profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife
+                tCityId, tCategoryId,ownerId:userId, profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife
             })
         })
         const resData = await response.json();
@@ -58,7 +61,7 @@ export const createTour = (tCityId, tCategoryId, profileImg, Image, tourImage, t
             type: CREATE_TOUR,
             tourData: {
                 id: resData.name,
-                tCityId, tCategoryId, profileImg, Image, tourImage, tourName,
+                tCityId, tCategoryId,ownerId:userId, profileImg, Image, tourImage, tourName,
                 time, language, city, category, price, tourPlan, groupSize,
                 personalDetail, isNatural, isCultural, isPhotography, isNightlife
             }
@@ -85,11 +88,12 @@ export const deleteTour = (tourId) => {
     }
 }
 
-export const updateTour = (id, profileImg, Image, tourImage, tourName, time, language, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife) => {
+export const updateTour = (id, profileImg, Image, tourImage, tourName, time, language, price, tourPlan, groupSize, personalDetail) => {
 
     return async (dispatch, getState) => {
         const token = getState().auth.token
-        const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${id}.json?auth=${token}`, {
+        const userId = getState().auth.userId
+        const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${userId}.json?auth=${token}`, {
             method: "PATCH",
             header: {
                 "Content-Type": "application/json",

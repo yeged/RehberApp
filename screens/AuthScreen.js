@@ -81,6 +81,7 @@ const AuthScreen = props => {
 
   const authHandler = async () => {
     let action;
+    let navigate;
     if (isSignUp) {
       action = authActions.signUp(
         formState.inputValues.email,
@@ -89,12 +90,13 @@ const AuthScreen = props => {
       action = authActions.login(
         formState.inputValues.email,
         formState.inputValues.password)
+        navigate = "Main"
     }
     setError(null)
     setIsLoading(true);
     try {
       await dispatch(action)
-      props.navigation.navigate("Main")
+      props.navigation.navigate(navigate)
     } catch (err) {
       setError(err.message)
       setIsLoading(false)
