@@ -20,6 +20,7 @@ import MyToursScreen from "../screens/MyToursScreen"
 import EditTourScreen from "../screens/EditTourScreen"
 import FilterScreen from "../screens/FilterScreen"
 import AuthScreen from "../screens/AuthScreen"
+import StartupScreen from "../screens/StartupScreen"
 import Colors from "../constants/Colors"
 
 const defaultStackNavOptions = {
@@ -139,6 +140,7 @@ const AuthNavigator = createStackNavigator({
 }, defaultStackNavOptions)
 
 const MNavigator = createSwitchNavigator({
+    Startup: StartupScreen,
     Auth:AuthNavigator,
     Main: MainNavigator
 })
