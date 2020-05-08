@@ -1,42 +1,44 @@
-import React, {useReducer, useCallback, useState} from 'react';
+import React, { useReducer, useCallback, useState, useEffect } from 'react';
 import {
   ScrollView,
   View,
   KeyboardAvoidingView,
   StyleSheet,
-  Button
+  Button,
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import NameInput from "../components/NameInput"
 import Colors from "../constants/Colors"
-import {useDispatch} from "react-redux"
+import { useDispatch } from "react-redux"
 import * as authActions from "../store/actions/auth"
 
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"
 
 const formReducer = (state, action) => {
-    if (action.type === FORM_INPUT_UPDATE) {
-        const updatedValues = {
-            ...state.inputValues,
-            [action.input]: action.value
-        }
-        const updatedValidities = {
-            ...state.inputValidities,
-            [action.input]: action.isValid
-        }
-        let updatedFormIsValid = true
-        for (const key in updatedValidities) {
-            updatedFormIsValid = updatedFormIsValid && updatedValidities[key]
-        }
-        return {
-            formIsValid: updatedFormIsValid,
-            inputValidities: updatedValidities,
-            inputValues: updatedValues
-        }
+  if (action.type === FORM_INPUT_UPDATE) {
+    const updatedValues = {
+      ...state.inputValues,
+      [action.input]: action.value
     }
-    return state;
+    const updatedValidities = {
+      ...state.inputValidities,
+      [action.input]: action.isValid
+    }
+    let updatedFormIsValid = true
+    for (const key in updatedValidities) {
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key]
+    }
+    return {
+      formIsValid: updatedFormIsValid,
+      inputValidities: updatedValidities,
+      inputValues: updatedValues
+    }
+  }
+  return state;
 
 }
 
@@ -44,48 +46,63 @@ const formReducer = (state, action) => {
 
 const AuthScreen = props => {
 
-    const [isSignUp, setIsSignUp] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isSignUp, setIsSignUp] = useState(false)
+  const [error, setError] = useState()
 
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-    const [formState, dispatchFormState] = useReducer(formReducer, {
-        inputValues: {
-            email:"",
-            password:""
-        },
-        inputValidities: {
-            email:false,
-            password:false
-        },
-        formIsValid: false
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      email: "",
+      password: ""
+    },
+    inputValidities: {
+      email: false,
+      password: false
+    },
+    formIsValid: false
+  })
+
+  const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
+    dispatchFormState({
+      type: FORM_INPUT_UPDATE,
+      value: inputValue,
+      isValid: inputValidity,
+      input: inputIdentifier
     })
+  }, [dispatchFormState])
 
-    const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
-        dispatchFormState({
-            type: FORM_INPUT_UPDATE,
-            value: inputValue,
-            isValid: inputValidity,
-            input: inputIdentifier
-        })
-    }, [dispatchFormState])
-
-    const authHandler = () => {
-      let action;
-      if(isSignUp){
-        action = authActions.signUp(
-          formState.inputValues.email, 
-          formState.inputValues.password)
-      }else{
-        action = authActions.login(
-          formState.inputValues.email, 
-          formState.inputValues.password)
-      }
-        dispatch(action)
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An Error Occured!", error, [{ text: "Okay" }])
     }
+  }, [error])
+
+  const authHandler = async () => {
+    let action;
+    if (isSignUp) {
+      action = authActions.signUp(
+        formState.inputValues.email,
+        formState.inputValues.password)
+    } else {
+      action = authActions.login(
+        formState.inputValues.email,
+        formState.inputValues.password)
+    }
+    setError(null)
+    setIsLoading(true);
+    try {
+      await dispatch(action)
+    } catch (err) {
+      setError(err.message)
+    }
+    setIsLoading(false)
+  }
 
   return (
     <KeyboardAvoidingView
-     
+
       style={styles.screen}
     >
       <LinearGradient colors={['#E0E2F0', '#6672B8']} style={styles.gradient}>
@@ -115,7 +132,8 @@ const AuthScreen = props => {
               initialValue=""
             />
             <View style={styles.buttonContainer}>
-              <Button title={isSignUp ? "Sign Up" : "Login"} color={Colors.detailbgColor} onPress={authHandler} />
+            {isLoading ? <ActivityIndicator size="small" color={Colors.detailbgColor} /> : 
+            <Button title={isSignUp ? "Sign Up" : "Login"} color={Colors.detailbgColor} onPress={authHandler} />}
             </View>
             <View style={styles.buttonContainer}>
               <Button
