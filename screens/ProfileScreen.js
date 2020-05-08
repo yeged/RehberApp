@@ -5,9 +5,14 @@ import { Ionicons } from "@expo/vector-icons"
 import DefaultTitle from "../components/DefaultTitle"
 import AccountSettingsList from "../components/AccountSettingsList"
 import ImgPicker from "../components/ImagePicker"
+import { useDispatch } from "react-redux";
+import * as authActions from "../store/actions/auth"
 
 
 const ProfileScreen = (props) => {
+
+    const dispatch = useDispatch()
+
     return (
         <View style={styles.screen}>
             <View style={styles.headerContainer}>
@@ -23,7 +28,10 @@ const ProfileScreen = (props) => {
             </View>
             <AccountSettingsList title="Kişisel Bilgiler" icon="ios-person" onSelect={() => {requestAnimationFrame(() => props.navigation.navigate("Info"))}}/>
             <AccountSettingsList title="Rehber Ol" icon="ios-home" onSelect={() => {requestAnimationFrame(() => props.navigation.navigate("BeGuide"))}}/>
-            <AccountSettingsList style={styles.title} title="Çıkış Yap" />
+            <AccountSettingsList style={styles.title} title="Çıkış Yap" onSelect={() => {
+                dispatch(authActions.logOut())
+                props.navigation.navigate("Auth")
+            }} />
             <ImgPicker />
         </View>
     )
