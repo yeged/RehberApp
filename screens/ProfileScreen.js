@@ -30,7 +30,7 @@ const ProfileScreen = (props) => {
             <AccountSettingsList title="Rehber Ol" icon="ios-home" onSelect={() => {requestAnimationFrame(() => props.navigation.navigate("BeGuide"))}}/>
             <AccountSettingsList style={styles.title} title="Çıkış Yap" onSelect={() => {
                 dispatch(authActions.logOut())
-                props.navigation.navigate("Auth")
+               
             }} />
             <ImgPicker />
         </View>

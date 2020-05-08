@@ -6,7 +6,7 @@ import { Provider } from "react-redux"
 import { combineReducers, createStore, applyMiddleware } from "redux"
 import ReduxThunk from "redux-thunk"
 
-import MainNavigator from "./navigation/FirstAppNavigation"
+import NavigationContainer from "./navigation/NavigationContainer"
 import tourReducer from "./store/reducers/tour"
 import authReducer from "./store/reducers/auth"
 import favoritesReducer from "./store/reducers/favorites"
@@ -41,7 +41,7 @@ export default function App() {
   }
   return (
     <Provider store={store}>
-      <MainNavigator />
+      <NavigationContainer />
       </Provider>
   );
 }
