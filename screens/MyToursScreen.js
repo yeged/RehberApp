@@ -86,13 +86,13 @@ const MyToursScreen = props => {
     )
   }
 
-  if (!isLoading && userTours.length === 0) {
-    return (
-      <View style={styles.centered}>
-        <Text>No Tour Here </Text>
-      </View>
-    )
-  }
+  // if (!isLoading && userTours.length === 0) {
+  //   return (
+  //     <View style={styles.centered}>
+  //       <Text>No Tour Here </Text>
+  //     </View>
+  //   )
+  // }
 
   return (
     <FlatList

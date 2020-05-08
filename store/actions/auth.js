@@ -31,6 +31,8 @@ export const signUp = (email, password) => {
 
         dispatch({
             type: SIGN_UP,
+            token:resData.idToken,
+            userId:resData.localId
         })
     }
 }
@@ -69,6 +71,8 @@ export const login = (email, password) => {
 
         dispatch({
             type: LOGIN,
+            token:resData.idToken,
+            userId:resData.localId
         })
     }
 }

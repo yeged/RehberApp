@@ -41,9 +41,9 @@ export const setTour = () => {
 }
 
 export const createTour = (tCityId, tCategoryId, profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife) => {
-    return async dispatch => {
-
-        const response = await fetch("https://rehber-2e983.firebaseio.com/tours.json", {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token
+        const response = await fetch(`https://rehber-2e983.firebaseio.com/tours.json?auth=${token}`, {
             method: "POST",
             header: {
                 "Content-Type": "application/json",
@@ -69,8 +69,9 @@ export const createTour = (tCityId, tCategoryId, profileImg, Image, tourImage, t
 
 export const deleteTour = (tourId) => {
 
-    return async dispatch => {
-        const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${tourId}.json`, {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token
+        const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${tourId}.json?auth=${token}`, {
             method: "DELETE",
         })
 
@@ -86,9 +87,9 @@ export const deleteTour = (tourId) => {
 
 export const updateTour = (id, profileImg, Image, tourImage, tourName, time, language, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife) => {
 
-    return async dispatch => {
-
-        const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${id}.json`, {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token
+        const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${id}.json?auth=${token}`, {
             method: "PATCH",
             header: {
                 "Content-Type": "application/json",
