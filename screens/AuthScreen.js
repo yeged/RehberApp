@@ -86,6 +86,7 @@ const AuthScreen = props => {
       action = authActions.signUp(
         formState.inputValues.email,
         formState.inputValues.password)
+        navigate = "ApplyInfo"
     } else {
       action = authActions.login(
         formState.inputValues.email,

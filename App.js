@@ -10,7 +10,7 @@ import NavigationContainer from "./navigation/NavigationContainer"
 import tourReducer from "./store/reducers/tour"
 import authReducer from "./store/reducers/auth"
 import favoritesReducer from "./store/reducers/favorites"
-import filterReducer from './store/reducers/filter';
+
 
 
 

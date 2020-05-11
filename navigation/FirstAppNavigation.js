@@ -21,6 +21,7 @@ import EditTourScreen from "../screens/EditTourScreen"
 import FilterScreen from "../screens/FilterScreen"
 import AuthScreen from "../screens/AuthScreen"
 import StartupScreen from "../screens/StartupScreen"
+import ApplyInfoScreen from "../screens/ApplyInfoScreen"
 import Colors from "../constants/Colors"
 
 const defaultStackNavOptions = {
@@ -139,9 +140,14 @@ const AuthNavigator = createStackNavigator({
     Auth: AuthScreen
 }, defaultStackNavOptions)
 
+const ApplyNavigator = createStackNavigator({
+    ApplyInfo:ApplyInfoScreen,
+},defaultStackNavOptions)
+
 const MNavigator = createSwitchNavigator({
     Startup: StartupScreen,
     Auth:AuthNavigator,
+    ApplyInfo:ApplyNavigator,
     Main: MainNavigator
 })
 
