@@ -8,7 +8,6 @@ const initialState = {
     userTour: [],
     categorizedTour: [],
     cityTour:[],
-    filters:[],
     category: [],
     city: [],
 }
@@ -32,7 +31,7 @@ const tourReducer = (state = initialState, actions) => {
                 }
                 return true;
             })
-            return {...state, filters:updatedFilteredTours}
+            return {...state, cityTour:updatedFilteredTours}
         case SET_TOUR:
             return {
                 tours: actions.availableTours,

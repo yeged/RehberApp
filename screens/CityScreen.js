@@ -29,7 +29,7 @@ const CityScreen = (props) => {
 
     const cityId = props.navigation.getParam("provinceId")
 
-    const availableCity = useSelector(state => state.tours.filters)
+    const availableCity = useSelector(state => state.tours.cityTour)
 
     const selectedCity = availableCity
 
@@ -61,6 +61,7 @@ const CityScreen = (props) => {
         loadTour().then(() => {
             setIsLoading(false)
         })
+        console.log(availableCity)
     }, [dispatch, loadTour])
 
     const saveFilters = useCallback(() => {
