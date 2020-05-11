@@ -1,4 +1,4 @@
-import { CREATE_PROFILE, SET_PROFILE, UPDATE_PROFILE} from "../actions/profile"
+import { CREATE_PROFILE, SET_PROFILE, UPDATE_PROFILE } from "../actions/profile"
 import Profile from "../../models/Profile"
 
 
@@ -8,7 +8,7 @@ const initialState = {
     profile: [],
 }
 
-const profilReducer = (state = initialState, actions) => {
+const profileReducer = (state = initialState, actions) => {
     switch (actions.type) {
         case CREATE_PROFILE:
             const newProfile = new Profile(
@@ -28,9 +28,11 @@ const profilReducer = (state = initialState, actions) => {
             return {
                 profile: actions.profile
             }
+        case UPDATE_PROFILE:
+            
         default:
             return state;
     }
 }
 
-export default favoritesReducer;
+export default profileReducer;

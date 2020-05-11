@@ -10,7 +10,7 @@ import NavigationContainer from "./navigation/NavigationContainer"
 import tourReducer from "./store/reducers/tour"
 import authReducer from "./store/reducers/auth"
 import favoritesReducer from "./store/reducers/favorites"
-
+import profileReducer from "./store/reducers/profile"
 
 
 
@@ -26,7 +26,8 @@ const fetchLayout = () => {
 const rootReducer = combineReducers({
   tours: tourReducer,
   favorites: favoritesReducer,
-  auth: authReducer
+  auth: authReducer,
+  profile:profileReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
