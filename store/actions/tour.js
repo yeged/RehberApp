@@ -10,11 +10,19 @@ export const CREATE_CAT = "CREATE_CAT"
 export const SET_CAT = "SET_CAT"
 export const CREATE_CITY = "CREATE_CITY"
 export const SET_CITY = "SET_CITY"
+export const SET_FILTER = "SET_FILTER"
 
 
 
+export const toggleFilter = (filterSettings) => {
+    return{
+        type: SET_FILTER,
+        filters: filterSettings
+    }
+}
 
-export const setTour = () => {
+
+export const setTour = (catId, cityId) => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId
         const response = await fetch("https://rehber-2e983.firebaseio.com/tours.json")
@@ -26,15 +34,17 @@ export const setTour = () => {
             const resData = await response.json();
             const loadedTours = []
             for (const key in resData) {
-                loadedTours.push(new Tour(key, resData[key].tCategoryId, resData[key].tCityId, resData[key].ownerId, resData[key].profileImg, resData[key].Image, resData[key].tourImage,
+                loadedTours.push(new Tour(key, resData[key].tCityId, resData[key].tCategoryId, resData[key].ownerId, resData[key].profileImg, resData[key].Image, resData[key].tourImage,
                     resData[key].tourName, resData[key].time, resData[key].language, resData[key].city, resData[key].category, resData[key].price, resData[key].tourPlan,
-                    resData[key].groupSize, resData[key].userComment, resData[key].personalDetail, resData[key].isNatural, resData[key].isCultural, resData[key].isPhotography, resData[key].isNightlife
+                    resData[key].groupSize,  resData[key].personalDetail, resData[key].isNatural, resData[key].isCultural, resData[key].isPhotography, resData[key].isNightlife
                 ))
             }
             dispatch({
                 type: SET_TOUR,
                 availableTours: loadedTours,
-                userTour: loadedTours.filter(tour => tour.ownerId === userId)
+                userTour: loadedTours.filter(tour => tour.ownerId === userId),
+                categorizedTour: loadedTours.filter(tour => tour.tCategoryId === catId),
+                cityTour:loadedTours.filter(tour => tour.tCityId === cityId)
             })
         } catch (err) {
             throw err;
@@ -92,8 +102,7 @@ export const updateTour = (id, profileImg, Image, tourImage, tourName, time, lan
 
     return async (dispatch, getState) => {
         const token = getState().auth.token
-        const userId = getState().auth.userId
-        const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${userId}.json?auth=${token}`, {
+        const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${id}.json?auth=${token}`, {
             method: "PATCH",
             header: {
                 "Content-Type": "application/json",

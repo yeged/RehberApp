@@ -1,21 +1,44 @@
 import { CATEGORIES, CITIES, TOURS } from "../../data/dummy-data"
-import { CREATE_TOUR, DELETE_TOUR, UPDATE_TOUR, SET_TOUR, CREATE_CAT, SET_CAT, SET_CITY } from "../actions/tour"
+import { CREATE_TOUR, DELETE_TOUR, UPDATE_TOUR, SET_TOUR, CREATE_CAT, SET_CAT, SET_CITY,SET_FILTER } from "../actions/tour"
 import Tour from "../../models/tours"
 import Category from "../../models/Category"
 
 const initialState = {
     tours: [],
     userTour: [],
+    categorizedTour: [],
+    cityTour:[],
+    filters:[],
     category: [],
     city: [],
 }
 
 const tourReducer = (state = initialState, actions) => {
     switch (actions.type) {
+        case SET_FILTER:
+            const appliedFilters = actions.filters
+            const updatedFilteredTours = state.cityTour.filter(tour => {
+                if(appliedFilters.natural && !tour.isNatural){
+                    return false
+                }
+                if(appliedFilters.cultural && !tour.isCultural){
+                    return false
+                }
+                if(appliedFilters.photography && !tour.isPhotography){
+                    return false
+                }
+                if(appliedFilters.night && !tour.isNightlife){
+                    return false
+                }
+                return true;
+            })
+            return {...state, filters:updatedFilteredTours}
         case SET_TOUR:
             return {
                 tours: actions.availableTours,
-                userTour: actions.userTour
+                userTour: actions.userTour,
+                categorizedTour: actions.categorizedTour,
+                cityTour: actions.cityTour
             }
         case CREATE_TOUR:
             const newTour = new Tour(
@@ -34,7 +57,6 @@ const tourReducer = (state = initialState, actions) => {
                 actions.tourData.price,
                 actions.tourData.tourPlan,
                 actions.tourData.groupSize,
-                "",
                 actions.tourData.personalDetail,
                 actions.tourData.isNatural,
                 actions.tourData.isCultural,
@@ -48,6 +70,7 @@ const tourReducer = (state = initialState, actions) => {
             }
         case UPDATE_TOUR:
             const tourIndex = state.userTour.findIndex(tour => tour.id === actions.tid)
+            
             const updatedTour = new Tour(
                 actions.tid,
                 state.userTour[tourIndex].tCityId,
@@ -64,7 +87,6 @@ const tourReducer = (state = initialState, actions) => {
                 actions.tourData.price,
                 actions.tourData.tourPlan,
                 actions.tourData.groupSize,
-                actions.tourData.userComment,
                 actions.tourData.personalDetail,
                 state.userTour[tourIndex].isNatural,
                 state.userTour[tourIndex].isCultural,
@@ -81,7 +103,7 @@ const tourReducer = (state = initialState, actions) => {
             return {
                 ...state,
                 tours: updatedGeneralTour,
-                userTour: updatedUserTour
+                userTour: updatedUserTour   
             }
 
         case DELETE_TOUR:

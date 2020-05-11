@@ -23,25 +23,26 @@ const CategoryScreen = (props) => {
  
     const catId = props.navigation.getParam("catId")
 
-    const availableTours = useSelector(state => state.tours.tours)
+    const availableTours = useSelector(state => state.tours.categorizedTour)
 
-    const selectedCategory = availableTours.filter(tour => tour.tCategoryId.indexOf(catId) >= 0)
-
+    
+    const selectedCategory = availableTours
     const favTours = useSelector(state => state.favorites.favorites)
-
+    
     const loadTour = useCallback( async () => {
         setError(null)
         setIsRefreshing(true)
         try{
-            await dispatch(tourActions.setTour())
+            await dispatch(tourActions.setTour(catId))
         }catch(err){
             setError(err.message)
         }
         setIsRefreshing(false)
-    }, [dispatch, setError, setIsLoading])
+    }, [dispatch, setError, setIsRefreshing])
+
 
     useEffect(() => {
-        const willFocusSub = props.navigation.addListener("willFocus", loadTour)
+        const willFocusSub = props.navigation.addListener("willBlur", loadTour)
         
         return () => {
             willFocusSub.remove()
@@ -103,13 +104,13 @@ const CategoryScreen = (props) => {
         )
     }
 
-    if(!isLoading && selectedCategory.length===0){
-        return(
-            <View style={styles.centered}>
-                 <Text>No Tour Here </Text>
-            </View>
-        )
-    }
+    // if(!isLoading && selectedCategory.length===0){
+    //     return(
+    //         <View style={styles.centered}>
+    //              <Text>No Tour Here </Text>
+    //         </View>
+    //     )
+    // }
 
     return (
         <View style={styles.screen}>

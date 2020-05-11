@@ -8,6 +8,7 @@ import CityList from "../components/CityList"
 import { useSelector, useDispatch } from "react-redux"
 import * as tourActions from "../store/actions/tour"
 import Colors from "../constants/Colors"
+import CustomButton from "../components/CustomButton"
 
 
 
@@ -15,7 +16,8 @@ const SearchScreen = (props) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [isRefreshing, setIsRefreshing] = useState(false)
-    const [error, setError] = useState()
+    // const [error, setError] = useState()
+    const [check, setCheck] = useState(false)
 
 
     const availableCategories = useSelector(state => state.tours.category)
@@ -26,12 +28,15 @@ const SearchScreen = (props) => {
 
     const dispatch = useDispatch()
 
+
+
     const loadCity = useCallback(async () => {
         try {
             await dispatch(tourActions.setCity())
         } catch (err) {
             throw err
         }
+        setCheck(true)
     }, [dispatch])
 
 
@@ -42,22 +47,36 @@ const SearchScreen = (props) => {
         } catch (err) {
             throw err
         }
+        setCheck(false)
     }, [dispatch])
+
+
+    useEffect(() => {
+        const willFocusSub = props.navigation.addListener("willFocus", loadCat)
+
+        return () => {
+            willFocusSub.remove()
+
+        }
+    }, [loadCat])
 
     useEffect(() => {
         setIsLoading(true)
         loadCat().then(() => {
             setIsLoading(false)
+
         })
     }, [dispatch, loadCat])
 
 
-    useEffect(() => {
-        setIsLoading(true)
-        loadCity().then(() => {
-            setIsLoading(false)
-        })
-    }, [dispatch, loadCity])
+    //  useEffect(() => {
+    //      setIsLoading(true)
+    //      loadCity().then(() => {
+    //          setIsLoading(false)
+    //      })
+    //  }, [dispatch, loadCity])
+
+
     const categoryHandler = itemData => {
         return (
             <CategoryList
@@ -110,11 +129,16 @@ const SearchScreen = (props) => {
                 <View style={styles.nameContainer}>
                     <DefaultTitle style={styles.name}>Uygulamanın İsmi</DefaultTitle>
                 </View>
+
                 <View style={styles.headerContainer}>
                     <DefaultTitle style={styles.title}>Şehrin Rehberlerinden Benzersiz Etkinlikler</DefaultTitle>
                 </View>
+                <CustomButton title={!check ? "Şehirler" : "Kategoriler"} onSelect={!check ? loadCity : loadCat} />
+                <View style={styles.headerContainer}>
+                    <DefaultTitle style={styles.title}>{!check ? "Tur Kategorileri" : "Başka Şehirlerdeki Rehberler"}</DefaultTitle>
+                </View>
                 <View style={styles.categoryContainer}>
-                    <FlatList
+                    {!check ? <FlatList
                         onRefresh={loadCat}
                         refreshing={isRefreshing}
                         keyExtractor={item => item.categoryId}
@@ -124,23 +148,21 @@ const SearchScreen = (props) => {
                         snapToInterval={Dimensions.get("window").width * 0.93}
                         data={availableCategories}
                         renderItem={categoryHandler}
-                    />
+                    /> : <FlatList
+                            onRefresh={loadCity}
+                            refreshing={isRefreshing}
+                            keyExtractor={item => item.cityId}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            pagingEnabled={true}
+                            snapToInterval={Dimensions.get("window").width * 0.434}
+                            data={availableCity}
+                            renderItem={cityHandler}
+                        />}
                 </View>
-                <View style={styles.headerContainer}>
-                    <DefaultTitle style={styles.title}>Başka Şehirlerdeki Rehberler</DefaultTitle>
-                </View>
+
                 <View style={styles.needSomePaddingforBottom}>
-                    <FlatList
-                        onRefresh={loadCity}
-                        refreshing={isRefreshing}
-                        keyExtractor={item => item.cityId}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        pagingEnabled={true}
-                        snapToInterval={Dimensions.get("window").width * 0.434}
-                        data={availableCity}
-                        renderItem={cityHandler}
-                    />
+
                 </View>
             </ScrollView>
         </View>
@@ -172,7 +194,7 @@ const styles = StyleSheet.create({
         padding: Dimensions.get("window").width * 0.04
     },
     title: {
-        fontSize: Dimensions.get("window").width * 0.085
+        fontSize: Dimensions.get("window").width * 0.065
     },
     nameContainer: {
         padding: Dimensions.get("window").width * 0.04,
@@ -189,7 +211,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center"
-      }
+    }
 })
 
 export default SearchScreen;

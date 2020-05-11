@@ -4,7 +4,6 @@ import {SET_FILTER } from "../actions/filter"
 
 
 const initialState = {
-    tours: TOURS,
     filters:TOURS
 }
 

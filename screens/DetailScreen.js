@@ -1,13 +1,15 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { View, Text, StyleSheet, Button, Dimensions, Image, ScrollView, TouchableNativeFeedback, TouchableOpacity } from "react-native";
+import React, { useState, useCallback, useEffect, useRef } from "react";
+import { View, Text, StyleSheet, Button, Dimensions, Image, ScrollView, TouchableNativeFeedback, TouchableOpacity, ProgressViewIOSComponent } from "react-native";
 import HeaderButton from "../components/HeaderButton"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { useSelector, useDispatch } from "react-redux"
 
+import * as tourActions from "../store/actions/tour"
 import Colors from "../constants/Colors"
 import DefaultTitle from "../components/DefaultTitle"
-import { toggleFav } from "../store/actions/favorites"
+import { addFav, setFav, deleteFav } from "../store/actions/favorites"
 import CustomButton from "../components/CustomButton"
+
 
 
 
@@ -18,11 +20,12 @@ const DetailScreen = (props) => {
     const [personReadMore, setPersonReadMore] = useState()
     const [showMore, setShowMore] = useState()
     const [showMoreInfo, setShowMoreInfo] = useState()
-
+    
 
     const tourId = props.navigation.getParam("tourId")
-    
-    const tourIsFav = useSelector(state => state.favorites.favorites.some(tour => tour.id === tourId))
+
+    const favTour = useSelector(state => state.favorites.favorites)
+    const tourIsFav = favTour.some(tour => tour.tourId === tourId)
 
     const availableTours = useSelector(state => state.tours.tours)
 
@@ -42,6 +45,7 @@ const DetailScreen = (props) => {
         if (showMore) {
             return setTourReadMore(true)
         }
+
     }, [showMore])
 
     useEffect(() => {
@@ -63,13 +67,41 @@ const DetailScreen = (props) => {
 
     const dispatch = useDispatch()
 
-    const favTourHandler = useCallback(() => {
-        dispatch(toggleFav(tourId))
-    }, [toggleFav, tourId])
+    const loadFav = useCallback(async () => {
+        try {
+            await dispatch(setFav())
+
+        } catch (err) {
+            throw err
+        }
+        console.log("dispatch set fav")
+    }, [dispatch, setFav])
+
+    const favTourHandler = useCallback(async () => {
+        try{
+            await dispatch(addFav(tourId, selectedTour.tourName, selectedTour.time, selectedTour.price, selectedTour.Image, selectedTour.city))
+        }catch(err){
+            throw err
+        }
+        console.log("dispatch addFav")
+    }, [addFav, dispatch])
+
+    const favRemoveHandler = useCallback(async () => {
+        const favId = favTour.find(value => value.tourId === tourId)
+        try{
+            await dispatch(deleteFav(favId.id))
+        }catch(err){
+            throw err
+        }
+        console.log("dispatch deletefav")
+        console.log(favId)
+    }, [deleteFav, dispatch])
+
+
 
     useEffect(() => {
         props.navigation.setParams({
-            favTour: favTourHandler
+            favTour: favHandler
         })
     }, [favTourHandler])
 
@@ -78,6 +110,15 @@ const DetailScreen = (props) => {
             isFav: tourIsFav
         })
     }, [tourIsFav])
+
+    const favHandler = useCallback(async () => {
+        loadFav()
+        if (!tourIsFav) {
+            favTourHandler()
+        } else {
+            favRemoveHandler()
+        }
+    }, [loadFav, favTourHandler, favRemoveHandler])
 
     return (
         <View style={styles.screen}>
@@ -113,7 +154,8 @@ const DetailScreen = (props) => {
                             </View>
                             <View>
                                 <DefaultTitle style={styles.infoHeader}>Sunduğu Diller</DefaultTitle>
-                                {selectedTour.language.map(tour => <Text style={styles.infoText}>{tour},</Text>)}
+                                <Text style={styles.infoText}>{selectedTour.language}</Text>
+                                {/* {selectedTour.language.map(tour => <Text style={styles.infoText}>{tour},</Text>)} */}
                             </View>
                         </View>
                     </View>
@@ -143,9 +185,13 @@ const DetailScreen = (props) => {
                                 <Text style={styles.readMore}>{showMoreInfo && personReadMore ? "Daha Fazla" : null}</Text>
                             </View>
                         </TouchableNativeFeedback>
-                        <CustomButton title="Ev sahibiyle iletişime geçin"/>
+                        <CustomButton title="Ev sahibiyle iletişime geçin" />
                     </View>
                 </View>
+
+                <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                    <Item iconName={tourIsFav ? "ios-heart" : "ios-heart-empty"} iconSize={25} style={styles.headerStyle} color="white" onPress={favHandler} />
+                </HeaderButtons>
             </ScrollView>
         </View>
     )
@@ -162,7 +208,7 @@ DetailScreen.navigationOptions = navData => {
         headerTintColor: "white",
         headerTransparent: false,
         headerRight: () => (<HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item iconName={isFav ? "ios-heart" : "ios-heart-empty"} iconSize={25} style={styles.headerStyle} color="white" onPress={favTour}  />
+            <Item iconName={isFav ? "ios-heart" : "ios-heart-empty"} iconSize={25} style={styles.headerStyle} color="white" onPress={favTour} />
         </HeaderButtons>)
     }
 }

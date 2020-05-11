@@ -26,7 +26,6 @@ const fetchLayout = () => {
 const rootReducer = combineReducers({
   tours: tourReducer,
   favorites: favoritesReducer,
-  filters: filterReducer,
   auth: authReducer
 })
 
