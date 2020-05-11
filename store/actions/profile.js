@@ -63,7 +63,7 @@ export const setProfile = () => {
     };
 }
 
-export const updateTour = (id, fname, lname, gender, email, phone, photo) => {
+export const updateProfile = (id, fname, lname, gender, email, phone, photo) => {
 
     return async (dispatch, getState) => {
         const token = getState().auth.token

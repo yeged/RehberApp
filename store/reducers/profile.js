@@ -29,7 +29,27 @@ const profileReducer = (state = initialState, actions) => {
                 profile: actions.profile
             }
         case UPDATE_PROFILE:
+            const profileIndex = state.profile.findIndex(value => value.id === actions.pid)
             
+            const updatedProfile = new Profile(
+                actions.tid,
+                actions.fname,
+                actions.lname,
+                actions.gender,
+                actions.email,
+                actions.phone,
+                actions.photo
+            )
+            const updatedUserProfile = [...state.profile]
+            updatedUserProfile[profileIndex] = updatedProfile
+
+
+
+            return {
+                ...state,
+                profile: updatedUserProfile,
+                   
+            }
         default:
             return state;
     }

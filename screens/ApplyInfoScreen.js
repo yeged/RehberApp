@@ -155,7 +155,7 @@ const ApplyInfoScreen = props => {
                         keyboardType="default"
                         returnKeyType="next"
                         onInputChange={inputChangeHandler}
-                        required
+                        
                     />
 
                     {/* <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity> */}

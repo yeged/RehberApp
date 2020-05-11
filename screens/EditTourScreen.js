@@ -98,11 +98,11 @@ const EditTourScreen = props => {
 
     }, [dispatch, tourId, formState])
 
-    // useEffect(() => {
-    //     props.navigation.setParams({
-    //         submit:submitHandler
-    //     },[submitHandler])
-    // })
+     useEffect(() => {
+         props.navigation.setParams({
+             submit:submitHandler
+         })
+     },[submitHandler])
 
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
         dispatchFormState({
@@ -245,9 +245,7 @@ const EditTourScreen = props => {
                     initialValue={editedTour.tourPlan}
                     initiallyValid={!!editedTour}
                 />
-                <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>
-                <TouchableOpacity style={{ padding: 10 }} onPress={() => console.log(editedTour)}><Text>Kaydet</Text></TouchableOpacity>
-
+                {/* <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity> */}
             </View>
         </ScrollView>
         </KeyboardAvoidingView>
