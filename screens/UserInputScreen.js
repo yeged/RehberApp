@@ -1,10 +1,11 @@
-import React, { useEffect, useCallback, useReducer } from "react"
-import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert,KeyboardAvoidingView } from "react-native"
+import React, { useEffect, useCallback, useReducer, useState } from "react"
+import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, ActivityIndicator } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
 import { useSelector, useDispatch } from "react-redux"
 import * as tourActions from "../store/actions/tour"
+import * as profileActions from "../store/actions/profile"
 
 import Colors from "../constants/Colors"
 import ImgPicker from "../components/ImagePicker"
@@ -37,55 +38,59 @@ const formReducer = (state, action) => {
 
 const UserInputScreen = props => {
 
+    const [error, setError] = useState()
+    const [isLoading, setIsLoading] = useState(true)
+
+    
+    const profileState = props.navigation.getParam("profileState")
+    const cityState = props.navigation.getParam("cityState")
+    const cityLabel = props.navigation.getParam("cityLabel")
+
     const dispatch = useDispatch()
 
     const [formState, dispatchFormState] = useReducer(formReducer, {
         inputValues: {
-            city: "",
+            city: cityState.inputValues.city,
             cat: "",
-            tourName: "",
-            profileImg: "",
+            tourName: cityState.inputValues.tourName,
+            fname: profileState.inputValues.fname,
+            phone: profileState.inputValues.phone,
+            profileImg: profileState.inputValues.profileImg,
             headerImage: "",
             images: "",
             hours: "",
             price: "",
             groupSize: "",
-            language: "",
-            personalInfo: "",
-            details: "",
+            language: cityState.inputValues.language,
+            personalInfo: profileState.inputValues.personalInfo,
+            details: cityState.inputValues.details,
         },
         inputValidities: {
-            city: false,
+            city: cityState.inputValidities.city,
             cat: false,
-            tourName: false,
-            profileImg: false,
+            tourName: cityState.inputValidities.tourName,
+            fname: profileState.inputValidities.fname,
+            phone: profileState.inputValidities.phone,
+            profileImg: profileState.inputValidities.profileImg,
             headerImage: false,
             images: false,
             hours: false,
             price: false,
             groupSize: false,
-            language: false,
-            personalInfo: false,
-            details: false,
+            language: cityState.inputValidities.language,
+            personalInfo: profileState.inputValidities.personalInfo,
+            details: cityState.inputValidities.details,
         },
         formIsValid: false
     })
 
 
-    const availableCity = useSelector(state => state.tours.city)
     const availableCat = useSelector(state => state.tours.category)
-    const tourss = useSelector(state => state.tours.tours)
 
-    const selectedCity = availableCity.find(city => city.cityId === formState.inputValues.city)
-    const selectedCat = availableCat.find(cat => cat.categoryId === formState.inputValues.cat)
+   const selectedCat = useSelector(state => state.tours.findCat)
 
-    let cityLabel = ""
     let catLabel = ""
-    
 
-    if (selectedCity) {
-        cityLabel = selectedCity.cityLabel
-    }
     if (selectedCat) {
         catLabel = selectedCat.categoryLabel
     }
@@ -95,17 +100,18 @@ const UserInputScreen = props => {
             Alert.alert("Wrong Input", "Please Check The Errors In The Form", [{ text: "Okay!" }])
             return;
         }
-        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat, formState.inputValues.profileImg, formState.inputValues.headerImage, formState.inputValues.images,
+        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat,formState.inputValues.fname,formState.inputValues.phone, formState.inputValues.profileImg, formState.inputValues.headerImage, formState.inputValues.images,
             formState.inputValues.tourName, +formState.inputValues.hours, formState.inputValues.language, cityLabel, catLabel, +formState.inputValues.price,
             formState.inputValues.details, +formState.inputValues.groupSize, formState.inputValues.personalInfo,
             selectedCat.isNatural, selectedCat.isCultural, selectedCat.isPhotography, selectedCat.isNightlife))
-            props.navigation.goBack()
+        props.navigation.navigate("BeGuide")
     }, [dispatch, formState, cityLabel, catLabel])
 
     useEffect(() => {
         props.navigation.setParams({
             submit: submitHandler
         })
+        
     }, [submitHandler])
 
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
@@ -117,155 +123,131 @@ const UserInputScreen = props => {
         })
     }, [dispatchFormState])
 
-    const imageTakenHandler = imagePath => {
 
+
+    const loadCat = useCallback(async () => {
+        setError(null)
+        try {
+            await dispatch(tourActions.setCat(formState.inputValues.cat))
+        } catch (err) {
+            setError(err.message)
+        }
+
+    }, [dispatch, setError,])
+
+    useEffect(() => {
+        const willFocusSub = props.navigation.addListener("willFocus", loadCat)
+
+        return () => {
+            willFocusSub.remove()
+        }
         
+    }, [loadCat])
+
+
+    useEffect(() => {
+        loadCat().then(() => {
+            setIsLoading(false)
+        })
+
+    }, [dispatch, loadCat])
+
+    
+    if (error) {
+        return (
+            <View style={styles.centered}>
+                <Text>An error occured!</Text>
+                <Button title="try again" onPress={loadTour} />
+            </View>
+        )
     }
 
-    return (
-        <KeyboardAvoidingView style={{flex: 1}} keyboardVerticalOffset={500}>
-        <ScrollView>
-            <View style={styles.form}>
-                <NameInput
-                    id="tourName"
-                    label="- Tur İsmi"
-                    errorText="Please enter a valid title"
-                    autoCapitalize="words"
-                    autoCorrect={true}
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                />
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Şehir</DefaultTitle>
-                    <View style={styles.picker}>
-                        <View style={styles.pickerContainer} >
-                            <Picker selectedValue={formState.inputValues.city} onValueChange={inputChangeHandler.bind(this, "city")} prompt="Şehir">
-                                <Picker.Item label="Şehir Seçiniz " value={null} />
-                                {availableCity.map(tour => <Picker.Item label={tour.cityLabel} value={tour.cityId} />)}
-                            </Picker>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.fromControl}>
-                    <DefaultTitle style={styles.label}>- Kategori</DefaultTitle>
-                    <View style={styles.picker}>
-                        <View style={styles.pickerContainer} >
-                            <Picker selectedValue={formState.inputValues.cat} onValueChange={inputChangeHandler.bind(this, "cat")} prompt="Kategori">
-                                <Picker.Item label="Kategori Seçiniz " value={null} />
-                                {availableCat.map(tour => <Picker.Item label={tour.categoryLabel} value={tour.categoryId} />)}
-                            </Picker>
-                        </View>
-                    </View>
-                </View>
-                
-                <NameInput
-                    id="headerImage"
-                    label="- Kapak Fotoğrafı"
-                    errorText="Please enter a valid URL"
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                />
-                <NameInput  
-                    id="images"
-                    label="- Detay Photos"
-                    errorText="Please enter a valid URL"
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-
-                />
-                <NameInput
-                    id="profileImg"
-                    label="- Profil Fotoğrafı"
-                    errorText="Please enter a valid URL"
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                />
-                <NameInput
-                    id="hours"
-                    label="- Saat"
-                    errorText="Please enter a valid hour"
-                    keyboardType="number-pad"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                    min={1}
-                    max={24}
-                    onlyNumber
-                />
-                <NameInput
-                    id="price"
-                    label="- Fiyat"
-                    errorText="Please enter a valid price"
-                    keyboardType="decimal-pad"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                    min={1}
-                    max={9999}
-                    minLength={1}
-                    onlyNumber
-                />
-                <NameInput
-                    id="groupSize"
-                    label="- Grup Büyüklüğü"
-                    errorText="Please enter a valid size"
-                    keyboardType="number-pad"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                    min={1}
-                    max={20}
-                    minLength={1}
-                    onlyNumber
-                
-                />
-                <NameInput
-                    id="language"
-                    label="- Diller"
-                    errorText="Please enter a valid language"
-                    autoCapitalize="words"
-                    autoCorrect={true}
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                />
-                <NameInput
-                    id="personalInfo"
-                    label="- Kişisel Bilgiler"
-                    errorText="Please enter a valid information"
-                    autoCapitalize="sentences"
-                    autoCorrect={true}
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                    multiline={true}
-                />
-
-                <NameInput
-                    id="details"
-                    label="- Yapılacaklar"
-                    errorText="Please enter a valid details"
-                    autoCapitalize="sentences"
-                    autoCorrect={true}
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                    multiline={true}
-                />
-                <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>
-                <TouchableOpacity style={{ padding: 10 }} onPress={() => console.log(tourss)}><Text>Kaydet</Text></TouchableOpacity>
-
+    if (isLoading) {
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size="large" color={Colors.detailbgColor} />
             </View>
-        </ScrollView>
+        )
+    }
+
+    
+    return (
+        <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={500}>
+            <ScrollView>
+                <View style={styles.form}>
+                    
+                    <View style={styles.fromControl}>
+                        <DefaultTitle style={styles.label}>- Kategori</DefaultTitle>
+                        <View style={styles.picker}>
+                            <View style={styles.pickerContainer} >
+                                <Picker selectedValue={formState.inputValues.cat} onValueChange={inputChangeHandler.bind(this, "cat")} prompt="Kategori">
+                                    <Picker.Item label="Kategori Seçiniz " value={null} />
+                                    {availableCat.map(tour => <Picker.Item label={tour.categoryLabel} value={tour.categoryId} />)}
+                                </Picker>
+                            </View>
+                        </View>
+                    </View>
+
+                    <NameInput
+                        id="headerImage"
+                        label="- Kapak Fotoğrafı"
+                        errorText="Please enter a valid URL"
+                        keyboardType="default"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                    />
+                    <NameInput
+                        id="images"
+                        label="- Detay Photos"
+                        errorText="Please enter a valid URL"
+                        keyboardType="default"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                    />
+                    <NameInput
+                        id="hours"
+                        label="- Saat"
+                        errorText="Please enter a valid hour"
+                        keyboardType="number-pad"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                        min={1}
+                        max={24}
+                        onlyNumber
+                    />
+                    <NameInput
+                        id="price"
+                        label="- Fiyat"
+                        errorText="Please enter a valid price"
+                        keyboardType="decimal-pad"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                        min={1}
+                        max={9999}
+                        minLength={1}
+                        onlyNumber
+                    />
+                    <NameInput
+                        id="groupSize"
+                        label="- Grup Büyüklüğü"
+                        errorText="Please enter a valid size"
+                        keyboardType="number-pad"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                        min={1}
+                        max={20}
+                        minLength={1}
+                        onlyNumber
+                    />
+                
+                    <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>
+
+                </View>
+            </ScrollView>
         </KeyboardAvoidingView>
     )
 }

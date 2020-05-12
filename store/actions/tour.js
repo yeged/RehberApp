@@ -34,7 +34,7 @@ export const setTour = (catId, cityId) => {
             const resData = await response.json();
             const loadedTours = []
             for (const key in resData) {
-                loadedTours.push(new Tour(key, resData[key].tCityId, resData[key].tCategoryId, resData[key].ownerId, resData[key].profileImg, resData[key].Image, resData[key].tourImage,
+                loadedTours.push(new Tour(key, resData[key].tCityId, resData[key].tCategoryId, resData[key].ownerId,resData[key].fname, resData[key].phone, resData[key].profileImg, resData[key].Image, resData[key].tourImage,
                     resData[key].tourName, resData[key].time, resData[key].language, resData[key].city, resData[key].category, resData[key].price, resData[key].tourPlan,
                     resData[key].groupSize,  resData[key].personalDetail, resData[key].isNatural, resData[key].isCultural, resData[key].isPhotography, resData[key].isNightlife
                 ))
@@ -52,7 +52,7 @@ export const setTour = (catId, cityId) => {
     }
 }
 
-export const createTour = (tCityId, tCategoryId, profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife) => {
+export const createTour = (tCityId, tCategoryId,fname, phone, profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
@@ -62,7 +62,7 @@ export const createTour = (tCityId, tCategoryId, profileImg, Image, tourImage, t
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                tCityId, tCategoryId,ownerId:userId, profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife
+                tCityId, tCategoryId,ownerId:userId, fname, phone, profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife
             })
         })
         const resData = await response.json();
@@ -71,7 +71,7 @@ export const createTour = (tCityId, tCategoryId, profileImg, Image, tourImage, t
             type: CREATE_TOUR,
             tourData: {
                 id: resData.name,
-                tCityId, tCategoryId,ownerId:userId, profileImg, Image, tourImage, tourName,
+                tCityId, tCategoryId,ownerId:userId, fname, phone, profileImg, Image, tourImage, tourName,
                 time, language, city, category, price, tourPlan, groupSize,
                 personalDetail, isNatural, isCultural, isPhotography, isNightlife
             }
@@ -125,7 +125,7 @@ export const updateTour = (id, profileImg, Image, tourImage, tourName, time, lan
     }
 }
 
-export const setCat = () => {
+export const setCat = (id) => {
     return async dispatch => {
         const response = await fetch("https://rehber-2e983.firebaseio.com/categories.json")
         try {
@@ -140,7 +140,9 @@ export const setCat = () => {
             }
             dispatch({
                 type: SET_CAT,
-                availableCat: loadedCat
+                availableCat: loadedCat,
+                findCat: loadedCat.filter(cat => cat.categoryId === id)
+                
             })
         } catch (err) {
             throw err
@@ -182,7 +184,7 @@ export const createCat = (categoryId, categoryLabel, categoryPhoto, categoryText
     }
 }
 
-export const setCity = () => {
+export const setCity = (id) => {
     return async dispatch => {
         const response = await fetch("https://rehber-2e983.firebaseio.com/cities.json")
         try {
@@ -196,7 +198,8 @@ export const setCity = () => {
             }
             dispatch({
                 type: SET_CITY,
-                availableCity: loadedCity
+                availableCity: loadedCity,
+                findCity: loadedCity.filter(city => city.cityId === id)
             })
         } catch (err) {
             throw err

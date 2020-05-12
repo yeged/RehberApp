@@ -6,8 +6,8 @@ import DefaultTitle from "../components/DefaultTitle"
 import AccountSettingsList from "../components/AccountSettingsList"
 import ImgPicker from "../components/ImagePicker"
 import { useSelector, useDispatch } from "react-redux";
-import * as authActions from "../store/actions/auth"
 import * as profileActions from "../store/actions/profile"
+import * as authActions from "../store/actions/auth"
 import Colors from "../constants/Colors"
 
 
@@ -66,7 +66,7 @@ const ProfileScreen = (props) => {
         <View style={styles.screen}>
             <View style={styles.headerContainer}>
                 <View style={styles.nameContainer}>
-                    <DefaultTitle numberOfLines={2} style={styles.name}>{userProfile[0].fname + userProfile[0].lname} </DefaultTitle>
+                    <DefaultTitle numberOfLines={2} style={styles.name}>{userProfile[0].fname +" "+ userProfile[0].lname} </DefaultTitle>
                 </View>
                 {/* <TouchableOpacity activeOpacity={0.65} style={styles.iconContainer}>
                     <Ionicons name="ios-person-add" size={50} />

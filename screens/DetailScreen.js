@@ -178,7 +178,7 @@ const DetailScreen = (props) => {
                         <View style={styles.profileImage}>
                             <Image style={styles.pImage} source={{ uri: selectedTour.profileImg }} />
                         </View>
-                        <DefaultTitle style={{ fontSize: 25, lineHeight: Dimensions.get("window").height * 0.1 }}>Morgan</DefaultTitle>
+                        <DefaultTitle style={{ fontSize: 25, lineHeight: Dimensions.get("window").height * 0.1 }}>{selectedTour.fname}</DefaultTitle>
                         <TouchableNativeFeedback useForeground onPress={pReadMoreHandler}>
                             <View>
                                 <Text onTextLayout={onTextLayoutInfo} numberOfLines={personReadMore ? 8 : null} style={styles.description}>{selectedTour.personalDetail}</Text>

@@ -10,6 +10,8 @@ const initialState = {
     cityTour:[],
     category: [],
     city: [],
+    findCity:[],
+    findCat:[]
 }
 
 const tourReducer = (state = initialState, actions) => {
@@ -45,6 +47,8 @@ const tourReducer = (state = initialState, actions) => {
                 actions.tourData.tCityId,
                 actions.tourData.tCategoryId,
                 actions.tourData.ownerId,
+                actions.tourData.fname,
+                actions.tourData.phone,
                 actions.tourData.profileImg,
                 actions.tourData.Image,
                 actions.tourData.tourImage,
@@ -75,6 +79,8 @@ const tourReducer = (state = initialState, actions) => {
                 state.userTour[tourIndex].tCityId,
                 state.userTour[tourIndex].tCategoryId,
                 state.userTour[tourIndex].ownerId,
+                state.userTour[tourIndex].fname,
+                state.userTour[tourIndex].phone,
                 actions.tourData.profileImg,
                 actions.tourData.Image,
                 actions.tourData.tourImage,
@@ -113,7 +119,8 @@ const tourReducer = (state = initialState, actions) => {
             }
         case SET_CAT:
             return {
-                category: actions.availableCat
+                category: actions.availableCat,
+                findCat: actions.findCat
             }
         case CREATE_CAT:
             const newCat = new Category(
@@ -132,7 +139,8 @@ const tourReducer = (state = initialState, actions) => {
             }
             case SET_CITY:
                 return{
-                    city: actions.availableCity
+                    city: actions.availableCity,
+                    findCity: actions.findCity
                 }
 
         default:
