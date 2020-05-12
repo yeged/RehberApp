@@ -1,5 +1,6 @@
 class Category {
-    constructor(categoryId, categoryLabel, categoryPhoto, categoryText, isNatural, isCultural, isPhotography, isNightlife) {
+    constructor(id, categoryId, categoryLabel, categoryPhoto, categoryText, isNatural, isCultural, isPhotography, isNightlife) {
+        this.id = id
         this.categoryId = categoryId
         this.categoryLabel = categoryLabel
         this.categoryPhoto = categoryPhoto

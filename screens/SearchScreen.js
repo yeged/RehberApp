@@ -32,7 +32,7 @@ const SearchScreen = (props) => {
 
     const loadCity = useCallback(async () => {
         try {
-            await dispatch(tourActions.setCity())
+            await dispatch(tourActions.setCity("p1"))
         } catch (err) {
             throw err
         }

@@ -41,77 +41,82 @@ const UserInputScreen = props => {
     const [error, setError] = useState()
     const [isLoading, setIsLoading] = useState(true)
 
-    
+
     const profileState = props.navigation.getParam("profileState")
     const cityState = props.navigation.getParam("cityState")
-    const cityLabel = props.navigation.getParam("cityLabel")
+    const categoryState = props.navigation.getParam("categoryState")
 
     const dispatch = useDispatch()
 
     const [formState, dispatchFormState] = useReducer(formReducer, {
         inputValues: {
-            city: cityState.inputValues.city,
-            cat: "",
+            city: profileState.inputValues.city,
+            cat: categoryState.inputValues.cat,
             tourName: cityState.inputValues.tourName,
             fname: profileState.inputValues.fname,
             phone: profileState.inputValues.phone,
             profileImg: profileState.inputValues.profileImg,
-            headerImage: "",
+            catLabel: "",
+            cityLabel: cityState.inputValues.cityLabel,
+            headerImage:cityState.inputValues.headerImage,
             images: "",
-            hours: "",
-            price: "",
-            groupSize: "",
+            hours: categoryState.inputValues.hours,
+            price: categoryState.inputValues.price,
+            groupSize: categoryState.inputValues.groupSize,
             language: cityState.inputValues.language,
             personalInfo: profileState.inputValues.personalInfo,
             details: cityState.inputValues.details,
+            isNatural:false,
+            isCultural:false,
+            isPhotography:false,
+            isNightlife:false
         },
         inputValidities: {
-            city: cityState.inputValidities.city,
-            cat: false,
+            city: profileState.inputValidities.city,
+            cat: categoryState.inputValidities.cat,
             tourName: cityState.inputValidities.tourName,
             fname: profileState.inputValidities.fname,
             phone: profileState.inputValidities.phone,
             profileImg: profileState.inputValidities.profileImg,
-            headerImage: false,
+            catLabel: true,
+            cityLabel:true,
             images: false,
-            hours: false,
-            price: false,
-            groupSize: false,
+            hours: categoryState.inputValidities.hours,
+            price: categoryState.inputValidities.price,
+            groupSize: categoryState.inputValidities.groupSize,
             language: cityState.inputValidities.language,
             personalInfo: profileState.inputValidities.personalInfo,
             details: cityState.inputValidities.details,
+            isNatural:true,
+            isCultural:true,
+            isPhotography:true,
+            isNightlife:true
         },
         formIsValid: false
     })
 
 
-    const availableCat = useSelector(state => state.tours.category)
 
-   const selectedCat = useSelector(state => state.tours.findCat)
 
-    let catLabel = ""
-
-    if (selectedCat) {
-        catLabel = selectedCat.categoryLabel
-    }
+    const selectedCategory = useSelector(state => state.tours.findCat)
 
     const submitHandler = useCallback(() => {
         if (!formState.formIsValid) {
             Alert.alert("Wrong Input", "Please Check The Errors In The Form", [{ text: "Okay!" }])
             return;
         }
-        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat,formState.inputValues.fname,formState.inputValues.phone, formState.inputValues.profileImg, formState.inputValues.headerImage, formState.inputValues.images,
-            formState.inputValues.tourName, +formState.inputValues.hours, formState.inputValues.language, cityLabel, catLabel, +formState.inputValues.price,
+        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat, formState.inputValues.fname, formState.inputValues.phone, formState.inputValues.profileImg, formState.inputValues.headerImage, formState.inputValues.images,
+            formState.inputValues.tourName, +formState.inputValues.hours, formState.inputValues.language, formState.inputValues.cityLabel, formState.inputValues.catLabel, +formState.inputValues.price,
             formState.inputValues.details, +formState.inputValues.groupSize, formState.inputValues.personalInfo,
-            selectedCat.isNatural, selectedCat.isCultural, selectedCat.isPhotography, selectedCat.isNightlife))
+            formState.inputValues.isNatural, formState.inputValues.isCultural, formState.inputValues.isPhotography, formState.inputValues.isNightlife))
         props.navigation.navigate("BeGuide")
-    }, [dispatch, formState, cityLabel, catLabel])
+    }, [dispatch, formState])
 
     useEffect(() => {
         props.navigation.setParams({
             submit: submitHandler
         })
-        
+        console.log(formState )
     }, [submitHandler])
 
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
@@ -128,7 +133,7 @@ const UserInputScreen = props => {
     const loadCat = useCallback(async () => {
         setError(null)
         try {
-            await dispatch(tourActions.setCat(formState.inputValues.cat))
+            await dispatch(tourActions.setCat(categoryState.inputValues.cat))
         } catch (err) {
             setError(err.message)
         }
@@ -141,7 +146,7 @@ const UserInputScreen = props => {
         return () => {
             willFocusSub.remove()
         }
-        
+
     }, [loadCat])
 
 
@@ -150,9 +155,9 @@ const UserInputScreen = props => {
             setIsLoading(false)
         })
 
-    }, [dispatch, loadCat])
+    }, [dispatch, loadCat, inputChangeHandler])
 
-    
+
     if (error) {
         return (
             <View style={styles.centered}>
@@ -170,33 +175,11 @@ const UserInputScreen = props => {
         )
     }
 
-    
+
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={500}>
             <ScrollView>
                 <View style={styles.form}>
-                    
-                    <View style={styles.fromControl}>
-                        <DefaultTitle style={styles.label}>- Kategori</DefaultTitle>
-                        <View style={styles.picker}>
-                            <View style={styles.pickerContainer} >
-                                <Picker selectedValue={formState.inputValues.cat} onValueChange={inputChangeHandler.bind(this, "cat")} prompt="Kategori">
-                                    <Picker.Item label="Kategori Seçiniz " value={null} />
-                                    {availableCat.map(tour => <Picker.Item label={tour.categoryLabel} value={tour.categoryId} />)}
-                                </Picker>
-                            </View>
-                        </View>
-                    </View>
-
-                    <NameInput
-                        id="headerImage"
-                        label="- Kapak Fotoğrafı"
-                        errorText="Please enter a valid URL"
-                        keyboardType="default"
-                        returnKeyType="next"
-                        onInputChange={inputChangeHandler}
-                        required
-                    />
                     <NameInput
                         id="images"
                         label="- Detay Photos"
@@ -204,46 +187,85 @@ const UserInputScreen = props => {
                         keyboardType="default"
                         returnKeyType="next"
                         onInputChange={inputChangeHandler}
+                        required
                     />
                     <NameInput
-                        id="hours"
-                        label="- Saat"
-                        errorText="Please enter a valid hour"
-                        keyboardType="number-pad"
+                        editable={false}
+                        id="catLabel"
+                        label="- Category Label"
+                        errorText="Please enter a valid title"
+                        autoCapitalize="words"
+                        autoCorrect={true}
+                        keyboardType="default"
                         returnKeyType="next"
                         onInputChange={inputChangeHandler}
                         required
-                        min={1}
-                        max={24}
-                        onlyNumber
+                        initialValue={selectedCategory.categoryLabel}
+                        initiallyValid={true}
+                        initialTouch={true}
                     />
                     <NameInput
-                        id="price"
-                        label="- Fiyat"
-                        errorText="Please enter a valid price"
-                        keyboardType="decimal-pad"
+                        editable={false}
+                        id="isNatural"
+                        label="Doğa Gezintisi"
+                        errorText="Please enter a valid title"
+                        autoCapitalize="words"
+                        autoCorrect={true}
+                        keyboardType="default"
                         returnKeyType="next"
                         onInputChange={inputChangeHandler}
                         required
-                        min={1}
-                        max={9999}
-                        minLength={1}
-                        onlyNumber
+                        initialValue={selectedCategory.isNatural}
+                        initiallyValid={true}
+                        initialTouch={true}
                     />
                     <NameInput
-                        id="groupSize"
-                        label="- Grup Büyüklüğü"
-                        errorText="Please enter a valid size"
-                        keyboardType="number-pad"
+                        editable={false}
+                        id="isCultural"
+                        label="- Kültür Gezintisi"
+                        errorText="Please enter a valid title"
+                        autoCapitalize="words"
+                        autoCorrect={true}
+                        keyboardType="default"
                         returnKeyType="next"
                         onInputChange={inputChangeHandler}
                         required
-                        min={1}
-                        max={20}
-                        minLength={1}
-                        onlyNumber
+                        initialValue={selectedCategory.isCultural}
+                        initiallyValid={true}
+                        initialTouch={true}
                     />
-                
+                    <NameInput
+                        editable={false}
+                        id="isPhotography"
+                        label="- City Label"
+                        errorText="Please enter a valid title"
+                        autoCapitalize="words"
+                        autoCorrect={true}
+                        keyboardType="default"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                        initialValue={selectedCategory.isPhotography}
+                        initiallyValid={true}
+                        initialTouch={true}
+                    />
+                    <NameInput
+                        editable={false}
+                        id="isNightlife"
+                        label="- City Label"
+                        errorText="Please enter a valid title"
+                        autoCapitalize="words"
+                        autoCorrect={true}
+                        keyboardType="default"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                        initialValue={selectedCategory.isNightlife}
+                        initiallyValid={true}
+                        initialTouch={true}
+                    />
+
+
                     <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>
 
                 </View>

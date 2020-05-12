@@ -36,7 +36,7 @@ const formReducer = (state, action) => {
 
 }
 
-const SecondCreateTourScreen = props => {
+const ThirdCreateTourScreen = props => {
 
     const [error, setError] = useState()
     const [isLoading, setIsLoading] = useState(true)
@@ -44,28 +44,27 @@ const SecondCreateTourScreen = props => {
     const dispatch = useDispatch()
 
     const profileState = props.navigation.getParam("profileState")
-
-    const selectedCity = useSelector(state => state.tours.findCity)
+    const cityState = props.navigation.getParam("cityState")
 
     const [formState, dispatchFormState] = useReducer(formReducer, {
         inputValues: {
-            tourName: "",
-            language: "",
-            details: "",
-            headerImage: "",
-            cityLabel: "",
+            cat: "",
+            hours: "",
+            price: "",
+            groupSize: "",
+ 
         },
         inputValidities: {
-            tourName: false,
-            language: false,
-            details: false,
-            headerImage: false,
-            cityLabel: true,
+            cat: false,
+            hours: false,
+            price: false,
+            groupSize: false,
+   
         },
         formIsValid: false
     })
 
-
+    const availableCat = useSelector(state => state.tours.category)
 
 
     const submitHandler = useCallback(() => {
@@ -73,9 +72,10 @@ const SecondCreateTourScreen = props => {
             Alert.alert("Wrong Input", "Please Check The Errors In The Form", [{ text: "Okay!" }])
             return;
         }
-        props.navigation.replace("ThirdCreate", {
+        props.navigation.replace("UserInput", {
             profileState: profileState,
-            cityState: formState,
+            cityState: cityState,
+            categoryState: formState
         })
         setIsLoading(true)
     }, [dispatch, formState])
@@ -84,9 +84,7 @@ const SecondCreateTourScreen = props => {
         props.navigation.setParams({
             submit: submitHandler
         })
-        console.log(selectedCity)
         console.log(formState)
-
     }, [submitHandler])
 
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
@@ -98,12 +96,10 @@ const SecondCreateTourScreen = props => {
         })
     }, [dispatchFormState])
 
-
-
-    const loadCity = useCallback(async () => {
+    const loadCat = useCallback(async () => {
         setError(null)
         try {
-            await dispatch(tourActions.setCity(profileState.inputValues.city))
+            await dispatch(tourActions.setCat(formState.inputValues.cat))
         } catch (err) {
             setError(err.message)
         }
@@ -111,18 +107,23 @@ const SecondCreateTourScreen = props => {
     }, [dispatch, setError,])
 
     useEffect(() => {
-        const willFocusSub = props.navigation.addListener("willFocus", loadCity)
+        const willFocusSub = props.navigation.addListener("willFocus", loadCat)
+
         return () => {
             willFocusSub.remove()
         }
-    }, [loadCity])
+
+    }, [loadCat])
 
 
     useEffect(() => {
-        loadCity().then(() => {
+        loadCat().then(() => {
             setIsLoading(false)
         })
-    }, [dispatch, loadCity, inputChangeHandler])
+
+    }, [dispatch, loadCat, inputChangeHandler])
+
+
 
     if (error) {
         return (
@@ -145,65 +146,54 @@ const SecondCreateTourScreen = props => {
         <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={500}>
             <ScrollView>
                 <View style={styles.form}>
+                    <View style={styles.fromControl}>
+                        <DefaultTitle style={styles.label}>- Kategori</DefaultTitle>
+                        <View style={styles.picker}>
+                            <View style={styles.pickerContainer} >
+                                <Picker selectedValue={formState.inputValues.cat} onValueChange={inputChangeHandler.bind(this, "cat")} prompt="Kategori">
+                                    <Picker.Item label="Kategori Seçiniz " value={null} />
+                                    {!isLoading && availableCat.map(tour => <Picker.Item label={tour.categoryLabel} value={tour.categoryId} />)}
+                                </Picker>
+                            </View>
+                        </View>
+                    </View>
                     <NameInput
-                        editable={false}
-                        id="cityLabel"
-                        label="- City Label"
-                        errorText="Please enter a valid title"
-                        autoCapitalize="words"
-                        autoCorrect={true}
-                        keyboardType="default"
+                        id="hours"
+                        label="- Saat"
+                        errorText="Please enter a valid hour"
+                        keyboardType="number-pad"
                         returnKeyType="next"
                         onInputChange={inputChangeHandler}
                         required
-                        initialValue={selectedCity.cityLabel}
-                        initiallyValid={true}
-                        initialTouch={true}
+                        min={1}
+                        max={24}
+                        onlyNumber
                     />
                     <NameInput
-
-                        id="tourName"
-                        label="- Tur İsmi"
-                        errorText="Please enter a valid title"
-                        autoCapitalize="words"
-                        autoCorrect={true}
-                        keyboardType="default"
+                        id="price"
+                        label="- Fiyat"
+                        errorText="Please enter a valid price"
+                        keyboardType="decimal-pad"
                         returnKeyType="next"
                         onInputChange={inputChangeHandler}
                         required
+                        min={1}
+                        max={9999}
+                        minLength={1}
+                        onlyNumber
                     />
                     <NameInput
-                        id="headerImage"
-                        label="- Kapak Fotoğrafı"
-                        errorText="Please enter a valid URL"
-                        keyboardType="default"
+                        id="groupSize"
+                        label="- Grup Büyüklüğü"
+                        errorText="Please enter a valid size"
+                        keyboardType="number-pad"
                         returnKeyType="next"
                         onInputChange={inputChangeHandler}
                         required
-                    />
-
-                    <NameInput
-                        id="language"
-                        label="- Diller"
-                        errorText="Please enter a valid language"
-                        autoCapitalize="words"
-                        autoCorrect={true}
-                        keyboardType="default"
-                        returnKeyType="next"
-                        onInputChange={inputChangeHandler}
-                        required
-                    />
-                    <NameInput
-                        id="details"
-                        label="- Yapılacaklar"
-                        errorText="Please enter a valid details"
-                        autoCapitalize="sentences"
-                        autoCorrect={true}
-                        keyboardType="default"
-                        returnKeyType="next"
-                        onInputChange={inputChangeHandler}
-                        required
-                        multiline={true}
+                        min={1}
+                        max={20}
+                        minLength={1}
+                        onlyNumber
                     />
                 </View>
             </ScrollView>
@@ -211,7 +201,7 @@ const SecondCreateTourScreen = props => {
     )
 }
 
-SecondCreateTourScreen.navigationOptions = (navData) => {
+ThirdCreateTourScreen.navigationOptions = (navData) => {
     const submitFn = navData.navigation.getParam('submit');
     return {
         headerRight: () => <TouchableOpacity style={{ padding: 10 }} onPress={submitFn}><Text>İlerle</Text></TouchableOpacity>
@@ -249,4 +239,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SecondCreateTourScreen;
+export default ThirdCreateTourScreen;

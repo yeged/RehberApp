@@ -1,17 +1,18 @@
-import { CATEGORIES, CITIES, TOURS } from "../../data/dummy-data"
-import { CREATE_TOUR, DELETE_TOUR, UPDATE_TOUR, SET_TOUR, CREATE_CAT, SET_CAT, SET_CITY,SET_FILTER } from "../actions/tour"
+
+import { CREATE_TOUR, DELETE_TOUR, UPDATE_TOUR, SET_TOUR, CREATE_CAT, SET_CAT, SET_CITY, SET_FILTER, CREATE_CITY } from "../actions/tour"
 import Tour from "../../models/tours"
 import Category from "../../models/Category"
+import Province from "../../models/City"
 
 const initialState = {
     tours: [],
     userTour: [],
     categorizedTour: [],
-    cityTour:[],
+    cityTour: [],
     category: [],
     city: [],
-    findCity:[],
-    findCat:[]
+    findCity: [],
+    findCat: []
 }
 
 const tourReducer = (state = initialState, actions) => {
@@ -19,21 +20,21 @@ const tourReducer = (state = initialState, actions) => {
         case SET_FILTER:
             const appliedFilters = actions.filters
             const updatedFilteredTours = state.cityTour.filter(tour => {
-                if(appliedFilters.natural && !tour.isNatural){
+                if (appliedFilters.natural && !tour.isNatural) {
                     return false
                 }
-                if(appliedFilters.cultural && !tour.isCultural){
+                if (appliedFilters.cultural && !tour.isCultural) {
                     return false
                 }
-                if(appliedFilters.photography && !tour.isPhotography){
+                if (appliedFilters.photography && !tour.isPhotography) {
                     return false
                 }
-                if(appliedFilters.night && !tour.isNightlife){
+                if (appliedFilters.night && !tour.isNightlife) {
                     return false
                 }
                 return true;
             })
-            return {...state, cityTour:updatedFilteredTours}
+            return { ...state, cityTour: updatedFilteredTours }
         case SET_TOUR:
             return {
                 tours: actions.availableTours,
@@ -73,7 +74,7 @@ const tourReducer = (state = initialState, actions) => {
             }
         case UPDATE_TOUR:
             const tourIndex = state.userTour.findIndex(tour => tour.id === actions.tid)
-            
+
             const updatedTour = new Tour(
                 actions.tid,
                 state.userTour[tourIndex].tCityId,
@@ -108,7 +109,7 @@ const tourReducer = (state = initialState, actions) => {
             return {
                 ...state,
                 tours: updatedGeneralTour,
-                userTour: updatedUserTour   
+                userTour: updatedUserTour
             }
 
         case DELETE_TOUR:
@@ -124,6 +125,7 @@ const tourReducer = (state = initialState, actions) => {
             }
         case CREATE_CAT:
             const newCat = new Category(
+                actions.id,
                 actions.tourData.categoryId,
                 actions.tourData.categoryLabel,
                 actions.tourData.categoryPhoto,
@@ -137,11 +139,24 @@ const tourReducer = (state = initialState, actions) => {
                 ...state,
                 category: actions.category.concat(newCat)
             }
-            case SET_CITY:
-                return{
-                    city: actions.availableCity,
-                    findCity: actions.findCity
-                }
+        case SET_CITY:
+            return {
+                city: actions.availableCity,
+                findCity: actions.findCity
+            }
+        case CREATE_CITY:
+            
+            const newCity = new Province(
+                actions.id,
+                actions.tourData.cityId,
+                actions.tourData.cityLabel,
+                actions.tourData.cityPhoto
+
+            )
+            return {
+                ...state,
+                city: actions.city.concat(newCity)
+            }
 
         default:
             return state;

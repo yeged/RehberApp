@@ -135,13 +135,15 @@ export const setCat = (id) => {
             const resData = await response.json()
             loadedCat = []
             for (const key in resData) {
-                loadedCat.push(new Category(resData[key].categoryId, resData[key].categoryLabel, resData[key].categoryPhoto, resData[key].categoryText,
+                loadedCat.push(new Category(key, resData[key].categoryId, resData[key].categoryLabel, resData[key].categoryPhoto, resData[key].categoryText,
                     resData[key].isNatural, resData[key].isCultural, resData[key].isPhotography, resData[key].isNightlife))
             }
+            const findCatIndex = loadedCat.filter(cat => cat.categoryId === id)
+            const loadedCatIndex  = findCatIndex[0]
             dispatch({
                 type: SET_CAT,
                 availableCat: loadedCat,
-                findCat: loadedCat.filter(cat => cat.categoryId === id)
+                findCat: loadedCatIndex
                 
             })
         } catch (err) {
@@ -150,9 +152,10 @@ export const setCat = (id) => {
     }
 }
 
-export const createCat = (categoryId, categoryLabel, categoryPhoto, categoryText, isNatural, isCultural, isPhotography, isNightlife) => {
-    return async dispatch => {
-        const response = await fetch("https://rehber-2e983.firebaseio.com/categories.json", {
+export const createCat = ( categoryId, categoryLabel, categoryPhoto, categoryText, isNatural, isCultural, isPhotography, isNightlife) => {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token
+        const response = await fetch(`https://rehber-2e983.firebaseio.com/categories.json?auth=${token}`, {
             method: "POST",
             header: {
                 "Content-Type": "application/json",
@@ -184,8 +187,37 @@ export const createCat = (categoryId, categoryLabel, categoryPhoto, categoryText
     }
 }
 
+
+export const createCity = (cityId, cityLabel, cityPhoto) => {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token
+        const response = await fetch(`https://rehber-2e983.firebaseio.com/cities.json?auth=${token}`, {
+            method: "POST",
+            header: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                cityId, cityLabel, cityPhoto
+            })
+        })
+        const resData = await response.json();
+
+        if (!response.ok) {
+            throw new Error("Something went wrong!")
+        }
+
+        dispatch({
+            type: CREATE_CITY,
+            id: resData.name,
+            tourData: {
+                cityId, cityLabel, cityPhoto
+            }
+        })
+    }
+}
+
 export const setCity = (id) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
         const response = await fetch("https://rehber-2e983.firebaseio.com/cities.json")
         try {
             if (!response.ok) {
@@ -194,12 +226,14 @@ export const setCity = (id) => {
             const resData = await response.json()
             loadedCity = []
             for (const key in resData) {
-                loadedCity.push(new Province(resData[key].cityId, resData[key].cityLabel, resData[key].cityPhoto))
+                loadedCity.push(new Province(key, resData[key].cityId, resData[key].cityLabel, resData[key].cityPhoto))
             }
+            const findCityIndex = loadedCity.filter(city => city.cityId === id)
+            const loadedCityIndex  = findCityIndex[0]
             dispatch({
                 type: SET_CITY,
                 availableCity: loadedCity,
-                findCity: loadedCity.filter(city => city.cityId === id)
+                findCity: loadedCityIndex
             })
         } catch (err) {
             throw err

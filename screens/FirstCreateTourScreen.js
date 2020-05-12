@@ -40,6 +40,7 @@ const FirstCreateTourScreen = props => {
 
     const [error, setError] = useState()
     const [isLoading, setIsLoading] = useState(true)
+    const [isRefreshing, setIsRefreshing] = useState(true)
 
     const userProfile = useSelector(state => state.profile.profile)
 
@@ -50,6 +51,7 @@ const FirstCreateTourScreen = props => {
             fname: userProfile[0].fname,
             phone: userProfile[0].phone,
             profileImg: userProfile[0].photo,
+            city: "",
             personalInfo: "",
 
         },
@@ -57,11 +59,14 @@ const FirstCreateTourScreen = props => {
             fname: true,
             phone: true,
             profileImg: true,
+            city: false,
             personalInfo: false,
 
         },
         formIsValid: false
     })
+
+    const availableCity = useSelector(state => state.tours.city)
 
 
     const submitHandler = useCallback(() => {
@@ -70,7 +75,7 @@ const FirstCreateTourScreen = props => {
             return;
         }
         props.navigation.replace("SecondCreate", {
-            profileState:formState
+            profileState: formState
         })
     }, [dispatch, formState])
 
@@ -119,6 +124,30 @@ const FirstCreateTourScreen = props => {
 
     }, [dispatch, loadProfile])
 
+    const loadCity = useCallback(async () => {
+        setError(null)
+        try {
+            await dispatch(tourActions.setCity(formState.inputValues.city))
+        } catch (err) {
+            setError(err.message)
+        }
+
+    }, [dispatch, setError,])
+
+    useEffect(() => {
+        const willFocusSub = props.navigation.addListener("willFocus", loadCity)
+        return () => {
+            willFocusSub.remove()
+        }
+    }, [loadCity])
+
+
+    useEffect(() => {
+        loadCity().then(() => {
+            setIsRefreshing(false)
+        })
+    }, [dispatch, loadCity, inputChangeHandler])
+
     if (error) {
         return (
             <View style={styles.centered}>
@@ -128,7 +157,7 @@ const FirstCreateTourScreen = props => {
         )
     }
 
-    if (isLoading) {
+    if (isLoading && isRefreshing) {
         return (
             <View style={styles.centered}>
                 <ActivityIndicator size="large" color={Colors.detailbgColor} />
@@ -192,7 +221,19 @@ const FirstCreateTourScreen = props => {
                         onInputChange={inputChangeHandler}
                         required
                         multiline={true}
+
                     />
+                    <View style={styles.fromControl}>
+                        <DefaultTitle style={styles.label}>- Şehir</DefaultTitle>
+                        <View style={styles.picker}>
+                            <View style={styles.pickerContainer} >
+                                <Picker selectedValue={formState.inputValues.city} onValueChange={inputChangeHandler.bind(this, "city")} prompt="Şehir">
+                                    <Picker.Item label="Şehir Seçiniz " value={null} />
+                                    {!isRefreshing && availableCity.map(tour => <Picker.Item label={tour.cityLabel} value={tour.cityId} />)}
+                                </Picker>
+                            </View>
+                        </View>
+                    </View>
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

@@ -54,6 +54,7 @@ const CategoryScreen = (props) => {
         loadTour().then(() => {
             setIsLoading(false)
         })
+        
     }, [dispatch, loadTour])
 
     const toursHandler = (itemData) => {

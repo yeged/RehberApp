@@ -29,7 +29,7 @@ const NameInput = (props) => {
     const [inputState, dispatch] = useReducer(inputReducer, {
         value: props.initialValue ? props.initialValue : "",
         isValid: props.initiallyValid,
-        touched: false
+        touched: props.initialTouch ? props.initialTouch : false
     })
 
     const textChangeHandler = text => {
@@ -87,6 +87,7 @@ const NameInput = (props) => {
                 onBlur={lostFocusHandler}  
             />
             {!inputState.isValid && inputState.touched && (<View style={styles.errorContainer}><Text style={styles.errorText}>{props.errorText}</Text></View>)}
+            
         </View>
     )
 }
