@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useReducer, useState } from "react"
-import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, ActivityIndicator } from "react-native"
+import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, ActivityIndicator, Button } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
@@ -187,7 +187,7 @@ const FirstCreateTourScreen = props => {
                     <NameInput
                         editable={false}
                         id="phone"
-                        label="- Telefon Numarası"
+                        label="Telefon Numarası"
                         errorText="Please enter a valid phone number"
                         keyboardType="number-pad"
                         returnKeyType="next"
@@ -201,7 +201,7 @@ const FirstCreateTourScreen = props => {
                     />
                     <NameInput
                         id="profileImg"
-                        label="- Profil Fotoğrafı"
+                        label="Profil Fotoğrafı"
                         errorText="Please enter a valid URL"
                         keyboardType="default"
                         returnKeyType="next"
@@ -212,7 +212,7 @@ const FirstCreateTourScreen = props => {
 
                     <NameInput
                         id="personalInfo"
-                        label="- Kişisel Bilgiler"
+                        label="Kişisel Bilgiler"
                         errorText="Please enter a valid information"
                         autoCapitalize="sentences"
                         autoCorrect={true}

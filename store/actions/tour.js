@@ -54,7 +54,7 @@ export const setTour = (catId, cityId) => {
 
 export const createTour = (tCityId, tCategoryId,fname, phone, profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife) => {
     return async (dispatch, getState) => {
-        const token = getState().auth.token
+        const token = getState().auth.token 
         const userId = getState().auth.userId
         const response = await fetch(`https://rehber-2e983.firebaseio.com/tours.json?auth=${token}`, {
             method: "POST",

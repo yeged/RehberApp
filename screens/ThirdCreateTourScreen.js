@@ -159,7 +159,7 @@ const ThirdCreateTourScreen = props => {
                     </View>
                     <NameInput
                         id="hours"
-                        label="- Saat"
+                        label="Saat"
                         errorText="Please enter a valid hour"
                         keyboardType="number-pad"
                         returnKeyType="next"
@@ -171,7 +171,7 @@ const ThirdCreateTourScreen = props => {
                     />
                     <NameInput
                         id="price"
-                        label="- Fiyat"
+                        label="Fiyat"
                         errorText="Please enter a valid price"
                         keyboardType="decimal-pad"
                         returnKeyType="next"
@@ -184,7 +184,7 @@ const ThirdCreateTourScreen = props => {
                     />
                     <NameInput
                         id="groupSize"
-                        label="- Grup Büyüklüğü"
+                        label="Grup Büyüklüğü"
                         errorText="Please enter a valid size"
                         keyboardType="number-pad"
                         returnKeyType="next"

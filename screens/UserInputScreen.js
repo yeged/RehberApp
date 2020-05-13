@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useReducer, useState } from "react"
-import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, ActivityIndicator } from "react-native"
+import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, ActivityIndicator, TouchableWithoutFeedback, Keyboard } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
@@ -58,7 +58,7 @@ const UserInputScreen = props => {
             profileImg: profileState.inputValues.profileImg,
             catLabel: "",
             cityLabel: cityState.inputValues.cityLabel,
-            headerImage:cityState.inputValues.headerImage,
+            headerImage: cityState.inputValues.headerImage,
             images: "",
             hours: categoryState.inputValues.hours,
             price: categoryState.inputValues.price,
@@ -66,10 +66,10 @@ const UserInputScreen = props => {
             language: cityState.inputValues.language,
             personalInfo: profileState.inputValues.personalInfo,
             details: cityState.inputValues.details,
-            isNatural:false,
-            isCultural:false,
-            isPhotography:false,
-            isNightlife:false
+            isNatural: false,
+            isCultural: false,
+            isPhotography: false,
+            isNightlife: false
         },
         inputValidities: {
             city: profileState.inputValidities.city,
@@ -79,7 +79,7 @@ const UserInputScreen = props => {
             phone: profileState.inputValidities.phone,
             profileImg: profileState.inputValidities.profileImg,
             catLabel: true,
-            cityLabel:true,
+            cityLabel: true,
             images: false,
             hours: categoryState.inputValidities.hours,
             price: categoryState.inputValidities.price,
@@ -87,10 +87,10 @@ const UserInputScreen = props => {
             language: cityState.inputValidities.language,
             personalInfo: profileState.inputValidities.personalInfo,
             details: cityState.inputValidities.details,
-            isNatural:true,
-            isCultural:true,
-            isPhotography:true,
-            isNightlife:true
+            isNatural: true,
+            isCultural: true,
+            isPhotography: true,
+            isNightlife: true
         },
         formIsValid: false
     })
@@ -116,7 +116,7 @@ const UserInputScreen = props => {
         props.navigation.setParams({
             submit: submitHandler
         })
-        console.log(formState )
+        console.log(formState)
     }, [submitHandler])
 
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
@@ -174,21 +174,20 @@ const UserInputScreen = props => {
             </View>
         )
     }
-
-
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={500}>
-            <ScrollView>
-                <View style={styles.form}>
-                    <NameInput
-                        id="images"
-                        label="- Detay Photos"
-                        errorText="Please enter a valid URL"
-                        keyboardType="default"
-                        returnKeyType="next"
-                        onInputChange={inputChangeHandler}
-                        required
-                    />
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={styles.form}>
+                <NameInput
+                    id="images"
+                    label="Detay Photos"
+                    errorText="Please enter a valid URL"
+                    keyboardType="default"
+                    returnKeyType="next"
+                    onInputChange={inputChangeHandler}
+                    required
+                />
+                <View style={{ marginTop: 1000 }}>
                     <NameInput
                         editable={false}
                         id="catLabel"
@@ -263,13 +262,13 @@ const UserInputScreen = props => {
                         initialValue={selectedCategory.isNightlife}
                         initiallyValid={true}
                         initialTouch={true}
-                    />
+                    /></View>
 
 
-                    <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>
+                <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>
 
-                </View>
-            </ScrollView>
+            </View>
+            </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     )
 }

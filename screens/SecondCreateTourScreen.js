@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useReducer, useState } from "react"
-import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, ActivityIndicator, Button } from "react-native"
+import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, ActivityIndicator, Button, Modal } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
@@ -148,7 +148,7 @@ const SecondCreateTourScreen = props => {
                     <NameInput
                         editable={false}
                         id="cityLabel"
-                        label="- City Label"
+                        label="Şehir ID"
                         errorText="Please enter a valid title"
                         autoCapitalize="words"
                         autoCorrect={true}
@@ -161,9 +161,8 @@ const SecondCreateTourScreen = props => {
                         initialTouch={true}
                     />
                     <NameInput
-
                         id="tourName"
-                        label="- Tur İsmi"
+                        label="Tur İsmi"
                         errorText="Please enter a valid title"
                         autoCapitalize="words"
                         autoCorrect={true}
@@ -174,7 +173,7 @@ const SecondCreateTourScreen = props => {
                     />
                     <NameInput
                         id="headerImage"
-                        label="- Kapak Fotoğrafı"
+                        label="Kapak Fotoğrafı"
                         errorText="Please enter a valid URL"
                         keyboardType="default"
                         returnKeyType="next"
@@ -184,7 +183,7 @@ const SecondCreateTourScreen = props => {
 
                     <NameInput
                         id="language"
-                        label="- Diller"
+                        label="Diller"
                         errorText="Please enter a valid language"
                         autoCapitalize="words"
                         autoCorrect={true}
@@ -195,7 +194,7 @@ const SecondCreateTourScreen = props => {
                     />
                     <NameInput
                         id="details"
-                        label="- Yapılacaklar"
+                        label="Yapılacaklar"
                         errorText="Please enter a valid details"
                         autoCapitalize="sentences"
                         autoCorrect={true}
