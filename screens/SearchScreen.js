@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from "react";
-import { View, StyleSheet, Dimensions, ScrollView, FlatList, ActivityIndicator } from "react-native";
+import { View, StyleSheet, Dimensions, ScrollView, FlatList, ActivityIndicator, TouchableNativeFeedback, Text } from "react-native";
 
 import SearchEngine from "../components/SearchEngine"
 import DefaultTitle from "../components/DefaultTitle"
@@ -133,10 +133,20 @@ const SearchScreen = (props) => {
                 <View style={styles.headerContainer}>
                     <DefaultTitle style={styles.title}>Şehrin Rehberlerinden Benzersiz Etkinlikler</DefaultTitle>
                 </View>
-                <CustomButton title={!check ? "Şehirler" : "Kategoriler"} onSelect={!check ? loadCity : loadCat} />
-                <View style={styles.headerContainer}>
-                    <DefaultTitle style={styles.title}>{!check ? "Tur Kategorileri" : "Başka Şehirlerdeki Rehberler"}</DefaultTitle>
-                </View>
+                
+                    <View style={styles.container}>
+                    <TouchableNativeFeedback useForeground onPress={loadCity}>
+                        <View style={styles.tab}>
+                            <Text style={check ? styles.text : styles.text2}>Şehirler</Text>
+                        </View>
+                        </TouchableNativeFeedback>
+                        <TouchableNativeFeedback useForeground onPress={loadCat}>
+                        <View style={styles.tab2}>
+                            <Text style={!check ? styles.text : styles.text2}>Kategoriler</Text>
+                        </View>
+                        </TouchableNativeFeedback>
+                    </View>
+                
                 <View style={styles.categoryContainer}>
                     {!check ? <FlatList
                         onRefresh={loadCat}
@@ -211,6 +221,39 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center"
+    },
+    container: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around",
+        borderBottomWidth: 1,
+        borderBottomColor:"#ccc",
+        elevation:1,
+        overflow: "hidden"
+    },
+    tab:{
+        justifyContent:"flex-start",
+        borderColor: "black",
+        paddingVertical: Dimensions.get("window").height * 0.02,
+        backgroundColor: "#f5f5f5",
+        
+    },
+    tab2:{
+        justifyContent:"flex-end",
+        borderColor: "black",
+        paddingVertical: Dimensions.get("window").height * 0.02,
+        backgroundColor: "#f5f5f5",
+    },
+
+    text: {
+        color:"black",
+        fontFamily: "open-sans-bold",
+        fontSize: 18
+    },
+    text2:{
+        color:"black",
+        fontFamily: "open-sans",
+        fontSize: 18
     }
 })
 
