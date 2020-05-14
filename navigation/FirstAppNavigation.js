@@ -26,6 +26,7 @@ import FirstCreateTourScreen from "../screens/FirstCreateTourScreen"
 import SecondCreateTourScreen from "../screens/SecondCreateTourScreen"
 import ThirdCreateTourScreen from "../screens/ThirdCreateTourScreen"
 import AddCityAndCat from "../screens/AddCityAndCat"
+import SearchEngineScreen from "../screens/SearchEngineScreen"
 import Colors from "../constants/Colors"
 
 const defaultStackNavOptions = {
@@ -40,6 +41,9 @@ const defaultStackNavOptions = {
 }
 const SearchNavigator = createStackNavigator({
     Search: SearchScreen,
+    SearchEngineS : {screen:SearchEngineScreen,        navigationOptions: {
+        headerShown: false
+    }},
     Category: CategoryScreen,
     City: CityScreen,
     Detail: {screen:DetailScreen,

@@ -181,7 +181,7 @@ const SearchScreen = (props) => {
 
 SearchScreen.navigationOptions = (navData) => {
     return {
-        headerTitle: () => <SearchEngine style={styles.search} navigation={navData.navigation} />
+        headerTitle: () => <SearchEngine style={styles.search} navigation={navData.navigation} onSelect={() => navData.navigation.navigate("SearchEngineS")}/>
     }
 }
 

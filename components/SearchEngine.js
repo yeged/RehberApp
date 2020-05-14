@@ -1,13 +1,12 @@
 import React from "react";
-import { View, TouchableNativeFeedback, StyleSheet, Dimensions, Text } from "react-native"
+import { View, TouchableNativeFeedback, StyleSheet, Dimensions, Text, TouchableOpacity } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
+
 
 function SearchEngine(props) {
     return (
         <View style={{...styles.border, ...props.style}}>
-        <TouchableNativeFeedback  onPress={() => {
-            
-        }}>
+        <TouchableOpacity activeOpacity={0.5} onPress={props.onSelect}>
         <View style={styles.container}>
             <View style={styles.row}>
             <View style={styles.icon}>
@@ -16,7 +15,7 @@ function SearchEngine(props) {
                 <Text style={styles.title}>Konum, kent simgesi veya adres</Text>
             </View>
         </View>
-        </TouchableNativeFeedback>
+        </TouchableOpacity>
         </View>
     )
 }
