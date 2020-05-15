@@ -54,13 +54,13 @@ const ProfileScreen = (props) => {
         const transformedData = JSON.parse(userData)
         const {token, userId, expiryDate} = transformedData
         console.log(userId)
-        //const url = "ed005b73-a6b7-450d-bc1d-a0f74883150d.jpg"
+        const url = "test-image"
         //const fileName =  url.split('/').pop()
-        //let image = await firebase.storage().ref().child(`images/${fileName}`).getDownloadURL()
+        // let image = firebase.storage().ref().child(`images/${url}`).delete
         //console.log(image)
         const response = await fetch(imagePath)
         const blob = await response.blob()
-        var ref = firebase.storage().ref().child("images/art/" + "test-image")
+        var ref = firebase.storage().ref().child("images/art/" + "test-image2")
         return ref.put(blob)
         // setSelectedImage(imagePath)
         
@@ -98,7 +98,7 @@ const ProfileScreen = (props) => {
                     <Ionicons name="ios-person-add" size={50} />
                 </TouchableOpacity> */}
                 <View style={styles.iconContainer}>
-                    <Image style={styles.pImage} source={{ uri: userProfile[0].photo }} />
+                    <Image resizeMode="cover" style={styles.pImage} source={{ uri: userProfile[0].photo }} />
                 </View>
             </View>
             <View style={styles.settingsContainer}>
@@ -110,7 +110,7 @@ const ProfileScreen = (props) => {
                 dispatch(authActions.logOut())
 
             }} />
-            <ImgPicker onImageTaken={resimYükle} />
+            <ImgPicker onImageTaken={resimYükle} aspect={[9,16]}/>
         </View>
     )
 }

@@ -197,7 +197,7 @@ const UserInputScreen = props => {
         <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={500}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.form}>
-                <ImgPicker onImageTaken={onTakenHandler}/>
+                <ImgPicker onImageTaken={onTakenHandler} aspect={[9,16]}/>
                 <View style={{ marginTop: 1000 }}>
                     <NameInput
                         editable={false}

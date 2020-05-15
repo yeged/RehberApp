@@ -1,4 +1,5 @@
 
+import firebase from "../../firebase/firebase"
 export const CREATE_PROFILE = "CREATE_PROFILE"
 export const SET_PROFILE = "SET_PROFILE"
 export const UPDATE_PROFILE = "UPDATE_PROFILE"
@@ -9,20 +10,25 @@ export const createProfile = (fname, lname, gender, email, phone, photo) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
+
+        const fileName = photo.split('/').pop()
+
+        const newPath = await firebase.storage().ref().child(`images/${userId}/${fileName}`).getDownloadURL()
+
         const response = await fetch(`https://rehber-2e983.firebaseio.com/user/${userId}/profile.json?auth=${token}`, {
             method: "POST",
             header: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                fname, lname, gender, email, phone, photo
+                fname, lname, gender, email, phone, photo:newPath
             })
         })
         const resData = await response.json();
         dispatch({
             type: CREATE_PROFILE,
             id:resData.name,
-            fname, lname, gender, email, phone, photo
+            fname, lname, gender, email, phone, photo:newPath
         })
     }
 }
@@ -68,13 +74,18 @@ export const updateProfile = (id, fname, lname, gender, email, phone, photo) => 
     return async (dispatch, getState) => {
         const token = getState().auth.token
         const userId = getState().auth.userId
+
+        const fileName = photo.split('/').pop()
+
+        const newPath = await firebase.storage().ref().child(`images/${userId}/${fileName}`).getDownloadURL()
+
         const response = await fetch(`https://rehber-2e983.firebaseio.com/user/${userId}/profile/${id}.json?auth=${token}`, {
             method: "PATCH",
             header: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                fname, lname, gender, email, phone, photo
+                fname, lname, gender, email, phone, photo:newPath
             })
         })
         if (!response.ok) {
@@ -83,7 +94,7 @@ export const updateProfile = (id, fname, lname, gender, email, phone, photo) => 
         dispatch({
             type: UPDATE_PROFILE,
             pid: id,
-            fname, lname, gender, email, phone, photo
+            fname, lname, gender, email, phone, photo:newPath
 
         })
     }

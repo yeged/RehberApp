@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useCallback, useReducer } from "react"
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Picker, KeyboardAvoidingView, ScrollView } from "react-native"
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Picker, KeyboardAvoidingView, ScrollView, AsyncStorage } from "react-native"
 import { useSelector, useDispatch } from "react-redux"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
 import * as profileActions from "../store/actions/profile"
+import ImgPicker from "../components/ImagePicker"
+import firebase from "../firebase/firebase"
+
 
 
 import Colors from "../constants/Colors"
@@ -71,7 +74,7 @@ const InformationScreen = (props) => {
         } catch (err) {
             setError(err.message)
         }
-        
+
 
     }, [dispatch, formState])
 
@@ -89,6 +92,23 @@ const InformationScreen = (props) => {
             submit: submitHandler
         })
     }, [submitHandler])
+
+    const onTakenHandler = useCallback(async (imagePath) => {
+
+        const userData = await AsyncStorage.getItem("userData")
+        const transformedData = JSON.parse(userData)
+        const { token, userId, expiryDate } = transformedData
+
+
+        inputChangeHandler("photo", imagePath, true)
+
+        const fileName = imagePath.split('/').pop()
+        const response = await fetch(imagePath)
+        const blob = await response.blob()
+        var ref = firebase.storage().ref().child(`images/${userId}/` + `${fileName}`)
+        return ref.put(blob)
+
+    })
 
 
     return (
@@ -162,18 +182,9 @@ const InformationScreen = (props) => {
                         initialValue={userProfile[0].phone}
                         initiallyValid={!!userProfile}
                     />
-                    <NameInput
-                        id="photo"
-                        label="- Profil Fotoğrafı"
-                        errorText="Please enter a valid URL"
-                        keyboardType="default"
-                        returnKeyType="next"
-                        onInputChange={inputChangeHandler}
-                        initialValue={userProfile[0].photo}
-                        initiallyValid={!!userProfile}
-                    />
 
-                    { <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity> }
+                    <ImgPicker onImageTaken={onTakenHandler} aspect={[4, 3]} />
+                    {<TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>}
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

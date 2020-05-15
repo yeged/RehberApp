@@ -1,10 +1,12 @@
 import React, { useEffect, useCallback, useReducer } from "react"
-import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView } from "react-native"
+import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, AsyncStorage } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
 import { useSelector, useDispatch } from "react-redux"
 import * as profileActions from "../store/actions/profile"
+import ImgPicker from "../components/ImagePicker"
+import firebase from "../firebase/firebase"
 
 import Colors from "../constants/Colors"
 
@@ -84,6 +86,23 @@ const ApplyInfoScreen = props => {
         })
     }, [dispatchFormState])
 
+
+    const onTakenHandler = useCallback(async (imagePath) => {
+
+        const userData = await AsyncStorage.getItem("userData")
+        const transformedData = JSON.parse(userData)
+        const { token, userId, expiryDate } = transformedData
+
+
+        inputChangeHandler("photo", imagePath, true)
+
+        const fileName = imagePath.split('/').pop()
+        const response = await fetch(imagePath)
+        const blob = await response.blob()
+        var ref = firebase.storage().ref().child(`images/${userId}/` + `${fileName}`)
+        return ref.put(blob)
+
+    })
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={500}>
             <ScrollView>
@@ -104,7 +123,7 @@ const ApplyInfoScreen = props => {
                         id="lname"
                         label="Soyad"
                         errorText="Please enter a valid last name"
-                        
+
                         autoCorrect={true}
                         keyboardType="default"
                         returnKeyType="next"
@@ -148,15 +167,7 @@ const ApplyInfoScreen = props => {
                         onlyNumber
                         maxLength={11}
                     />
-                    <NameInput
-                        id="photo"
-                        label="- Profil Fotoğrafı"
-                        errorText="Please enter a valid URL"
-                        keyboardType="default"
-                        returnKeyType="next"
-                        onInputChange={inputChangeHandler}
-                        
-                    />
+                    <ImgPicker onImageTaken={onTakenHandler} aspect={[4,3]} />
 
                     {/* <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity> */}
                 </View>
