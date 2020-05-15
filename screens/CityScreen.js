@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { View, StyleSheet, Dimensions, FlatList, Platform, Text, Switch, Button, ActivityIndicator } from "react-native";
-import SearchEngine from "../components/SearchEngine"
 import GuideList from "../components/GuideList";
 import DefaultTitle from "../components/DefaultTitle"
 import { useSelector, useDispatch } from "react-redux"
@@ -94,7 +93,7 @@ const CityScreen = (props) => {
                 time={itemData.item.time}
                 price={itemData.item.price}
                 target={itemData.item.category}
-                img={itemData.item.Image} />
+                img={itemData.item.tourImage} />
         )
     }
 
@@ -104,7 +103,6 @@ const CityScreen = (props) => {
 
         return (
             <View>
-                <SearchEngine />
                 <View style={styles.textContainer}>
                     <DefaultTitle style={styles.text}>{cityHeader} İçin Öne Çıkan Rehberler</DefaultTitle>
                 </View>
@@ -161,6 +159,7 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         paddingHorizontal: Dimensions.get("window").width * 0.05,
+        paddingVertical: Dimensions.get("window").height * 0.05
     },
     text: {
         fontSize: 24

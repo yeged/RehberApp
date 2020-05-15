@@ -67,7 +67,7 @@ const FavoritesScreen = (props) => {
                 time={itemData.item.time}
                 price={+itemData.item.price}
                 target={itemData.item.city}
-                img={itemData.item.Image} />
+                img={itemData.item.tourImage} />
         )
     }
 

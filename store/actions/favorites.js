@@ -4,7 +4,7 @@ export const SET_FAV = "SET_FAV"
 export const DELETE_FAV = "DELETE_FAV"
 import Favorite from "../../models/Favorites"
 
-export const addFav = (tourId, tourName, time, price, Image, city) => {
+export const addFav = (tourId, tourName, time, price, tourImage, city) => {
 
     return async (dispatch, getState) => {
         const token = getState().auth.token
@@ -15,7 +15,7 @@ export const addFav = (tourId, tourName, time, price, Image, city) => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                tourId, tourName, time, price, Image, city
+                tourId, tourName, time, price, tourImage, city
             })
         })
         const resData = await response.json();
@@ -26,7 +26,7 @@ export const addFav = (tourId, tourName, time, price, Image, city) => {
             tourName: tourName,
             time: time,
             price: price,
-            Image: Image,
+            tourImage: tourImage,
             city: city
         })
     }
@@ -56,7 +56,7 @@ export const setFav = () => {
                         resData[key].tourName,
                         resData[key].time,
                         resData[key].price,
-                        resData[key].Image,
+                        resData[key].tourImage,
                         resData[key].city
                     )
                 );

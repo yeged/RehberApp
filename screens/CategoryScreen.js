@@ -71,7 +71,7 @@ const CategoryScreen = (props) => {
                     time={itemData.item.time}
                     price={itemData.item.price}
                     target={itemData.item.city}
-                    img={itemData.item.Image} />
+                    img={itemData.item.tourImage} />
         )
     }
 
@@ -79,7 +79,6 @@ const CategoryScreen = (props) => {
         const catHeader =  props.navigation.getParam("catHeader")
         return(
             <View>
-            <SearchEngine />
             <View style={styles.textContainer}>
                 <DefaultTitle style={styles.text}>{catHeader} İçin Öne Çıkan Rehberler</DefaultTitle>
             </View>
@@ -138,7 +137,8 @@ CategoryScreen.navigationOptions = (navData) => {
 
 const styles = StyleSheet.create({
     screen: {
-        flex: 1
+        flex: 1,
+        paddingVertical:Dimensions.get("window").height * 0.05
     },
     textContainer: {
         paddingHorizontal: Dimensions.get("window").width * 0.05,

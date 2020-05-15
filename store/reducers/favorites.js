@@ -1,5 +1,5 @@
-import { TOURS } from "../../data/dummy-data"
-import { TOGGLE_FAV, ADD_FAV, SET_FAV, DELETE_FAV } from "../actions/favorites"
+
+import { ADD_FAV, SET_FAV, DELETE_FAV } from "../actions/favorites"
 import Favorite from "../../models/Favorites"
 
 
@@ -7,7 +7,6 @@ import Favorite from "../../models/Favorites"
 
 const initialState = {
     favorites: [],
-    filters: TOURS
 }
 
 const favoritesReducer = (state = initialState, actions) => {
@@ -19,7 +18,7 @@ const favoritesReducer = (state = initialState, actions) => {
                 actions.tourName,
                 actions.time,
                 actions.price,
-                actions.Image,
+                actions.tourImage,
                 actions.city
             )
             return {

@@ -1,13 +1,12 @@
 class Tour {
-    constructor(id,tCityId, tCategoryId, ownerId,fname, phone, profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize,  personalDetail, isNatural, isCultural, isPhotography, isNightlife) {
+    constructor(id,tCityId, tCategoryId, ownerId,fname, phone, profileImg, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize,  personalDetail, isNatural, isCultural, isPhotography, isNightlife) {
                 this.id = id, 
                 this.tCityId = tCityId,
                 this.tCategoryId = tCategoryId,
                 this.ownerId = ownerId,
                 this.fname = fname,
                 this.phone = phone,
-                this.profileImg = profileImg, 
-                this.Image = Image, 
+                this.profileImg = profileImg,
                 this.tourImage = tourImage, 
                 this.tourName = tourName, 
                 this.time = time, 

@@ -1,16 +1,15 @@
 import React, { useEffect, useCallback, useReducer, useState } from "react"
-import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, ActivityIndicator, TouchableWithoutFeedback, Keyboard } from "react-native"
+import { View, StyleSheet, Text, Dimensions, TouchableOpacity, Alert, KeyboardAvoidingView, ActivityIndicator, TouchableWithoutFeedback, Keyboard, AsyncStorage } from "react-native"
 
-import DefaultTitle from "../components/DefaultTitle"
+
 import NameInput from "../components/NameInput"
 import { useSelector, useDispatch } from "react-redux"
 import * as tourActions from "../store/actions/tour"
-import * as profileActions from "../store/actions/profile"
 import ImgPicker from "../components/ImagePicker"
 import firebase from "../firebase/firebase"
 
 import Colors from "../constants/Colors"
-import { set } from "react-native-reanimated"
+
 
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"
@@ -62,7 +61,6 @@ const UserInputScreen = props => {
             profileImg: profileState.inputValues.profileImg,
             catLabel: "",
             cityLabel: cityState.inputValues.cityLabel,
-            headerImage: cityState.inputValues.headerImage,
             image: "",
             hours: categoryState.inputValues.hours,
             price: categoryState.inputValues.price,
@@ -109,8 +107,8 @@ const UserInputScreen = props => {
             Alert.alert("Wrong Input", "Please Check The Errors In The Form", [{ text: "Okay!" }])
             return;
         }
-        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat, formState.inputValues.fname, formState.inputValues.phone, formState.inputValues.profileImg, 
-            formState.inputValues.headerImage, formState.inputValues.image,
+        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat, formState.inputValues.fname, 
+            formState.inputValues.phone, formState.inputValues.profileImg, formState.inputValues.image,
             formState.inputValues.tourName, +formState.inputValues.hours, formState.inputValues.language, formState.inputValues.cityLabel, formState.inputValues.catLabel, +formState.inputValues.price,
             formState.inputValues.details, +formState.inputValues.groupSize, formState.inputValues.personalInfo,
             formState.inputValues.isNatural, formState.inputValues.isCultural, formState.inputValues.isPhotography, formState.inputValues.isNightlife))
@@ -163,11 +161,18 @@ const UserInputScreen = props => {
     }, [dispatch, loadCat, inputChangeHandler, onTakenHandler])
 
     const onTakenHandler = useCallback(async (imagePath) => {
+
+        const userData = await AsyncStorage.getItem("userData")
+        const transformedData = JSON.parse(userData)
+        const {token, userId, expiryDate} = transformedData
+
+
         inputChangeHandler("image", imagePath, true)
+
         const fileName = imagePath.split('/').pop()
         const response = await fetch(imagePath)
         const blob = await response.blob()
-        var ref = firebase.storage().ref().child(`images/` + `${fileName}`)
+        var ref = firebase.storage().ref().child(`images/${userId}/` + `${fileName}`)
         return ref.put(blob)
         
     })

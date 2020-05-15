@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ActivityIndicator, Image, Button } from "react-native";
-import { Ionicons } from "@expo/vector-icons"
+import { View, Text, StyleSheet, Dimensions, ActivityIndicator, Image, Button, AsyncStorage } from "react-native";
+
 
 import DefaultTitle from "../components/DefaultTitle"
 import AccountSettingsList from "../components/AccountSettingsList"
@@ -50,11 +50,14 @@ const ProfileScreen = (props) => {
 
 
     const resimYükle = useCallback(async (imagePath) => {
-        const url = "ed005b73-a6b7-450d-bc1d-a0f74883150d.jpg"
-        const fileName =  url.split('/').pop()
-        let image = await firebase.storage().ref().child(`images/${fileName}`).getDownloadURL()
-        console.log("bu imagedir")
-        console.log(image)
+        const userData = await AsyncStorage.getItem("userData")
+        const transformedData = JSON.parse(userData)
+        const {token, userId, expiryDate} = transformedData
+        console.log(userId)
+        //const url = "ed005b73-a6b7-450d-bc1d-a0f74883150d.jpg"
+        //const fileName =  url.split('/').pop()
+        //let image = await firebase.storage().ref().child(`images/${fileName}`).getDownloadURL()
+        //console.log(image)
         const response = await fetch(imagePath)
         const blob = await response.blob()
         var ref = firebase.storage().ref().child("images/art/" + "test-image")

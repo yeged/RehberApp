@@ -52,14 +52,12 @@ const SecondCreateTourScreen = props => {
             tourName: "",
             language: "",
             details: "",
-            headerImage: "",
             cityLabel: "",
         },
         inputValidities: {
             tourName: false,
             language: false,
             details: false,
-            headerImage: false,
             cityLabel: true,
         },
         formIsValid: false
@@ -171,16 +169,6 @@ const SecondCreateTourScreen = props => {
                         onInputChange={inputChangeHandler}
                         required
                     />
-                    <NameInput
-                        id="headerImage"
-                        label="Kapak Fotoğrafı"
-                        errorText="Please enter a valid URL"
-                        keyboardType="default"
-                        returnKeyType="next"
-                        onInputChange={inputChangeHandler}
-                        required
-                    />
-
                     <NameInput
                         id="language"
                         label="Diller"

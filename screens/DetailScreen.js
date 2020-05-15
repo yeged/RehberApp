@@ -79,7 +79,7 @@ const DetailScreen = (props) => {
 
     const favTourHandler = useCallback(async () => {
         try{
-            await dispatch(addFav(tourId, selectedTour.tourName, selectedTour.time, selectedTour.price, selectedTour.Image, selectedTour.city))
+            await dispatch(addFav(tourId, selectedTour.tourName, selectedTour.time, selectedTour.price, selectedTour.tourImage, selectedTour.city))
         }catch(err){
             throw err
         }
