@@ -25,12 +25,14 @@ const ImgPicker = props => {
         if(!hasPermission){
             return;
         }
-        const image = await ImagePicker.launchCameraAsync({
+        const image = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true, //CROPS etc
             aspect:[16,9],
             quality: 0.5 // 0-1
         })
+        console.log(image.uri)
         setPickedImg(image.uri)
+
         props.onImageTaken(image.uri)
     }
 

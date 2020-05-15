@@ -6,7 +6,11 @@ import { Ionicons } from "@expo/vector-icons"
 import Colors from "../constants/Colors"
 
 
-const data = [{ id: "1", name: "as" }, { id: "2", name: "as" }, { id: "3", name: "as" },]
+
+
+
+
+
 const SearchEngineScreen = props => {
 
 
@@ -48,6 +52,7 @@ const SearchEngineScreen = props => {
 
 
 
+
   const renderItem = (itemData) => {
     return <View style={styles.screen}>
       <TouchableOpacity onPress={() => {
@@ -71,8 +76,21 @@ const SearchEngineScreen = props => {
       return lowerCaseCity.indexOf(searchTermLower) > -1
 
     })
-    setData(filteredCity)
-    console.log(value)
+    function turkcesiralama(a, b) {
+      var alfabe = "AaBbCcÇçDdEeFfGgĞğHhIıİiJjKkLlMmNnOoÖöPpQqRrSsŞşTtUuÜüVvWwXxYyZz0123456789";
+      if (a.cityLabel.length === 0 || b.cityLabel.length === 0) {
+        return a.cityLabel.length - b.cityLabel.length;
+      }
+      for (var i = 0; i < a.cityLabel.length && i < b.cityLabel.length; i++) {
+        var ai = alfabe.indexOf(a.cityLabel[i]);
+        var bi = alfabe.indexOf(b.cityLabel[i]);
+        if (ai !== bi) {
+          return ai - bi;
+        }
+      }
+    }
+
+    setData(filteredCity.sort(turkcesiralama))
   }
 
   if (isLoading) {
@@ -85,22 +103,22 @@ const SearchEngineScreen = props => {
 
   return (
     <View>
-        <View style={styles.border}>
-          <View style={styles.container}>
-            <View style={styles.row}>
-              <View style={styles.icon}>
-                <Ionicons name="ios-search" size={25} />
-              </View>
-              <View style={{ width: Dimensions.get("window").width * 0.9 }}>
-                <TextInput
-                  autoCapitalize="words"
-                  placeholder="Search"
-                  onChangeText={(value) => { searchCity(value) }}
-                />
-              </View>
+      <View style={styles.border}>
+        <View style={styles.container}>
+          <View style={styles.row}>
+            <View style={styles.icon}>
+              <Ionicons name="ios-search" size={25} />
+            </View>
+            <View style={{ width: Dimensions.get("window").width * 0.9 }}>
+              <TextInput
+                autoCapitalize="words"
+                placeholder="Search"
+                onChangeText={(value) => { searchCity(value) }}
+              />
             </View>
           </View>
         </View>
+      </View>
       <FlatList
         data={data}
         renderItem={renderItem}
@@ -114,10 +132,11 @@ const SearchEngineScreen = props => {
 const styles = StyleSheet.create({
   screen: {
     minHeight: Dimensions.get("window").width * 0.1,
-    marginVertical:Dimensions.get("window").height * 0.02,
+    marginVertical: Dimensions.get("window").height * 0.02,
     padding: Dimensions.get("window").height * 0.01,
     marginHorizontal: Dimensions.get("window").width * 0.03,
-    borderBottomWidth:1,
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
   },
   border: {
     borderRadius: 20,

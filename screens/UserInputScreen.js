@@ -6,9 +6,12 @@ import NameInput from "../components/NameInput"
 import { useSelector, useDispatch } from "react-redux"
 import * as tourActions from "../store/actions/tour"
 import * as profileActions from "../store/actions/profile"
+import ImgPicker from "../components/ImagePicker"
+import firebase from "../firebase/firebase"
 
 import Colors from "../constants/Colors"
-import ImgPicker from "../components/ImagePicker"
+import { set } from "react-native-reanimated"
+
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"
 
@@ -40,6 +43,7 @@ const UserInputScreen = props => {
 
     const [error, setError] = useState()
     const [isLoading, setIsLoading] = useState(true)
+    const [selectedImage, setSelectedImage] = useState()
 
 
     const profileState = props.navigation.getParam("profileState")
@@ -59,7 +63,7 @@ const UserInputScreen = props => {
             catLabel: "",
             cityLabel: cityState.inputValues.cityLabel,
             headerImage: cityState.inputValues.headerImage,
-            images: "",
+            image: "",
             hours: categoryState.inputValues.hours,
             price: categoryState.inputValues.price,
             groupSize: categoryState.inputValues.groupSize,
@@ -80,7 +84,7 @@ const UserInputScreen = props => {
             profileImg: profileState.inputValidities.profileImg,
             catLabel: true,
             cityLabel: true,
-            images: false,
+            image: false,
             hours: categoryState.inputValidities.hours,
             price: categoryState.inputValidities.price,
             groupSize: categoryState.inputValidities.groupSize,
@@ -105,12 +109,13 @@ const UserInputScreen = props => {
             Alert.alert("Wrong Input", "Please Check The Errors In The Form", [{ text: "Okay!" }])
             return;
         }
-        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat, formState.inputValues.fname, formState.inputValues.phone, formState.inputValues.profileImg, formState.inputValues.headerImage, formState.inputValues.images,
+        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat, formState.inputValues.fname, formState.inputValues.phone, formState.inputValues.profileImg, 
+            formState.inputValues.headerImage, formState.inputValues.image,
             formState.inputValues.tourName, +formState.inputValues.hours, formState.inputValues.language, formState.inputValues.cityLabel, formState.inputValues.catLabel, +formState.inputValues.price,
             formState.inputValues.details, +formState.inputValues.groupSize, formState.inputValues.personalInfo,
             formState.inputValues.isNatural, formState.inputValues.isCultural, formState.inputValues.isPhotography, formState.inputValues.isNightlife))
         props.navigation.navigate("BeGuide")
-    }, [dispatch, formState])
+    }, [dispatch, formState, onTakenHandler])
 
     useEffect(() => {
         props.navigation.setParams({
@@ -155,8 +160,17 @@ const UserInputScreen = props => {
             setIsLoading(false)
         })
 
-    }, [dispatch, loadCat, inputChangeHandler])
+    }, [dispatch, loadCat, inputChangeHandler, onTakenHandler])
 
+    const onTakenHandler = useCallback(async (imagePath) => {
+        inputChangeHandler("image", imagePath, true)
+        const fileName = imagePath.split('/').pop()
+        const response = await fetch(imagePath)
+        const blob = await response.blob()
+        var ref = firebase.storage().ref().child(`images/` + `${fileName}`)
+        return ref.put(blob)
+        
+    })
 
     if (error) {
         return (
@@ -178,15 +192,7 @@ const UserInputScreen = props => {
         <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={500}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.form}>
-                <NameInput
-                    id="images"
-                    label="Detay Photos"
-                    errorText="Please enter a valid URL"
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                />
+                <ImgPicker onImageTaken={onTakenHandler}/>
                 <View style={{ marginTop: 1000 }}>
                     <NameInput
                         editable={false}

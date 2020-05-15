@@ -12,6 +12,8 @@ export const CREATE_CITY = "CREATE_CITY"
 export const SET_CITY = "SET_CITY"
 export const SET_FILTER = "SET_FILTER"
 
+import firebase from "../../firebase/firebase"
+
 
 
 export const toggleFilter = (filterSettings) => {
@@ -20,7 +22,6 @@ export const toggleFilter = (filterSettings) => {
         filters: filterSettings
     }
 }
-
 
 export const setTour = (catId, cityId) => {
     return async (dispatch, getState) => {
@@ -56,13 +57,25 @@ export const createTour = (tCityId, tCategoryId,fname, phone, profileImg, Image,
     return async (dispatch, getState) => {
         const token = getState().auth.token 
         const userId = getState().auth.userId
+
+        console.log(tourImage)
+        
+        const fileName = tourImage.split('/').pop()
+
+        const newPath = await firebase.storage().ref().child(`images/${fileName}`).getDownloadURL()
+
+        console.log("BU NEW PATH")
+        console.log(newPath)
+
+
+
         const response = await fetch(`https://rehber-2e983.firebaseio.com/tours.json?auth=${token}`, {
             method: "POST",
             header: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                tCityId, tCategoryId,ownerId:userId, fname, phone, profileImg, Image, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife
+                tCityId, tCategoryId,ownerId:userId, fname, phone, profileImg, Image, tourImage:newPath, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife
             })
         })
         const resData = await response.json();
@@ -71,7 +84,7 @@ export const createTour = (tCityId, tCategoryId,fname, phone, profileImg, Image,
             type: CREATE_TOUR,
             tourData: {
                 id: resData.name,
-                tCityId, tCategoryId,ownerId:userId, fname, phone, profileImg, Image, tourImage, tourName,
+                tCityId, tCategoryId,ownerId:userId, fname, phone, profileImg, Image, tourImage:newPath, tourName,
                 time, language, city, category, price, tourPlan, groupSize,
                 personalDetail, isNatural, isCultural, isPhotography, isNightlife
             }

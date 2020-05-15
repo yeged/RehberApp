@@ -1,20 +1,23 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ActivityIndicator, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ActivityIndicator, Image, Button } from "react-native";
 import { Ionicons } from "@expo/vector-icons"
 
 import DefaultTitle from "../components/DefaultTitle"
 import AccountSettingsList from "../components/AccountSettingsList"
-import ImgPicker from "../components/ImagePicker"
 import { useSelector, useDispatch } from "react-redux";
 import * as profileActions from "../store/actions/profile"
 import * as authActions from "../store/actions/auth"
 import Colors from "../constants/Colors"
+import * as tourActions from "../store/actions/tour"
+import ImgPicker from "../components/ImagePicker"
+import firebase from "../firebase/firebase"
 
 
 const ProfileScreen = (props) => {
 
     const [error, setError] = useState()
     const [isLoading, setIsLoading] = useState(true)
+    const [selectedImage, setSelectedImage] = useState()
 
     const userProfile = useSelector(state => state.profile.profile)
     const dispatch = useDispatch()
@@ -38,18 +41,38 @@ const ProfileScreen = (props) => {
     }, [loadProfile])
 
 
-    useEffect(() => {
+    useEffect(() => { 
         loadProfile().then(() => {
             setIsLoading(false)
         })
 
     }, [dispatch, loadProfile])
 
+
+    const resimYükle = useCallback(async (imagePath) => {
+        const url = "ed005b73-a6b7-450d-bc1d-a0f74883150d.jpg"
+        const fileName =  url.split('/').pop()
+        let image = await firebase.storage().ref().child(`images/${fileName}`).getDownloadURL()
+        console.log("bu imagedir")
+        console.log(image)
+        const response = await fetch(imagePath)
+        const blob = await response.blob()
+        var ref = firebase.storage().ref().child("images/art/" + "test-image")
+        return ref.put(blob)
+        // setSelectedImage(imagePath)
+        
+    })
+
+    // useEffect(() => {
+    //     console.log("----------------------------------------")
+    //     console.log(selectedImage)
+    // })
+
     if (error) {
         return (
             <View style={styles.centered}>
                 <Text>An error occured!</Text>
-                <Button title="try again" onPress={loadTour} />
+                <Button title="try again" onPress={loadProfile} />
             </View>
         )
     }
@@ -84,6 +107,7 @@ const ProfileScreen = (props) => {
                 dispatch(authActions.logOut())
 
             }} />
+            <ImgPicker onImageTaken={resimYükle} />
         </View>
     )
 }
@@ -140,6 +164,11 @@ const styles = StyleSheet.create({
     pImage: {
         height: "100%",
         width: "100%"
+    },
+    centered:{
+        flex:1,
+        justifyContent:"center",
+        alignItems:"center"
     }
 })
 
