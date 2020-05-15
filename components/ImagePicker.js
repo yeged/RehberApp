@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { View, Text, Image, Button, StyleSheet, Alert } from "react-native"
+import { View, Text, Image, Button, StyleSheet, Alert, Dimensions } from "react-native"
 import * as ImagePicker from "expo-image-picker" 
 import * as Permissions from "expo-permissions"
 
@@ -32,14 +32,17 @@ const ImgPicker = props => {
         })
         console.log(image.uri)
         setPickedImg(image.uri)
-
-        props.onImageTaken(image.uri)
+        if(!image.cancelled){
+            
+        }   if(!image.cancelled){
+            props.onImageTaken(image.uri)
+        }
     }
 
     return (
         <View style={styles.imagePicker}>
-            <View style={styles.imagePreview}>
-                {!pickedImg ? <Text>No image picked yet</Text> :
+            <View style={props.style}>
+                {!pickedImg ? <Image style={styles.image} source={{uri: props.prevImg}}/> :
                 <Image style={styles.image} source={{uri: pickedImg}}/>}
             </View>
             <Button title="Take Image" color={Colors.detailbgColor} onPress={takeImageHandler} />
@@ -54,12 +57,23 @@ const styles = StyleSheet.create({
     },
     imagePreview:{
         width: "100%",
-        height: 200,
-        marginBottom:10,
+        height: Dimensions.get("window").height * 0.3,
+        marginBottom:Dimensions.get("window").height * 0.05,
         justifyContent: "center",
         alignItems: "center",
         borderColor: "#ccc",
         borderWidth:1
+    },
+    prevImg:{
+        width: "70%",
+        height: Dimensions.get("window").height * 0.3,
+        marginBottom:Dimensions.get("window").height * 0.05,
+        justifyContent: "center",
+        alignItems: "center",
+        borderColor: "#ccc",
+        borderRadius:Dimensions.get("window").height * 0.15,
+        borderWidth:1,
+        overflow:"hidden"
     },
     image:{
         width: "100%",

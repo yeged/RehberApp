@@ -105,7 +105,7 @@ const InformationScreen = (props) => {
         let deleteImg = firebase.storage().refFromURL(`${deleteFormStateImg}`)
         console.log("bu delete image")
         console.log(deleteImg)
-        deleteImg.delete()
+        await deleteImg.delete()
         
         inputChangeHandler("photo", imagePath, true)
 
@@ -114,6 +114,7 @@ const InformationScreen = (props) => {
         const blob = await response.blob()
         var ref = firebase.storage().ref().child(`images/${userId}/` + `${fileName}`)
         return ref.put(blob)
+        
 
     })
 
@@ -189,7 +190,7 @@ const InformationScreen = (props) => {
                         initialValue={userProfile[0].phone}
                         initiallyValid={!!userProfile}
                     />
-                    <ImgPicker onImageTaken={onTakenHandler} aspect={[4, 3]} />
+                    <ImgPicker onImageTaken={onTakenHandler} aspect={[4, 3]} prevImg={formState.inputValues.photo} style={styles.prevImg}/>
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
@@ -227,6 +228,17 @@ const styles = StyleSheet.create({
     picker: {
         borderBottomColor: "#ccc",
         borderBottomWidth: 1
+    },
+    prevImg:{
+        width: "70%",
+        height: Dimensions.get("window").height * 0.3,
+        marginBottom:Dimensions.get("window").height * 0.05,
+        justifyContent: "center",
+        alignItems: "center",
+        borderColor: "#ccc",
+        borderRadius:Dimensions.get("window").height * 0.15,
+        borderWidth:1,
+        overflow:"hidden"
     },
 })
 
