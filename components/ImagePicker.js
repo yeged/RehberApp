@@ -64,17 +64,7 @@ const styles = StyleSheet.create({
         borderColor: "#ccc",
         borderWidth:1
     },
-    prevImg:{
-        width: "70%",
-        height: Dimensions.get("window").height * 0.3,
-        marginBottom:Dimensions.get("window").height * 0.05,
-        justifyContent: "center",
-        alignItems: "center",
-        borderColor: "#ccc",
-        borderRadius:Dimensions.get("window").height * 0.15,
-        borderWidth:1,
-        overflow:"hidden"
-    },
+
     image:{
         width: "100%",
         height: "100%"

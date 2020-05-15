@@ -58,16 +58,6 @@ export const createTour = (tCityId, tCategoryId,fname, phone, profileImg, tourIm
         const token = getState().auth.token 
         const userId = getState().auth.userId
 
-        console.log(tourImage)
-        
-        const fileName = tourImage.split('/').pop()
-
-        const newPath = await firebase.storage().ref().child(`images/${userId}/${fileName}`).getDownloadURL()
-
-        console.log("BU NEW PATH")
-        console.log(newPath)
-
-
 
         const response = await fetch(`https://rehber-2e983.firebaseio.com/tours.json?auth=${token}`, {
             method: "POST",
@@ -75,7 +65,7 @@ export const createTour = (tCityId, tCategoryId,fname, phone, profileImg, tourIm
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                tCityId, tCategoryId,ownerId:userId, fname, phone, profileImg, tourImage:newPath, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife
+                tCityId, tCategoryId,ownerId:userId, fname, phone, profileImg, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife
             })
         })
         const resData = await response.json();
@@ -84,7 +74,7 @@ export const createTour = (tCityId, tCategoryId,fname, phone, profileImg, tourIm
             type: CREATE_TOUR,
             tourData: {
                 id: resData.name,
-                tCityId, tCategoryId,ownerId:userId, fname, phone, profileImg, tourImage:newPath, tourName,
+                tCityId, tCategoryId,ownerId:userId, fname, phone, profileImg, tourImage, tourName,
                 time, language, city, category, price, tourPlan, groupSize,
                 personalDetail, isNatural, isCultural, isPhotography, isNightlife
             }
@@ -111,17 +101,34 @@ export const deleteTour = (tourId) => {
     }
 }
 
-export const updateTour = (id, profileImg, tourImage, tourName, time, language, price, tourPlan, groupSize, personalDetail) => {
+export const updateTour = (id, profileImg, tourImage, tourName, time, language, price, tourPlan, groupSize, personalDetail, phone) => {
 
     return async (dispatch, getState) => {
         const token = getState().auth.token
+        const userId = getState().auth.userId
+
+        let fileName;
+        let newPath;
+
+        if(tourImage===""){
+            newPath = ""
+        }else{
+
+             fileName = tourImage.split('/').pop()
+             newPath = await firebase.storage().ref().child(`images/${userId}/${id}/${fileName}`).getDownloadURL()
+        }
+
+        fileNameProfile = profileImg.split('/').pop()
+        newPathProfile = await firebase.storage().ref.child(`images/${userId}/${id}/${fileNameProfile}`).getDownloadURL()
+
+
         const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${id}.json?auth=${token}`, {
             method: "PATCH",
             header: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                profileImg, tourImage, tourName, time, language, price, tourPlan, groupSize, personalDetail
+                profileImg:newPathProfile, tourImage:newPath, tourName, time, language, price, tourPlan, groupSize, personalDetail,phone
             })
         })
         if (!response.ok) {
@@ -131,7 +138,7 @@ export const updateTour = (id, profileImg, tourImage, tourName, time, language, 
             type: UPDATE_TOUR,
             tid: id,
             tourData: {
-                profileImg, tourImage, tourName, time, language, price, tourPlan, groupSize, personalDetail
+                profileImg:newPathProfile, tourImage:newPath, tourName, time, language, price, tourPlan, groupSize, personalDetail,phone
             }
 
         })

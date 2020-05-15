@@ -105,7 +105,7 @@ const InformationScreen = (props) => {
         let deleteImg = firebase.storage().refFromURL(`${deleteFormStateImg}`)
         console.log("bu delete image")
         console.log(deleteImg)
-        await deleteImg.delete()
+        deleteImg.delete()
         
         inputChangeHandler("photo", imagePath, true)
 

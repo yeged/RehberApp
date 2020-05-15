@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux"
 import * as tourActions from "../store/actions/tour"
 import ImgPicker from "../components/ImagePicker"
 import firebase from "../firebase/firebase"
+import CustomButton from "../components/CustomButton"
 
 import Colors from "../constants/Colors"
 
@@ -82,7 +83,7 @@ const UserInputScreen = props => {
             profileImg: profileState.inputValidities.profileImg,
             catLabel: true,
             cityLabel: true,
-            image: false,
+            image: true,
             hours: categoryState.inputValidities.hours,
             price: categoryState.inputValidities.price,
             groupSize: categoryState.inputValidities.groupSize,
@@ -115,12 +116,12 @@ const UserInputScreen = props => {
         props.navigation.navigate("BeGuide")
     }, [dispatch, formState, onTakenHandler])
 
-    useEffect(() => {
-        props.navigation.setParams({
-            submit: submitHandler
-        })
-        console.log(formState)
-    }, [submitHandler])
+    // useEffect(() => {
+    //     props.navigation.setParams({
+    //         submit: submitHandler
+    //     })
+    //     console.log(formState)
+    // }, [submitHandler])
 
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
         dispatchFormState({
@@ -197,7 +198,9 @@ const UserInputScreen = props => {
         <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={500}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.form}>
-                <ImgPicker onImageTaken={onTakenHandler} aspect={[9,16]}/>
+                <CustomButton onSelect={submitHandler} title="Tur Oluştur"/>
+                {/* <ImgPicker onImageTaken={onTakenHandler} aspect={[9,16]}/> */}
+
                 <View style={{ marginTop: 1000 }}>
                     <NameInput
                         editable={false}

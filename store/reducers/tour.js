@@ -80,7 +80,7 @@ const tourReducer = (state = initialState, actions) => {
                 state.userTour[tourIndex].tCategoryId,
                 state.userTour[tourIndex].ownerId,
                 state.userTour[tourIndex].fname,
-                state.userTour[tourIndex].phone,
+                actions.tourData.phone,
                 actions.tourData.profileImg,
                 actions.tourData.tourImage,
                 actions.tourData.tourName,

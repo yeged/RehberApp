@@ -27,6 +27,9 @@ import SecondCreateTourScreen from "../screens/SecondCreateTourScreen"
 import ThirdCreateTourScreen from "../screens/ThirdCreateTourScreen"
 import AddCityAndCat from "../screens/AddCityAndCat"
 import SearchEngineScreen from "../screens/SearchEngineScreen"
+import StartEditScreen from "../screens/StartEditScreen"
+import AddTourImgScreen from "../screens/AddTourImgScreen"
+import AddProfileImgToTourScreen from "../screens/AddProfileImgToTourScreen"
 import Colors from "../constants/Colors"
 
 const defaultStackNavOptions = {
@@ -79,7 +82,10 @@ const ProfileNavigator = createStackNavigator({
     ThirdCreate: {screen:ThirdCreateTourScreen},
     UserInput: {screen:UserInputScreen},
     MyTours: {screen:MyToursScreen},
+    StartEdit :{screen:StartEditScreen},
     EditTour: {screen: EditTourScreen},
+    AddTourImg: {screen:AddTourImgScreen},
+    AddProfileImg: {screen:AddProfileImgToTourScreen},
     Add: {screen: AddCityAndCat}
 }, defaultStackNavOptions)
 

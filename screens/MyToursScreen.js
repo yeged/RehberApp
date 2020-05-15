@@ -46,7 +46,7 @@ const MyToursScreen = props => {
   }, [dispatch, loadTour])
 
   const editProductHandler = id => {
-    props.navigation.navigate('EditTour', { tid: id });
+    props.navigation.navigate('StartEdit', { tid: id });
   };
 
   const deleteHandler = (id) => {
@@ -102,7 +102,7 @@ const MyToursScreen = props => {
       keyExtractor={item => item.id}
       renderItem={itemData => (
         <UserTourItem
-          image={itemData.item.Image}
+          image={itemData.item.tourImage}
           title={itemData.item.tourName}
           price={+itemData.item.price}
           city={itemData.item.city}

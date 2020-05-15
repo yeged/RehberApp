@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer } from "react"
-import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert , KeyboardAvoidingView} from "react-native"
+import { View, StyleSheet, Text, ScrollView, Dimensions, TouchableOpacity, Alert, KeyboardAvoidingView } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
@@ -21,14 +21,14 @@ const formReducer = (state, action) => {
             [action.input]: action.isValid
         }
         let updatedFormIsValid = true
-        for(const key in updatedValidities){
+        for (const key in updatedValidities) {
             updatedFormIsValid = updatedFormIsValid && updatedValidities[key]
         }
 
-        return{
-            formIsValid:updatedFormIsValid,
+        return {
+            formIsValid: updatedFormIsValid,
             inputValidities: updatedValidities,
-            inputValues:updatedValues
+            inputValues: updatedValues
         }
     }
 }
@@ -48,7 +48,6 @@ const EditTourScreen = props => {
         inputValues: {
             tourName: editedTour.tourName,
             profileImg: editedTour.profileImg,
-            headerImage: editedTour.Image,
             images: editedTour.tourImage,
             hours: editedTour.time.toString(),
             price: editedTour.price.toString(),
@@ -56,6 +55,7 @@ const EditTourScreen = props => {
             language: editedTour.language,
             personalInfo: editedTour.personalDetail,
             details: editedTour.tourPlan,
+            phone: editedTour.phone,
             natural: false,
             cultural: false,
             photography: false,
@@ -64,7 +64,6 @@ const EditTourScreen = props => {
         inputValidities: {
             tourName: true,
             profileImg: true,
-            headerImage: true,
             images: true,
             hours: true,
             price: true,
@@ -72,37 +71,38 @@ const EditTourScreen = props => {
             language: true,
             personalInfo: true,
             details: true,
+            phone: true
         },
-        formIsValid : true
+        formIsValid: true
     })
 
     useEffect(() => {
-        if(error){
-            Alert.alert("an error occured !", error, [{text: "Okay"}])
+        if (error) {
+            Alert.alert("an error occured !", error, [{ text: "Okay" }])
         }
     }, [error])
 
     const submitHandler = useCallback(async () => {
         setError(null)
         setIsLoading(true)
-        try{
-            await dispatch(tourActions.updateTour(tourId, formState.inputValues.profileImg, formState.inputValues.headerImage, formState.inputValues.images, formState.inputValues.tourName,
-                formState.inputValues.hours, formState.inputValues.language, formState.inputValues.price, formState.inputValues.details, 
-                formState.inputValues.groupSize, formState.inputValues.personalInfo, 
+        try {
+            await dispatch(tourActions.updateTour(tourId, formState.inputValues.profileImg, formState.inputValues.images, formState.inputValues.tourName,
+                formState.inputValues.hours, formState.inputValues.language, formState.inputValues.price, formState.inputValues.details,
+                formState.inputValues.groupSize, formState.inputValues.personalInfo, formState.inputValues.phone,
                 formState.inputValues.natural, formState.inputValues.cultural, formState.inputValues.photography, formState.inputValues.nightlife))
             props.navigation.goBack()
-        }catch(err){
+        } catch (err) {
             setError(err.message)
         }
-        setIsLoading(false) 
+        setIsLoading(false)
 
     }, [dispatch, tourId, formState])
 
-     useEffect(() => {
-         props.navigation.setParams({
-             submit:submitHandler
-         })
-     },[submitHandler])
+    useEffect(() => {
+        props.navigation.setParams({
+            submit: submitHandler
+        })
+    }, [submitHandler])
 
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
         dispatchFormState({
@@ -114,140 +114,122 @@ const EditTourScreen = props => {
     }, [dispatchFormState])
 
     return (
-        <KeyboardAvoidingView style={{flex: 1}} keyboardVerticalOffset={500}>
-        <ScrollView>
-            <View style={styles.form}>
-            <NameInput
-                    id="tourName"
-                    label="- Tur İsmi"
-                    errorText="Please enter a valid title"
-                    autoCapitalize="words"
-                    autoCorrect={true}
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                    initialValue={editedTour.tourName}
-                    initiallyValid={!!editedTour}
-                />
-                <NameInput
-                    id="headerImage"
-                    label="- Kapak Fotoğrafı"
-                    errorText="Please enter a valid URL"
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                    initialValue={editedTour.Image}
-                    initiallyValid={!!editedTour}
-                />
-                <NameInput
-                    id="images"
-                    label="- Detay Photos"
-                    errorText="Please enter a valid URL"
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    initialValue={editedTour.tourImage}
-                    initiallyValid={!!editedTour}
-                />
-                <NameInput
-                    id="profileImg"
-                    label="- Profil Fotoğrafı"
-                    errorText="Please enter a valid URL"
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    initialValue={editedTour.profileImg}
-                    initiallyValid={!!editedTour}
-                />
-                <NameInput
-                    id="hours"
-                    label="- Saat"
-                    errorText="Please enter a valid hour"
-                    keyboardType="number-pad"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                    min={1}
-                    max={24}
-                    initialValue={editedTour.time.toString()}
-                    initiallyValid={!!editedTour}
-                />
-                <NameInput
-                    id="price"
-                    label="- Fiyat"
-                    errorText="Please enter a valid price"
-                    keyboardType="decimal-pad"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                    min={1}
-                    max={9999}
-                    minLength={1}
-                    initialValue={editedTour.price.toString()}
-                    initiallyValid={!!editedTour}
-           
-                />
-                <NameInput
-                    id="groupSize"
-                    label="- Grup Büyüklüğü"
-                    errorText="Please enter a valid size"
-                    keyboardType="number-pad"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                    min={1}
-                    max={20}
-                    minLength={1}
-                    initialValue={editedTour.groupSize.toString()}
-                    initiallyValid={!!editedTour}
-                />
-                <NameInput
-                    id="language"
-                    label="- Diller"
-                    errorText="Please enter a valid language"
-                    autoCapitalize="words"
-                    autoCorrect={true}
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                    initialValue={editedTour.language}
-                    initiallyValid={!!editedTour}
-                />
-                <NameInput
-                    id="personalInfo"
-                    label="- Kişisel Bilgiler"
-                    errorText="Please enter a valid information"
-                    autoCapitalize="sentences"
-                    autoCorrect={true}
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                    multiline={true}
-                    initialValue={editedTour.personalDetail}
-                    initiallyValid={!!editedTour}
-                />
+        <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={500}>
+            <ScrollView>
+                <View style={styles.form}>
+                    <NameInput
+                        id="phone"
+                        label="Telefon Numarası"
+                        errorText="Please enter a valid phone number"
+                        keyboardType="number-pad"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                        minLength={11}
+                        onlyNumber
+                        maxLength={11}
+                        initialValue={editedTour.phone}
+                        initiallyValid={!!editedTour}
+                    />
+                    <NameInput
+                        id="tourName"
+                        label="Tur İsmi"
+                        errorText="Please enter a valid title"
+                        autoCapitalize="words"
+                        autoCorrect={true}
+                        keyboardType="default"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                        initialValue={editedTour.tourName}
+                        initiallyValid={!!editedTour}
+                    />
+                    <NameInput
+                        id="hours"
+                        label="Saat"
+                        errorText="Please enter a valid hour"
+                        keyboardType="number-pad"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                        min={1}
+                        max={24}
+                        initialValue={editedTour.time.toString()}
+                        initiallyValid={!!editedTour}
+                    />
+                    <NameInput
+                        id="price"
+                        label="Fiyat"
+                        errorText="Please enter a valid price"
+                        keyboardType="decimal-pad"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                        min={1}
+                        max={9999}
+                        minLength={1}
+                        initialValue={editedTour.price.toString()}
+                        initiallyValid={!!editedTour}
 
-                <NameInput
-                    id="details"
-                    label="- Yapılacaklar"
-                    errorText="Please enter a valid details"
-                    autoCapitalize="sentences"
-                    autoCorrect={true}
-                    keyboardType="default"
-                    returnKeyType="next"
-                    onInputChange={inputChangeHandler}
-                    required
-                    multiline={true}
-                    initialValue={editedTour.tourPlan}
-                    initiallyValid={!!editedTour}
-                />
-                {/* <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity> */}
-            </View>
-        </ScrollView>
+                    />
+                    <NameInput
+                        id="groupSize"
+                        label="Grup Büyüklüğü"
+                        errorText="Please enter a valid size"
+                        keyboardType="number-pad"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                        min={1}
+                        max={20}
+                        minLength={1}
+                        initialValue={editedTour.groupSize.toString()}
+                        initiallyValid={!!editedTour}
+                    />
+                    <NameInput
+                        id="language"
+                        label="Diller"
+                        errorText="Please enter a valid language"
+                        autoCapitalize="words"
+                        autoCorrect={true}
+                        keyboardType="default"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                        initialValue={editedTour.language}
+                        initiallyValid={!!editedTour}
+                    />
+                    <NameInput
+                        id="personalInfo"
+                        label="Kişisel Bilgiler"
+                        errorText="Please enter a valid information"
+                        autoCapitalize="sentences"
+                        autoCorrect={true}
+                        keyboardType="default"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                        multiline={true}
+                        initialValue={editedTour.personalDetail}
+                        initiallyValid={!!editedTour}
+                    />
+
+                    <NameInput
+                        id="details"
+                        label="Yapılacaklar"
+                        errorText="Please enter a valid details"
+                        autoCapitalize="sentences"
+                        autoCorrect={true}
+                        keyboardType="default"
+                        returnKeyType="next"
+                        onInputChange={inputChangeHandler}
+                        required
+                        multiline={true}
+                        initialValue={editedTour.tourPlan}
+                        initiallyValid={!!editedTour}
+                    />
+                </View>
+            </ScrollView>
         </KeyboardAvoidingView>
     )
 }
@@ -255,7 +237,11 @@ const EditTourScreen = props => {
 EditTourScreen.navigationOptions = (navData) => {
     const submitFn = navData.navigation.getParam('submit');
     return {
-        headerRight: () => <TouchableOpacity style={{ padding: 10 }} onPress={submitFn}><Text>Kaydet</Text></TouchableOpacity>
+        headerTitle: () => <DefaultTitle style={{ fontSize: 22, color: "white" }}>Tur Bilgileri</DefaultTitle>,
+        headerStyle: {
+            backgroundColor: Colors.detailbgColor
+        },
+        headerRight: () => <TouchableOpacity style={{ padding: 10 }} onPress={submitFn}><Text style={{color:"white"}}>Kaydet</Text></TouchableOpacity>
     }
 }
 

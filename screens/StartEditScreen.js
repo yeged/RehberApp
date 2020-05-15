@@ -7,28 +7,35 @@ import DefaultTitle from "../components/DefaultTitle"
 import CustomButton from "../components/CustomButton"
 import Colors from "../constants/Colors"
 
-const LocalGuideScreen = (props) => {
+const StartEditScreen = (props) => {
+
+    const tourId = props.navigation.getParam("tid")
 
 
     return (
         <View style={styles.screen}>
             <CustomButton onSelect={() => {
                 requestAnimationFrame(() => {
-                    props.navigation.navigate("FirstCreate")
+                    props.navigation.navigate("AddTourImg", {tid: tourId})
                 })
-            }} title="Yeni Tur Oluştur" />
+            }} title="Tur Fotoğrafı Ekle" />
             <CustomButton onSelect={() => {
                 requestAnimationFrame(() => {
-                    props.navigation.navigate("MyTours")
+                    props.navigation.navigate("AddProfileImg", {tid: tourId})
                 })
-            }} title="Turları Düzenle ve Fotoğraf Ekle" />
+            }} title="Kişisel Fotoğraf Ekle" />
+            <CustomButton onSelect={() => {
+                requestAnimationFrame(() => {
+                    props.navigation.navigate("EditTour", {tid: tourId})
+                })
+            }} title="Tur Bilgilerini Düzenle" />
         </View>
     )
 }
 
-LocalGuideScreen.navigationOptions = (navData) => {
+StartEditScreen.navigationOptions = (navData) => {
     return {
-        headerTitle: () => <DefaultTitle style={{ fontSize: 22, color: "white" }}>Rehber Ol</DefaultTitle>,
+        headerTitle: () => <DefaultTitle style={{ fontSize: 22, color: "white" }}>Düzenle</DefaultTitle>,
         headerStyle: {
             backgroundColor: Colors.detailbgColor
         }
@@ -48,4 +55,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default LocalGuideScreen
+export default StartEditScreen
