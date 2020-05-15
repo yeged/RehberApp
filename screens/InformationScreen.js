@@ -91,15 +91,22 @@ const InformationScreen = (props) => {
         props.navigation.setParams({
             submit: submitHandler
         })
+        console.log(formState.inputValues.photo.toString())
     }, [submitHandler])
 
     const onTakenHandler = useCallback(async (imagePath) => {
 
+        
         const userData = await AsyncStorage.getItem("userData")
         const transformedData = JSON.parse(userData)
         const { token, userId, expiryDate } = transformedData
 
-
+        let deleteFormStateImg = formState.inputValues.photo
+        let deleteImg = firebase.storage().refFromURL(`${deleteFormStateImg}`)
+        console.log("bu delete image")
+        console.log(deleteImg)
+        deleteImg.delete()
+        
         inputChangeHandler("photo", imagePath, true)
 
         const fileName = imagePath.split('/').pop()
@@ -182,9 +189,7 @@ const InformationScreen = (props) => {
                         initialValue={userProfile[0].phone}
                         initiallyValid={!!userProfile}
                     />
-
                     <ImgPicker onImageTaken={onTakenHandler} aspect={[4, 3]} />
-                    {<TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>}
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

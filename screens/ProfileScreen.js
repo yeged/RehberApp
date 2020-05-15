@@ -54,14 +54,17 @@ const ProfileScreen = (props) => {
         const transformedData = JSON.parse(userData)
         const {token, userId, expiryDate} = transformedData
         console.log(userId)
-        const url = "test-image"
+        const url = "Adsız.png"
         //const fileName =  url.split('/').pop()
-        // let image = firebase.storage().ref().child(`images/${url}`).delete
+        let image = firebase.storage().ref().child(`images/${url}`)
+        console.log("TAM ÖNEMLİ şu an")
         //console.log(image)
-        const response = await fetch(imagePath)
-        const blob = await response.blob()
-        var ref = firebase.storage().ref().child("images/art/" + "test-image2")
-        return ref.put(blob)
+        //image.delete()
+        //console.log(image)
+        //const response = await fetch(imagePath)
+        //const blob = await response.blob()
+        //var ref = firebase.storage().ref().child("images/art/" + "test-image2")
+        //return ref.put(blob)
         // setSelectedImage(imagePath)
         
     })
