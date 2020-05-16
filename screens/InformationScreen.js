@@ -96,7 +96,7 @@ const InformationScreen = (props) => {
 
     const onTakenHandler = useCallback(async (imagePath) => {
 
-        
+
         const userData = await AsyncStorage.getItem("userData")
         const transformedData = JSON.parse(userData)
         const { token, userId, expiryDate } = transformedData
@@ -106,7 +106,7 @@ const InformationScreen = (props) => {
         console.log("bu delete image")
         console.log(deleteImg)
         deleteImg.delete()
-        
+
         inputChangeHandler("photo", imagePath, true)
 
         const fileName = imagePath.split('/').pop()
@@ -114,7 +114,7 @@ const InformationScreen = (props) => {
         const blob = await response.blob()
         var ref = firebase.storage().ref().child(`images/${userId}/` + `${fileName}`)
         return ref.put(blob)
-        
+
 
     })
 
@@ -165,6 +165,7 @@ const InformationScreen = (props) => {
                         </View>
                     </View>
                     <NameInput
+                        editable={false}
                         id="email"
                         label="E-Mail"
                         keyboardType="email-address"
@@ -190,7 +191,7 @@ const InformationScreen = (props) => {
                         initialValue={userProfile[0].phone}
                         initiallyValid={!!userProfile}
                     />
-                    <ImgPicker onImageTaken={onTakenHandler} aspect={[4, 3]} prevImg={formState.inputValues.photo} style={styles.prevImg}/>
+                    <ImgPicker onImageTaken={onTakenHandler} aspect={[4, 3]} prevImg={formState.inputValues.photo} style={styles.prevImg} />
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
@@ -229,16 +230,16 @@ const styles = StyleSheet.create({
         borderBottomColor: "#ccc",
         borderBottomWidth: 1
     },
-    prevImg:{
+    prevImg: {
         width: "70%",
         height: Dimensions.get("window").height * 0.3,
-        marginBottom:Dimensions.get("window").height * 0.05,
+        marginBottom: Dimensions.get("window").height * 0.05,
         justifyContent: "center",
         alignItems: "center",
         borderColor: "#ccc",
-        borderRadius:Dimensions.get("window").height * 0.15,
-        borderWidth:1,
-        overflow:"hidden"
+        borderRadius: Dimensions.get("window").height * 0.15,
+        borderWidth: 1,
+        overflow: "hidden"
     },
 })
 

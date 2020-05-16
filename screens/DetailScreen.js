@@ -188,10 +188,6 @@ const DetailScreen = (props) => {
                         <CustomButton title="Ev sahibiyle iletişime geçin" />
                     </View>
                 </View>
-
-                <HeaderButtons HeaderButtonComponent={HeaderButton}>
-                    <Item iconName={tourIsFav ? "ios-heart" : "ios-heart-empty"} iconSize={25} style={styles.headerStyle} color="white" onPress={favHandler} />
-                </HeaderButtons>
             </ScrollView>
         </View>
     )

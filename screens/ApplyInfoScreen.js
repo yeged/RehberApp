@@ -40,6 +40,10 @@ const ApplyInfoScreen = props => {
 
     const dispatch = useDispatch()
 
+
+ 
+
+
     const [formState, dispatchFormState] = useReducer(formReducer, {
         inputValues: {
             fname: "",
@@ -53,7 +57,7 @@ const ApplyInfoScreen = props => {
             fname: false,
             lname: false,
             gender: false,
-            email: false,
+            email: true,
             phone: false,
             photo: false
         },
@@ -75,6 +79,7 @@ const ApplyInfoScreen = props => {
         props.navigation.setParams({
             submit: submitHandler
         })
+        console.log(formState.inputValues.email)
     }, [submitHandler])
 
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
@@ -91,9 +96,9 @@ const ApplyInfoScreen = props => {
 
         const userData = await AsyncStorage.getItem("userData")
         const transformedData = JSON.parse(userData)
-        const { token, userId, expiryDate } = transformedData
+        const { token, userId,email, expiryDate } = transformedData
 
-
+        inputChangeHandler("email", email, true)
         inputChangeHandler("photo", imagePath, true)
 
         const fileName = imagePath.split('/').pop()
@@ -145,17 +150,6 @@ const ApplyInfoScreen = props => {
                         </View>
                     </View>
                     <NameInput
-                        id="email"
-                        label="E-Mail"
-                        keyboardType="email-address"
-                        required
-                        email
-                        autoCapitalize="none"
-                        errorText="Please enter a valid email address."
-                        onInputChange={inputChangeHandler}
-                        initialValue=""
-                    />
-                    <NameInput
                         id="phone"
                         label="- Telefon Numarası"
                         errorText="Please enter a valid phone number"
@@ -167,7 +161,7 @@ const ApplyInfoScreen = props => {
                         onlyNumber
                         maxLength={11}
                     />
-                    <ImgPicker onImageTaken={onTakenHandler} aspect={[4,3]} />
+                    <ImgPicker onImageTaken={onTakenHandler} aspect={[4,3]} style={styles.prevImg} />
 
                     {/* <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity> */}
                 </View>
@@ -206,6 +200,17 @@ const styles = StyleSheet.create({
     picker: {
         borderBottomColor: "#ccc",
         borderBottomWidth: 1
+    },
+    prevImg:{
+        width: "70%",
+        height: Dimensions.get("window").height * 0.3,
+        marginBottom:Dimensions.get("window").height * 0.05,
+        justifyContent: "center",
+        alignItems: "center",
+        borderColor: "#ccc",
+        borderRadius:Dimensions.get("window").height * 0.15,
+        borderWidth:1,
+        overflow:"hidden"
     },
 })
 
