@@ -1,4 +1,4 @@
-import { CREATE_PROFILE, SET_PROFILE, UPDATE_PROFILE } from "../actions/profile"
+import { CREATE_PROFILE, SET_PROFILE, UPDATE_PROFILE , SET_SELECTED_PROFILE} from "../actions/profile"
 import Profile from "../../models/Profile"
 
 
@@ -6,10 +6,15 @@ import Profile from "../../models/Profile"
 
 const initialState = {
     profile: [],
+    selectedProfile: [],
 }
 
 const profileReducer = (state = initialState, actions) => {
     switch (actions.type) {
+        case SET_SELECTED_PROFILE:
+            return{
+                profile: actions.selectedProfile
+            }
         case CREATE_PROFILE:
             const newProfile = new Profile(
                 actions.id,

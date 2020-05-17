@@ -56,9 +56,7 @@ const UserInputScreen = props => {
             city: profileState.inputValues.city,
             cat: categoryState.inputValues.cat,
             tourName: cityState.inputValues.tourName,
-            fname: profileState.inputValues.fname,
             phone: profileState.inputValues.phone,
-            profileImg: profileState.inputValues.profileImg,
             catLabel: "",
             cityLabel: cityState.inputValues.cityLabel,
             image: "",
@@ -77,9 +75,7 @@ const UserInputScreen = props => {
             city: profileState.inputValidities.city,
             cat: categoryState.inputValidities.cat,
             tourName: cityState.inputValidities.tourName,
-            fname: profileState.inputValidities.fname,
             phone: profileState.inputValidities.phone,
-            profileImg: profileState.inputValidities.profileImg,
             catLabel: true,
             cityLabel: true,
             image: true,
@@ -107,8 +103,8 @@ const UserInputScreen = props => {
             Alert.alert("Wrong Input", "Please Check The Errors In The Form", [{ text: "Okay!" }])
             return;
         }
-        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat, formState.inputValues.fname,
-            formState.inputValues.phone, formState.inputValues.profileImg, formState.inputValues.image,
+        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat,
+            formState.inputValues.phone, formState.inputValues.image,
             formState.inputValues.tourName, +formState.inputValues.hours, formState.inputValues.language, formState.inputValues.cityLabel, formState.inputValues.catLabel, +formState.inputValues.price,
             formState.inputValues.details, +formState.inputValues.groupSize, formState.inputValues.personalInfo,
             formState.inputValues.isNatural, formState.inputValues.isCultural, formState.inputValues.isPhotography, formState.inputValues.isNightlife))

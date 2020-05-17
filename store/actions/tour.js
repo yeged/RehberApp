@@ -35,7 +35,7 @@ export const setTour = (catId, cityId) => {
             const resData = await response.json();
             const loadedTours = []
             for (const key in resData) {
-                loadedTours.push(new Tour(key, resData[key].tCityId, resData[key].tCategoryId, resData[key].ownerId,resData[key].fname, resData[key].phone, resData[key].profileImg, resData[key].tourImage,
+                loadedTours.push(new Tour(key, resData[key].tCityId, resData[key].tCategoryId, resData[key].ownerId, resData[key].phone, resData[key].tourImage,
                     resData[key].tourName, resData[key].time, resData[key].language, resData[key].city, resData[key].category, resData[key].price, resData[key].tourPlan,
                     resData[key].groupSize,  resData[key].personalDetail, resData[key].isNatural, resData[key].isCultural, resData[key].isPhotography, resData[key].isNightlife
                 ))
@@ -53,7 +53,7 @@ export const setTour = (catId, cityId) => {
     }
 }
 
-export const createTour = (tCityId, tCategoryId,fname, phone, profileImg, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife) => {
+export const createTour = (tCityId, tCategoryId, phone,  tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token 
         const userId = getState().auth.userId
@@ -65,7 +65,7 @@ export const createTour = (tCityId, tCategoryId,fname, phone, profileImg, tourIm
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                tCityId, tCategoryId,ownerId:userId, fname, phone, profileImg, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife
+                tCityId, tCategoryId,ownerId:userId, phone, tourImage, tourName, time, language, city, category, price, tourPlan, groupSize, personalDetail, isNatural, isCultural, isPhotography, isNightlife
             })
         })
         const resData = await response.json();
@@ -74,7 +74,7 @@ export const createTour = (tCityId, tCategoryId,fname, phone, profileImg, tourIm
             type: CREATE_TOUR,
             tourData: {
                 id: resData.name,
-                tCityId, tCategoryId,ownerId:userId, fname, phone, profileImg, tourImage, tourName,
+                tCityId, tCategoryId,ownerId:userId, phone, tourImage, tourName,
                 time, language, city, category, price, tourPlan, groupSize,
                 personalDetail, isNatural, isCultural, isPhotography, isNightlife
             }
@@ -101,7 +101,7 @@ export const deleteTour = (tourId) => {
     }
 }
 
-export const updateTour = (id, profileImg, tourImage, tourName, time, language, price, tourPlan, groupSize, personalDetail, phone) => {
+export const updateTour = (id, tourImage, tourName, time, language, price, tourPlan, groupSize, personalDetail, phone) => {
 
     return async (dispatch, getState) => {
         const token = getState().auth.token
@@ -121,8 +121,7 @@ export const updateTour = (id, profileImg, tourImage, tourName, time, language, 
              newPath = await firebase.storage().ref().child(`images/${userId}/${id}/${fileName}`).getDownloadURL()
         }
 
-        // fileNameProfile = profileImg.split('/').pop()
-        // newPathProfile = await firebase.storage().ref.child(`images/${userId}/${id}/${fileNameProfile}`).getDownloadURL()
+ 
 
 
         const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${id}.json?auth=${token}`, {
@@ -131,7 +130,7 @@ export const updateTour = (id, profileImg, tourImage, tourName, time, language, 
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                profileImg, tourImage:newPath, tourName, time, language, price, tourPlan, groupSize, personalDetail,phone
+                 tourImage:newPath, tourName, time, language, price, tourPlan, groupSize, personalDetail,phone
             })
         })
         if (!response.ok) {
@@ -141,7 +140,7 @@ export const updateTour = (id, profileImg, tourImage, tourName, time, language, 
             type: UPDATE_TOUR,
             tid: id,
             tourData: {
-                profileImg, tourImage:newPath, tourName, time, language, price, tourPlan, groupSize, personalDetail,phone
+                tourImage:newPath, tourName, time, language, price, tourPlan, groupSize, personalDetail,phone
             }
 
         })

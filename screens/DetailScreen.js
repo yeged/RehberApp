@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { View, Text, StyleSheet, Dimensions, Image, ScrollView, TouchableNativeFeedback, TouchableOpacity} from "react-native";
+import { View, Text, StyleSheet, Dimensions, Image, ScrollView, TouchableNativeFeedback, TouchableOpacity, ActivityIndicator } from "react-native";
 import HeaderButton from "../components/HeaderButton"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { useSelector, useDispatch } from "react-redux"
@@ -8,6 +8,8 @@ import Colors from "../constants/Colors"
 import DefaultTitle from "../components/DefaultTitle"
 import { addFav, setFav, deleteFav } from "../store/actions/favorites"
 import CustomButton from "../components/CustomButton"
+import * as tourActions from "../store/actions/tour"
+import * as profileActions from "../store/actions/profile"
 
 
 
@@ -19,6 +21,7 @@ const DetailScreen = (props) => {
     const [showMore, setShowMore] = useState()
     const [showMoreInfo, setShowMoreInfo] = useState()
 
+    const [isLoading, setIsLoading] = useState(true)
 
     const tourId = props.navigation.getParam("tourId")
 
@@ -29,6 +32,8 @@ const DetailScreen = (props) => {
 
     const selectedTour = availableTours.find(tour => tour.id === tourId)
 
+
+    const userProfile = useSelector(state => state.profile.profile)
 
     // READ MORE SECTION
     const onTextLayout = useCallback(e => {
@@ -111,13 +116,45 @@ const DetailScreen = (props) => {
             throw err
         }
     }
+    const loadProfile = useCallback(async () => {
+        try {
+            await dispatch(profileActions.setSelectedProfile(selectedTour.ownerId))
+        } catch (err) {
+            throw err
+        }
+
+    }, [dispatch])
+
+    useEffect(() => {
+        const willFocusSub = props.navigation.addListener("willFocus", loadProfile)
+
+        return () => {
+            willFocusSub.remove()
+        }
+    }, [loadProfile])
+
+
+    useEffect(() => {
+        loadProfile().then(() => {
+            setIsLoading(false)
+        })
+    }, [dispatch, loadProfile])
+
+
+    if (isLoading) {
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size="large" color={Colors.detailbgColor} />
+            </View>
+        )
+    }
 
     return (
         <View style={styles.screen}>
             <View style={styles.headerContainer}>
                 <View style={styles.nameContainer}>
                     <HeaderButtons HeaderButtonComponent={HeaderButton}>
-                        <Item iconName="ios-arrow-back" iconSize={25} style={{ height: Dimensions.get("window").height * 0.05 }} color="white" onPress={() => {props.navigation.goBack()}} />
+                        <Item iconName="ios-arrow-back" iconSize={25} style={{ height: Dimensions.get("window").height * 0.05 }} color="white" onPress={() => { props.navigation.goBack() }} />
                     </HeaderButtons>
                 </View>
                 <View>
@@ -179,9 +216,9 @@ const DetailScreen = (props) => {
                     <View style={styles.tourPerson}>
                         <DefaultTitle style={styles.tourTitle}>Rehberiniz</DefaultTitle>
                         <View style={styles.profileImage}>
-                            <Image style={styles.pImage} source={{ uri: selectedTour.profileImg }} />
+                            <Image style={styles.pImage} source={{ uri: userProfile[0].photo }} />
                         </View>
-                        <DefaultTitle style={{ fontSize: 25, lineHeight: Dimensions.get("window").height * 0.1 }}>{selectedTour.fname}</DefaultTitle>
+                        <DefaultTitle style={{ fontSize: 25, lineHeight: Dimensions.get("window").height * 0.1 }}>{userProfile[0].fname}</DefaultTitle>
                         <TouchableNativeFeedback useForeground onPress={pReadMoreHandler}>
                             <View>
                                 <Text onTextLayout={onTextLayoutInfo} numberOfLines={personReadMore ? 8 : null} style={styles.description}>{selectedTour.personalDetail}</Text>
@@ -312,7 +349,11 @@ const styles = StyleSheet.create({
         overflow: "hidden"
 
     },
-
+    centered: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    }
 })
 
 

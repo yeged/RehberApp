@@ -50,7 +50,6 @@ const FirstCreateTourScreen = props => {
         inputValues: {
             fname: userProfile[0].fname,
             phone: userProfile[0].phone,
-            profileImg: userProfile[0].photo,
             city: "",
             personalInfo: "",
 
@@ -58,7 +57,6 @@ const FirstCreateTourScreen = props => {
         inputValidities: {
             fname: true,
             phone: true,
-            profileImg: true,
             city: false,
             personalInfo: false,
 
@@ -199,17 +197,6 @@ const FirstCreateTourScreen = props => {
                         initialValue={userProfile[0].phone.toString()}
                         initiallyValid={!!userProfile}
                     />
-                    <NameInput
-                        id="profileImg"
-                        label="Profil Fotoğrafı"
-                        errorText="Please enter a valid URL"
-                        keyboardType="default"
-                        returnKeyType="next"
-                        onInputChange={inputChangeHandler}
-                        initialValue={userProfile[0].photo}
-                        initiallyValid={!!userProfile}
-                    />
-
                     <NameInput
                         id="personalInfo"
                         label="Kişisel Bilgiler"

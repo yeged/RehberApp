@@ -3,6 +3,7 @@ import firebase from "../../firebase/firebase"
 export const CREATE_PROFILE = "CREATE_PROFILE"
 export const SET_PROFILE = "SET_PROFILE"
 export const UPDATE_PROFILE = "UPDATE_PROFILE"
+export const SET_SELECTED_PROFILE = "SET_SELECTED_PROFILE"
 import Profile from "../../models/Profile"
 
 export const createProfile = (fname, lname, gender, email, phone, photo) => {
@@ -63,6 +64,42 @@ export const setProfile = () => {
                 );
             }
             dispatch({ type: SET_PROFILE, profile: loadedProfile });
+        } catch (err) {
+            throw err;
+        }
+    };
+}
+
+export const setSelectedProfile = (ownerId) => {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token
+        try {
+            const response = await fetch(
+                `https://rehber-2e983.firebaseio.com/user/${ownerId}/profile.json?auth=${token}`
+            );
+
+            if (!response.ok) {
+                throw new Error('Something went wrong!');
+            }
+
+            const resData = await response.json();
+            const loadedSelectedProfile = [];
+
+            for (const key in resData) {
+                loadedSelectedProfile.push(
+                    new Profile(
+                        key,
+                        resData[key].fname,
+                        resData[key].lname,
+                        resData[key].gender,
+                        resData[key].email,
+                        resData[key].phone,
+                        resData[key].photo
+                    )
+                );
+            }
+
+            dispatch({ type: SET_SELECTED_PROFILE, selectedProfile: loadedSelectedProfile });
         } catch (err) {
             throw err;
         }

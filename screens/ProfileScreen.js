@@ -20,9 +20,13 @@ const ProfileScreen = (props) => {
     const dispatch = useDispatch()
 
     const loadProfile = useCallback(async () => {
+        const userData = await AsyncStorage.getItem("userData")
+        const transformedData = JSON.parse(userData)
+        const { token, userId, expiryDate } = transformedData
+
         setError(null)
         try {
-            await dispatch(profileActions.setProfile())
+            await dispatch(profileActions.setSelectedProfile(userId))
         } catch (err) {
             setError(err.message)
         }

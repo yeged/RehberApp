@@ -20,11 +20,6 @@ const StartEditScreen = (props) => {
             }} title="Tur Fotoğrafı Ekle" />
             <CustomButton onSelect={() => {
                 requestAnimationFrame(() => {
-                    props.navigation.navigate("AddProfileImg", {tid: tourId})
-                })
-            }} title="Kişisel Fotoğraf Ekle" />
-            <CustomButton onSelect={() => {
-                requestAnimationFrame(() => {
                     props.navigation.navigate("EditTour", {tid: tourId})
                 })
             }} title="Tur Bilgilerini Düzenle" />
