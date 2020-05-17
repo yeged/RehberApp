@@ -28,7 +28,7 @@ const ImgPicker = props => {
         const image = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true, //CROPS etc
             aspect:props.aspect,
-            quality: 0.5 // 0-1
+            quality: 0.3 // 0-1
         })
         console.log(image.uri)
         setPickedImg(image.uri)

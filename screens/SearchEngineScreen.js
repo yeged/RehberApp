@@ -7,16 +7,10 @@ import Colors from "../constants/Colors"
 
 
 
-
-
-
-
 const SearchEngineScreen = props => {
 
 
   const [isLoading, setIsLoading] = useState(false)
-  const [isRefreshing, setIsRefreshing] = useState(false)
-  const [error, setError] = useState()
   const [data, setData] = useState([])
 
   const availableCity = useSelector(state => state.tours.city)
@@ -111,7 +105,7 @@ const SearchEngineScreen = props => {
             </View>
             <View style={{ width: Dimensions.get("window").width * 0.9 }}>
               <TextInput
-                autoCapitalize="words"
+                autoCapitalize="none"
                 placeholder="Search"
                 onChangeText={(value) => { searchCity(value) }}
               />

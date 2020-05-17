@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer } from "react"
-import { View,  StyleSheet, Text, ScrollView, Dimensions,TouchableOpacity, Alert, KeyboardAvoidingView, AsyncStorage } from "react-native"
+import { View, StyleSheet, Text, ScrollView, Dimensions, TouchableOpacity, Alert, KeyboardAvoidingView, AsyncStorage, ActivityIndicator } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
@@ -86,7 +86,6 @@ const AddTourImgScreen = props => {
 
     const submitHandler = useCallback(async () => {
         setError(null)
-        setIsLoading(true)
         try {
             await dispatch(tourActions.updateTour(tourId, formState.inputValues.profileImg, formState.inputValues.images, formState.inputValues.tourName,
                 formState.inputValues.hours, formState.inputValues.language, formState.inputValues.price, formState.inputValues.details,
@@ -96,7 +95,6 @@ const AddTourImgScreen = props => {
         } catch (err) {
             setError(err.message)
         }
-        setIsLoading(false)
 
     }, [dispatch, tourId, formState])
 
@@ -104,6 +102,8 @@ const AddTourImgScreen = props => {
         props.navigation.setParams({
             submit: submitHandler
         })
+        console.log("-------")
+        console.log("bu")
         console.log(formState.inputValues.images)
     }, [submitHandler])
 
@@ -111,13 +111,13 @@ const AddTourImgScreen = props => {
         dispatchFormState({
             type: FORM_INPUT_UPDATE,
             input: inputIdentifier,
-            value: inputValue,
+            value: inputValue, 
             isValid: inputValidity
         })
     }, [dispatchFormState])
 
-    const onTakenHandler = useCallback(async (imagePath) => { 
-
+    const onTakenHandler = useCallback(async (imagePath) => {
+ 
 
         const userData = await AsyncStorage.getItem("userData")
         const transformedData = JSON.parse(userData)
@@ -126,19 +126,31 @@ const AddTourImgScreen = props => {
         let deleteFormStateImg = formState.inputValues.images
         if (deleteFormStateImg !== "") {
             let deleteImg = firebase.storage().refFromURL(`${deleteFormStateImg}`)
-            console.log("bu delete image")
-            console.log(deleteImg)
             deleteImg.delete()
-
         }
 
         inputChangeHandler("images", imagePath, true)
-
+        setIsLoading(true)
         const fileName = imagePath.split('/').pop()
         const response = await fetch(imagePath)
         const blob = await response.blob()
         var ref = firebase.storage().ref().child(`images/${userId}/${tourId}/` + `${fileName}`)
-        return ref.put(blob)
+
+        try {
+            ref.put(blob)
+            await firebase.storage().ref().child(`images/${userId}/${tourId}/${fileName}`).getDownloadURL().then(onResolve, onReject)
+            function onResolve(foundURL){
+                console.log(foundURL)
+                setIsLoading(false)
+            }
+            function onReject(error){
+                setIsLoading(true)
+                console.log(error)
+                onResolve()
+            }
+        } catch (err) {
+            throw err
+        }
 
 
     })
@@ -147,7 +159,10 @@ const AddTourImgScreen = props => {
         <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={500}>
             <ScrollView>
                 <View style={styles.form}>
-                    <ImgPicker onImageTaken={onTakenHandler} aspect={[9, 16]} prevImg={formState.inputValues.images} style={styles.prevImg} />
+                    {isLoading ? (
+                        <ActivityIndicator size="small" color={Colors.primary} />
+                    ) :
+                        <ImgPicker onImageTaken={onTakenHandler} aspect={[9, 16]} prevImg={formState.inputValues.images} style={styles.prevImg} />}
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

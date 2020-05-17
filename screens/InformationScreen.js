@@ -10,8 +10,6 @@ import firebase from "../firebase/firebase"
 
 
 
-import Colors from "../constants/Colors"
-
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"
 
 const formReducer = (state, action) => {

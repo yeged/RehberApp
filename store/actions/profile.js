@@ -75,9 +75,19 @@ export const updateProfile = (id, fname, lname, gender, email, phone, photo) => 
         const token = getState().auth.token
         const userId = getState().auth.userId
 
-        const fileName = photo.split('/').pop()
+        
 
-        const newPath = await firebase.storage().ref().child(`images/${userId}/${fileName}`).getDownloadURL()
+        let fileName;
+        let newPath;
+
+        if(photo.slice(0,5) === "https"){
+            newPath = photo
+        }else{
+             fileName = photo.split('/').pop()
+             newPath = await firebase.storage().ref().child(`images/${userId}/${fileName}`).getDownloadURL()
+        }
+
+
 
         const response = await fetch(`https://rehber-2e983.firebaseio.com/user/${userId}/profile/${id}.json?auth=${token}`, {
             method: "PATCH",

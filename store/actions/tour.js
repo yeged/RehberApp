@@ -112,14 +112,17 @@ export const updateTour = (id, profileImg, tourImage, tourName, time, language, 
 
         if(tourImage===""){
             newPath = ""
-        }else{
+        }else if(tourImage.slice(0,5) === "https"){
+            newPath = tourImage
+        }
+        else{
 
              fileName = tourImage.split('/').pop()
              newPath = await firebase.storage().ref().child(`images/${userId}/${id}/${fileName}`).getDownloadURL()
         }
 
-        fileNameProfile = profileImg.split('/').pop()
-        newPathProfile = await firebase.storage().ref.child(`images/${userId}/${id}/${fileNameProfile}`).getDownloadURL()
+        // fileNameProfile = profileImg.split('/').pop()
+        // newPathProfile = await firebase.storage().ref.child(`images/${userId}/${id}/${fileNameProfile}`).getDownloadURL()
 
 
         const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${id}.json?auth=${token}`, {
@@ -128,7 +131,7 @@ export const updateTour = (id, profileImg, tourImage, tourName, time, language, 
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                profileImg:newPathProfile, tourImage:newPath, tourName, time, language, price, tourPlan, groupSize, personalDetail,phone
+                profileImg, tourImage:newPath, tourName, time, language, price, tourPlan, groupSize, personalDetail,phone
             })
         })
         if (!response.ok) {
@@ -138,7 +141,7 @@ export const updateTour = (id, profileImg, tourImage, tourName, time, language, 
             type: UPDATE_TOUR,
             tid: id,
             tourData: {
-                profileImg:newPathProfile, tourImage:newPath, tourName, time, language, price, tourPlan, groupSize, personalDetail,phone
+                profileImg, tourImage:newPath, tourName, time, language, price, tourPlan, groupSize, personalDetail,phone
             }
 
         })

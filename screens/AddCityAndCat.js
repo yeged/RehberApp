@@ -45,10 +45,10 @@ const ThirdCreateTourScreen = props => {
 
     const [formState, dispatchFormState] = useReducer(formReducer, {
         inputValues: {
-            categoryId:"",
+            cityId:"",
         },
         inputValidities: {
-            categoryId:false
+            cityId:false
 
         },
         formIsValid: false
@@ -60,7 +60,7 @@ const ThirdCreateTourScreen = props => {
             Alert.alert("Wrong Input", "Please Check The Errors In The Form", [{ text: "Okay!" }])
             return;
         }
-        dispatch(tourActions.createCat(formState.inputValues.categoryId))
+        dispatch(tourActions.createCity(formState.inputValues.cityId))
     }, [dispatch, formState])
 
     useEffect(() => {
@@ -85,7 +85,7 @@ const ThirdCreateTourScreen = props => {
             <ScrollView>
                 <View style={styles.form}>
                     <NameInput
-                        id="categoryId"
+                        id="cityId"
                         label="- id"
                         errorText="Please enter a valid URL"
                         keyboardType="default"

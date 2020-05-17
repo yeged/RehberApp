@@ -185,7 +185,7 @@ const DetailScreen = (props) => {
                                 <Text style={styles.readMore}>{showMoreInfo && personReadMore ? "Daha Fazla" : null}</Text>
                             </View>
                         </TouchableNativeFeedback>
-                        <CustomButton title="Ev sahibiyle iletişime geçin" />
+                        <CustomButton title={ "İletişim Numarası : " + selectedTour.phone.slice(0,4) + "-" + selectedTour.phone.slice(4,7) + "-" + selectedTour.phone.slice(7,9) + "-" + selectedTour.phone.slice(9,11)} />
                     </View>
                 </View>
             </ScrollView>

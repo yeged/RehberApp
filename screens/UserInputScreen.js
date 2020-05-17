@@ -290,7 +290,7 @@ const UserInputScreen = props => {
 UserInputScreen.navigationOptions = (navData) => {
     const submitFn = navData.navigation.getParam('submit');
     return {
-        headerRight: () => <TouchableOpacity style={{ padding: 10 }} onPress={submitFn}><Text>Kaydet</Text></TouchableOpacity>
+        
     }
 }
 
