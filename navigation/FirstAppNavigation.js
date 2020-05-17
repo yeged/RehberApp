@@ -51,7 +51,8 @@ const SearchNavigator = createStackNavigator({
     City: CityScreen,
     Detail: {screen:DetailScreen,
     navigationOptions:{
-        tabBarVisible:false
+        tabBarVisible:false,
+        headerShown:false
     }},
 
 }, defaultStackNavOptions)
@@ -92,7 +93,10 @@ const ProfileNavigator = createStackNavigator({
 
 const FavoritesNavigator = createStackNavigator({
     Favorites: FavoritesScreen,
-    Detail: DetailScreen
+    Detail: {screen : DetailScreen, navigationOptions:{
+        tabBarVisible:false,
+        headerShown:false
+    }}
 }, defaultStackNavOptions)
 
 

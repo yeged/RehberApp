@@ -55,6 +55,7 @@ const FavoritesScreen = (props) => {
             setIsLoading(false)
 
         })
+        
     }, [dispatch, loadFav])
 
 
@@ -71,8 +72,6 @@ const FavoritesScreen = (props) => {
         )
     }
 
-
-    
     if(isLoading){
         return(
             <View style={styles.centered}>

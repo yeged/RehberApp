@@ -9,7 +9,7 @@ import Colors from "../constants/Colors"
 import DefaultTitle from "../components/DefaultTitle"
 import { addFav, setFav, deleteFav } from "../store/actions/favorites"
 import CustomButton from "../components/CustomButton"
-
+import { Ionicons } from "@expo/vector-icons"
 
 
 
@@ -20,7 +20,7 @@ const DetailScreen = (props) => {
     const [personReadMore, setPersonReadMore] = useState()
     const [showMore, setShowMore] = useState()
     const [showMoreInfo, setShowMoreInfo] = useState()
-    
+
 
     const tourId = props.navigation.getParam("tourId")
 
@@ -78,9 +78,9 @@ const DetailScreen = (props) => {
     }, [dispatch, setFav])
 
     const favTourHandler = useCallback(async () => {
-        try{
+        try {
             await dispatch(addFav(tourId, selectedTour.tourName, selectedTour.time, selectedTour.price, selectedTour.tourImage, selectedTour.city))
-        }catch(err){
+        } catch (err) {
             throw err
         }
         console.log("dispatch addFav")
@@ -88,40 +88,61 @@ const DetailScreen = (props) => {
 
     const favRemoveHandler = useCallback(async () => {
         const favId = favTour.find(value => value.tourId === tourId)
-        try{
+        try {
             await dispatch(deleteFav(favId.id))
-        }catch(err){
+        } catch (err) {
             throw err
         }
         console.log("dispatch deletefav")
-        console.log(favId)
-    }, [deleteFav, dispatch])
+        console.log(favId.id)
+    }, [deleteFav, dispatch, favTour])
 
 
+
+    //  useEffect(() => {
+    //      props.navigation.setParams({
+    //          favTour: favHandler
+    //      })
+    //  }, [favTourHandler])
+
+    //  useEffect(() => {
+    //      props.navigation.setParams({
+    //          isFav: tourIsFav
+    //      })
+    //  }, [tourIsFav])
 
     useEffect(() => {
-        props.navigation.setParams({
-            favTour: favHandler
-        })
-    }, [favTourHandler])
-
-    useEffect(() => {
-        props.navigation.setParams({
-            isFav: tourIsFav
-        })
-    }, [tourIsFav])
-
-    const favHandler = useCallback(async () => {
         loadFav()
-        if (!tourIsFav) {
-            favTourHandler()
-        } else {
-            favRemoveHandler()
+    }, [loadFav])
+
+    const favHandler = () => {
+        try {
+
+            if (!tourIsFav) {
+                favTourHandler()
+            } else {
+                favRemoveHandler()
+            }
+        } catch (err) {
+            throw err
         }
-    }, [loadFav, favTourHandler, favRemoveHandler])
+
+    }
 
     return (
         <View style={styles.screen}>
+            <View style={styles.headerContainer}>
+                <View style={styles.nameContainer}>
+                    <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                        <Item iconName="ios-arrow-back" iconSize={25} style={{ height: Dimensions.get("window").height * 0.05 }} color="white" onPress={() => {props.navigation.goBack()}} />
+                    </HeaderButtons>
+                </View>
+                <View>
+                    <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                        <Item iconName={tourIsFav ? "ios-heart" : "ios-heart-empty"} iconSize={25} style={{ height: Dimensions.get("window").height * 0.05 }} color="white" onPress={favHandler} />
+                    </HeaderButtons>
+                </View>
+            </View>
             <ScrollView>
                 <View style={styles.imageContainer}>
                     <Image source={{ uri: selectedTour.tourImage }} style={styles.image} />
@@ -155,7 +176,6 @@ const DetailScreen = (props) => {
                             <View>
                                 <DefaultTitle style={styles.infoHeader}>Sunduğu Diller</DefaultTitle>
                                 <Text style={styles.infoText}>{selectedTour.language}</Text>
-                                {/* {selectedTour.language.map(tour => <Text style={styles.infoText}>{tour},</Text>)} */}
                             </View>
                         </View>
                     </View>
@@ -185,7 +205,7 @@ const DetailScreen = (props) => {
                                 <Text style={styles.readMore}>{showMoreInfo && personReadMore ? "Daha Fazla" : null}</Text>
                             </View>
                         </TouchableNativeFeedback>
-                        <CustomButton title={ "İletişim Numarası : " + selectedTour.phone.slice(0,4) + "-" + selectedTour.phone.slice(4,7) + "-" + selectedTour.phone.slice(7,9) + "-" + selectedTour.phone.slice(9,11)} />
+                        <CustomButton title={"İletişim Numarası : " + selectedTour.phone.slice(0, 4) + "-" + selectedTour.phone.slice(4, 7) + "-" + selectedTour.phone.slice(7, 9) + "-" + selectedTour.phone.slice(9, 11)} />
                     </View>
                 </View>
             </ScrollView>
@@ -193,21 +213,6 @@ const DetailScreen = (props) => {
     )
 }
 
-DetailScreen.navigationOptions = navData => {
-    const favTour = navData.navigation.getParam("favTour")
-    const isFav = navData.navigation.getParam("isFav")
-    return {
-        headerTitle: () => null,
-        headerStyle: {
-            backgroundColor: Colors.detailbgColor
-        },
-        headerTintColor: "white",
-        headerTransparent: false,
-        headerRight: () => (<HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item iconName={isFav ? "ios-heart" : "ios-heart-empty"} iconSize={25} style={styles.headerStyle} color="white" onPress={favTour} />
-        </HeaderButtons>)
-    }
-}
 
 const styles = StyleSheet.create({
     screen: {
@@ -312,7 +317,18 @@ const styles = StyleSheet.create({
     pImage: {
         height: "100%",
         width: "100%"
-    }
+    },
+    headerContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        height: Dimensions.get("window").height * 0.01,
+        paddingHorizontal: Dimensions.get("window").width * 0.08,
+        paddingVertical: Dimensions.get("window").height * 0.062,
+        backgroundColor: Colors.detailbgColor,
+        elevation: 2,
+        overflow: "hidden"
+
+    },
 
 })
 
