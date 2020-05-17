@@ -1,14 +1,12 @@
-import React, { useEffect, useCallback, useState, } from "react";
-import { View, Text, StyleSheet, Dimensions, ActivityIndicator } from "react-native"
-import { useSelector, useDispatch } from "react-redux"
-import * as tourActions from "../store/actions/tour"
+import React from "react";
+import { View,  StyleSheet, Dimensions} from "react-native"
+
 
 import DefaultTitle from "../components/DefaultTitle"
 import CustomButton from "../components/CustomButton"
 import Colors from "../constants/Colors"
 
 const LocalGuideScreen = (props) => {
-
 
     return (
         <View style={styles.screen}>
@@ -28,6 +26,7 @@ const LocalGuideScreen = (props) => {
 
 LocalGuideScreen.navigationOptions = (navData) => {
     return {
+        headerTintColor: "white",
         headerTitle: () => <DefaultTitle style={{ fontSize: 22, color: "white" }}>Rehber Ol</DefaultTitle>,
         headerStyle: {
             backgroundColor: Colors.detailbgColor

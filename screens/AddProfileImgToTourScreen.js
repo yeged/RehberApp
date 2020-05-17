@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useReducer } from "react"
 import { View,  StyleSheet, Text, ScrollView, Dimensions,TouchableOpacity, Alert, KeyboardAvoidingView, AsyncStorage } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
-import NameInput from "../components/NameInput"
 import { useSelector, useDispatch } from "react-redux"
 import * as tourActions from "../store/actions/tour"
 import ImgPicker from "../components/ImagePicker"
@@ -136,8 +135,6 @@ const AddProfileImgToTourScreen = props => {
         const blob = await response.blob()
         var ref = firebase.storage().ref().child(`images/${userId}/${tourId}/` + `${fileName}`)
         return ref.put(blob)
-
-
     })
 
     return (

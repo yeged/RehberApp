@@ -1,7 +1,6 @@
-import React, { useEffect, useCallback, useState, } from "react";
-import { View, Text, StyleSheet, Dimensions, ActivityIndicator } from "react-native"
-import { useSelector, useDispatch } from "react-redux"
-import * as tourActions from "../store/actions/tour"
+import React  from "react";
+import { View, StyleSheet, Dimensions } from "react-native"
+
 
 import DefaultTitle from "../components/DefaultTitle"
 import CustomButton from "../components/CustomButton"
@@ -35,6 +34,7 @@ const StartEditScreen = (props) => {
 
 StartEditScreen.navigationOptions = (navData) => {
     return {
+        headerTintColor: "white",
         headerTitle: () => <DefaultTitle style={{ fontSize: 22, color: "white" }}>Düzenle</DefaultTitle>,
         headerStyle: {
             backgroundColor: Colors.detailbgColor

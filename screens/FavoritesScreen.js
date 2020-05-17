@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, ActivityIndicator } from "react-native";
+import { View, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import { useSelector, useDispatch } from "react-redux"
 import *as favActions from "../store/actions/favorites"
 import * as tourActions from "../store/actions/tour"
@@ -90,6 +90,12 @@ const FavoritesScreen = (props) => {
             />
         </View>
     )
+}
+
+FavoritesScreen.navigationOptions = (navData) => {
+    return{
+        headerTitle: "Beğenilenler",    
+    }
 }
 
 const styles = StyleSheet.create({

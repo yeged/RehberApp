@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import UserTourItem from "../components/UserTourItem"
 import Colors from "../constants/Colors";
 import * as tourActions from "../store/actions/tour"
-
+import DefaultTitle from "../components/DefaultTitle"
 
 
 const MyToursScreen = props => {
@@ -127,6 +127,16 @@ const MyToursScreen = props => {
     />
   );
 };
+
+MyToursScreen.navigationOptions = (navData) => {
+  return{
+    headerTintColor: "white",
+    headerTitle: () => <DefaultTitle style={{ fontSize: 22, color: "white" }}>Turlarım</DefaultTitle>,
+    headerStyle: {
+        backgroundColor: Colors.detailbgColor
+    }
+  }
+}
 
 const styles = StyleSheet.create({
   centered: {

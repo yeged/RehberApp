@@ -1,14 +1,14 @@
 import React, { useEffect, useCallback, useReducer, useState } from "react"
-import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, ActivityIndicator, Button, Modal } from "react-native"
+import { View, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, ActivityIndicator, Button } from "react-native"
 
-import DefaultTitle from "../components/DefaultTitle"
+
 import NameInput from "../components/NameInput"
 import { useSelector, useDispatch } from "react-redux"
 import * as tourActions from "../store/actions/tour"
 
 
 import Colors from "../constants/Colors"
-import ImgPicker from "../components/ImagePicker"
+
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"
 
@@ -201,7 +201,12 @@ const SecondCreateTourScreen = props => {
 SecondCreateTourScreen.navigationOptions = (navData) => {
     const submitFn = navData.navigation.getParam('submit');
     return {
-        headerRight: () => <TouchableOpacity style={{ padding: 10 }} onPress={submitFn}><Text>İlerle</Text></TouchableOpacity>
+        headerTintColor: "white",
+        headerTitle:null,
+        headerRight: () => <TouchableOpacity style={{ padding: 10 }} onPress={submitFn}><Text style={{color:"white"}}>İlerle</Text></TouchableOpacity>,
+        headerStyle: {
+            backgroundColor: Colors.detailbgColor
+        }
     }
 }
 
@@ -219,13 +224,6 @@ const styles = StyleSheet.create({
         marginVertical: 4 // SONRA HALLET AMK
     },
     input: {
-        borderBottomColor: "#ccc",
-        borderBottomWidth: 1
-    },
-    pickerContainer: {
-        marginHorizontal: Dimensions.get("window").width * -0.02
-    },
-    picker: {
         borderBottomColor: "#ccc",
         borderBottomWidth: 1
     },

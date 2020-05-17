@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useReducer } from "react"
 import { View, StyleSheet, Text, ScrollView, Dimensions, TouchableOpacity, Alert, KeyboardAvoidingView, AsyncStorage, ActivityIndicator } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
-import NameInput from "../components/NameInput"
 import { useSelector, useDispatch } from "react-redux"
 import * as tourActions from "../store/actions/tour"
 import ImgPicker from "../components/ImagePicker"
@@ -151,8 +150,6 @@ const AddTourImgScreen = props => {
         } catch (err) {
             throw err
         }
-
-
     })
 
     return (
@@ -172,6 +169,7 @@ const AddTourImgScreen = props => {
 AddTourImgScreen.navigationOptions = (navData) => {
     const submitFn = navData.navigation.getParam('submit');
     return {
+        headerTintColor: "white",
         headerTitle: () => <DefaultTitle style={{ fontSize: 22, color: "white" }}>Tur Fotoğrafı Ekle</DefaultTitle>,
         headerStyle: {
             backgroundColor: Colors.detailbgColor

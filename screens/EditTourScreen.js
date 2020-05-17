@@ -237,6 +237,7 @@ const EditTourScreen = props => {
 EditTourScreen.navigationOptions = (navData) => {
     const submitFn = navData.navigation.getParam('submit');
     return {
+        headerTintColor: "white",
         headerTitle: () => <DefaultTitle style={{ fontSize: 22, color: "white" }}>Tur Bilgileri</DefaultTitle>,
         headerStyle: {
             backgroundColor: Colors.detailbgColor

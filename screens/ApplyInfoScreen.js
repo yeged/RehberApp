@@ -1,14 +1,14 @@
 import React, { useEffect, useCallback, useReducer } from "react"
-import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, AsyncStorage } from "react-native"
+import { View, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, AsyncStorage } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import * as profileActions from "../store/actions/profile"
 import ImgPicker from "../components/ImagePicker"
 import firebase from "../firebase/firebase"
 
-import Colors from "../constants/Colors"
+
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"
 
@@ -39,10 +39,6 @@ const formReducer = (state, action) => {
 const ApplyInfoScreen = props => {
 
     const dispatch = useDispatch()
-
-
- 
-
 
     const [formState, dispatchFormState] = useReducer(formReducer, {
         inputValues: {

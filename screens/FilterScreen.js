@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { View, StyleSheet, Dimensions, Platform, Text, Switch } from "react-native";
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { toggleFilter } from "../store/actions/tour"
 import Colors from "../constants/Colors"
 import CustomButton from "../components/CustomButton"
@@ -80,6 +80,12 @@ const CityScreen = (props) => {
 
 
     )
+}
+
+CityScreen.navigationOptions = (navData) => {
+    return{
+        headerTitle:"Filtrele"
+    }
 }
 
 const styles = StyleSheet.create({

@@ -5,7 +5,6 @@ import { View, StyleSheet, Text, Dimensions, TouchableOpacity, Alert, KeyboardAv
 import NameInput from "../components/NameInput"
 import { useSelector, useDispatch } from "react-redux"
 import * as tourActions from "../store/actions/tour"
-import ImgPicker from "../components/ImagePicker"
 import firebase from "../firebase/firebase"
 import CustomButton from "../components/CustomButton"
 
@@ -108,7 +107,7 @@ const UserInputScreen = props => {
             Alert.alert("Wrong Input", "Please Check The Errors In The Form", [{ text: "Okay!" }])
             return;
         }
-        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat, formState.inputValues.fname, 
+        dispatch(tourActions.createTour(formState.inputValues.city, formState.inputValues.cat, formState.inputValues.fname,
             formState.inputValues.phone, formState.inputValues.profileImg, formState.inputValues.image,
             formState.inputValues.tourName, +formState.inputValues.hours, formState.inputValues.language, formState.inputValues.cityLabel, formState.inputValues.catLabel, +formState.inputValues.price,
             formState.inputValues.details, +formState.inputValues.groupSize, formState.inputValues.personalInfo,
@@ -165,7 +164,7 @@ const UserInputScreen = props => {
 
         const userData = await AsyncStorage.getItem("userData")
         const transformedData = JSON.parse(userData)
-        const {token, userId, expiryDate} = transformedData
+        const { token, userId, expiryDate } = transformedData
 
 
         inputChangeHandler("image", imagePath, true)
@@ -175,7 +174,7 @@ const UserInputScreen = props => {
         const blob = await response.blob()
         var ref = firebase.storage().ref().child(`images/${userId}/` + `${fileName}`)
         return ref.put(blob)
-        
+
     })
 
     if (error) {
@@ -197,91 +196,87 @@ const UserInputScreen = props => {
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={500}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <View style={styles.form}>
-                <CustomButton onSelect={submitHandler} title="Tur Oluştur"/>
-                {/* <ImgPicker onImageTaken={onTakenHandler} aspect={[9,16]}/> */}
+                <View style={styles.form}>
+                    <CustomButton onSelect={submitHandler} title="Tur Oluştur" />
+                    {/* <ImgPicker onImageTaken={onTakenHandler} aspect={[9,16]}/> */}
 
-                <View style={{ marginTop: 1000 }}>
-                    <NameInput
-                        editable={false}
-                        id="catLabel"
-                        label="- Category Label"
-                        errorText="Please enter a valid title"
-                        autoCapitalize="words"
-                        autoCorrect={true}
-                        keyboardType="default"
-                        returnKeyType="next"
-                        onInputChange={inputChangeHandler}
-                        required
-                        initialValue={selectedCategory.categoryLabel}
-                        initiallyValid={true}
-                        initialTouch={true}
-                    />
-                    <NameInput
-                        editable={false}
-                        id="isNatural"
-                        label="Doğa Gezintisi"
-                        errorText="Please enter a valid title"
-                        autoCapitalize="words"
-                        autoCorrect={true}
-                        keyboardType="default"
-                        returnKeyType="next"
-                        onInputChange={inputChangeHandler}
-                        required
-                        initialValue={selectedCategory.isNatural}
-                        initiallyValid={true}
-                        initialTouch={true}
-                    />
-                    <NameInput
-                        editable={false}
-                        id="isCultural"
-                        label="- Kültür Gezintisi"
-                        errorText="Please enter a valid title"
-                        autoCapitalize="words"
-                        autoCorrect={true}
-                        keyboardType="default"
-                        returnKeyType="next"
-                        onInputChange={inputChangeHandler}
-                        required
-                        initialValue={selectedCategory.isCultural}
-                        initiallyValid={true}
-                        initialTouch={true}
-                    />
-                    <NameInput
-                        editable={false}
-                        id="isPhotography"
-                        label="- City Label"
-                        errorText="Please enter a valid title"
-                        autoCapitalize="words"
-                        autoCorrect={true}
-                        keyboardType="default"
-                        returnKeyType="next"
-                        onInputChange={inputChangeHandler}
-                        required
-                        initialValue={selectedCategory.isPhotography}
-                        initiallyValid={true}
-                        initialTouch={true}
-                    />
-                    <NameInput
-                        editable={false}
-                        id="isNightlife"
-                        label="- City Label"
-                        errorText="Please enter a valid title"
-                        autoCapitalize="words"
-                        autoCorrect={true}
-                        keyboardType="default"
-                        returnKeyType="next"
-                        onInputChange={inputChangeHandler}
-                        required
-                        initialValue={selectedCategory.isNightlife}
-                        initiallyValid={true}
-                        initialTouch={true}
-                    /></View>
-
-
-                <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity>
-
-            </View>
+                    <View style={{ marginTop: 1000 }}>
+                        <NameInput
+                            editable={false}
+                            id="catLabel"
+                            label="- Category Label"
+                            errorText="Please enter a valid title"
+                            autoCapitalize="words"
+                            autoCorrect={true}
+                            keyboardType="default"
+                            returnKeyType="next"
+                            onInputChange={inputChangeHandler}
+                            required
+                            initialValue={selectedCategory.categoryLabel}
+                            initiallyValid={true}
+                            initialTouch={true}
+                        />
+                        <NameInput
+                            editable={false}
+                            id="isNatural"
+                            label="Doğa Gezintisi"
+                            errorText="Please enter a valid title"
+                            autoCapitalize="words"
+                            autoCorrect={true}
+                            keyboardType="default"
+                            returnKeyType="next"
+                            onInputChange={inputChangeHandler}
+                            required
+                            initialValue={selectedCategory.isNatural}
+                            initiallyValid={true}
+                            initialTouch={true}
+                        />
+                        <NameInput
+                            editable={false}
+                            id="isCultural"
+                            label="- Kültür Gezintisi"
+                            errorText="Please enter a valid title"
+                            autoCapitalize="words"
+                            autoCorrect={true}
+                            keyboardType="default"
+                            returnKeyType="next"
+                            onInputChange={inputChangeHandler}
+                            required
+                            initialValue={selectedCategory.isCultural}
+                            initiallyValid={true}
+                            initialTouch={true}
+                        />
+                        <NameInput
+                            editable={false}
+                            id="isPhotography"
+                            label="- City Label"
+                            errorText="Please enter a valid title"
+                            autoCapitalize="words"
+                            autoCorrect={true}
+                            keyboardType="default"
+                            returnKeyType="next"
+                            onInputChange={inputChangeHandler}
+                            required
+                            initialValue={selectedCategory.isPhotography}
+                            initiallyValid={true}
+                            initialTouch={true}
+                        />
+                        <NameInput
+                            editable={false}
+                            id="isNightlife"
+                            label="- City Label"
+                            errorText="Please enter a valid title"
+                            autoCapitalize="words"
+                            autoCorrect={true}
+                            keyboardType="default"
+                            returnKeyType="next"
+                            onInputChange={inputChangeHandler}
+                            required
+                            initialValue={selectedCategory.isNightlife}
+                            initiallyValid={true}
+                            initialTouch={true}
+                        /></View>
+                </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     )
@@ -290,7 +285,11 @@ const UserInputScreen = props => {
 UserInputScreen.navigationOptions = (navData) => {
     const submitFn = navData.navigation.getParam('submit');
     return {
-        
+        headerTitle: null,
+        headerTintColor: "white",
+        headerStyle: {
+            backgroundColor: Colors.detailbgColor
+        }
     }
 }
 
@@ -298,7 +297,7 @@ const styles = StyleSheet.create({
     form: {
         width: "100%",
         paddingHorizontal: Dimensions.get("window").width * 0.08,
-        paddingTop: Dimensions.get("window").height * 0.04,
+        paddingVertical: Dimensions.get("window").height * 0.35
     },
     fromControl: {
         width: "100%",

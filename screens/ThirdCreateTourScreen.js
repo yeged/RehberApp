@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useReducer, useState } from "react"
-import { View, TextInput, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, ActivityIndicator, Button } from "react-native"
+import { View, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, ActivityIndicator, Button } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
@@ -8,7 +8,7 @@ import * as tourActions from "../store/actions/tour"
 
 
 import Colors from "../constants/Colors"
-import ImgPicker from "../components/ImagePicker"
+
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"
 
@@ -204,7 +204,12 @@ const ThirdCreateTourScreen = props => {
 ThirdCreateTourScreen.navigationOptions = (navData) => {
     const submitFn = navData.navigation.getParam('submit');
     return {
-        headerRight: () => <TouchableOpacity style={{ padding: 10 }} onPress={submitFn}><Text>İlerle</Text></TouchableOpacity>
+        headerTintColor: "white",
+        headerTitle:null,
+        headerRight: () => <TouchableOpacity style={{ padding: 10 }} onPress={submitFn}><Text style={{color:"white"}}>İlerle</Text></TouchableOpacity>,
+        headerStyle: {
+            backgroundColor: Colors.detailbgColor
+        }
     }
 }
 

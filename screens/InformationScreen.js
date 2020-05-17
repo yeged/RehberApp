@@ -7,7 +7,7 @@ import NameInput from "../components/NameInput"
 import * as profileActions from "../store/actions/profile"
 import ImgPicker from "../components/ImagePicker"
 import firebase from "../firebase/firebase"
-
+import Colors from "../constants/Colors"
 
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"
@@ -199,8 +199,12 @@ const InformationScreen = (props) => {
 InformationScreen.navigationOptions = (navData) => {
     const submitFn = navData.navigation.getParam('submit');
     return {
+        headerTintColor: "white",
         headerTitle: () => null,
-        headerRight: () => <TouchableOpacity style={{ padding: 10 }} onPress={submitFn}><Text>Kaydet</Text></TouchableOpacity>
+        headerRight: () => <TouchableOpacity style={{ padding: 10 }} onPress={submitFn}><Text style={{color:"white"}}>Kaydet</Text></TouchableOpacity>,
+        headerStyle: {
+            backgroundColor: Colors.detailbgColor
+        }
     }
 }
 

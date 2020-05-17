@@ -1,15 +1,13 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Button, Dimensions, Image, ScrollView, TouchableNativeFeedback, TouchableOpacity, ProgressViewIOSComponent } from "react-native";
+import React, { useState, useCallback, useEffect } from "react";
+import { View, Text, StyleSheet, Dimensions, Image, ScrollView, TouchableNativeFeedback, TouchableOpacity} from "react-native";
 import HeaderButton from "../components/HeaderButton"
 import { HeaderButtons, Item } from "react-navigation-header-buttons"
 import { useSelector, useDispatch } from "react-redux"
 
-import * as tourActions from "../store/actions/tour"
 import Colors from "../constants/Colors"
 import DefaultTitle from "../components/DefaultTitle"
 import { addFav, setFav, deleteFav } from "../store/actions/favorites"
 import CustomButton from "../components/CustomButton"
-import { Ionicons } from "@expo/vector-icons"
 
 
 
@@ -98,26 +96,12 @@ const DetailScreen = (props) => {
     }, [deleteFav, dispatch, favTour])
 
 
-
-    //  useEffect(() => {
-    //      props.navigation.setParams({
-    //          favTour: favHandler
-    //      })
-    //  }, [favTourHandler])
-
-    //  useEffect(() => {
-    //      props.navigation.setParams({
-    //          isFav: tourIsFav
-    //      })
-    //  }, [tourIsFav])
-
     useEffect(() => {
         loadFav()
     }, [loadFav])
 
     const favHandler = () => {
         try {
-
             if (!tourIsFav) {
                 favTourHandler()
             } else {
@@ -126,7 +110,6 @@ const DetailScreen = (props) => {
         } catch (err) {
             throw err
         }
-
     }
 
     return (

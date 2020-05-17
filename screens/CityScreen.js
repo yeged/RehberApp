@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { View, StyleSheet, Dimensions, FlatList, Platform, Text, Switch, Button, ActivityIndicator } from "react-native";
+import { View, StyleSheet, Dimensions, FlatList, Platform, Text, ActivityIndicator } from "react-native";
 import GuideList from "../components/GuideList";
 import DefaultTitle from "../components/DefaultTitle"
 import { useSelector, useDispatch } from "react-redux"

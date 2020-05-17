@@ -8,7 +8,7 @@ import CityList from "../components/CityList"
 import { useSelector, useDispatch } from "react-redux"
 import * as tourActions from "../store/actions/tour"
 import Colors from "../constants/Colors"
-import CustomButton from "../components/CustomButton"
+
 
 
 
