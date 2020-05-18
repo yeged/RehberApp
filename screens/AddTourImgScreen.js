@@ -101,9 +101,6 @@ const AddTourImgScreen = props => {
         props.navigation.setParams({
             submit: submitHandler
         })
-        console.log("-------")
-        console.log("bu ")
-        console.log(formState.inputValues.images)
     }, [submitHandler])
 
     const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {

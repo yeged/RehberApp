@@ -86,7 +86,7 @@ const EditTourScreen = props => {
         setError(null)
         setIsLoading(true)
         try {
-            await dispatch(tourActions.updateTour(tourId, formState.inputValues.profileImg, formState.inputValues.images, formState.inputValues.tourName,
+            await dispatch(tourActions.updateTour(tourId, formState.inputValues.images, formState.inputValues.tourName,
                 formState.inputValues.hours, formState.inputValues.language, formState.inputValues.price, formState.inputValues.details,
                 formState.inputValues.groupSize, formState.inputValues.personalInfo, formState.inputValues.phone,
                 formState.inputValues.natural, formState.inputValues.cultural, formState.inputValues.photography, formState.inputValues.nightlife))
