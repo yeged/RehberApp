@@ -121,7 +121,7 @@ export const updateTour = (id, tourImage, tourName, time, language, price, tourP
              newPath = await firebase.storage().ref().child(`images/${userId}/${id}/${fileName}`).getDownloadURL()
         }
 
- 
+         
 
 
         const response = await fetch(`https://rehber-2e983.firebaseio.com/tours/${id}.json?auth=${token}`, {

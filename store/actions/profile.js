@@ -8,7 +8,7 @@ import Profile from "../../models/Profile"
 
 export const createProfile = (fname, lname, gender, email, phone, photo) => {
 
-    return async (dispatch, getState) => {
+    return async (dispatch, getState) => { 
         const token = getState().auth.token
         const userId = getState().auth.userId
 
@@ -23,7 +23,7 @@ export const createProfile = (fname, lname, gender, email, phone, photo) => {
             },
             body: JSON.stringify({
                 fname, lname, gender, email, phone, photo:newPath
-            })
+            })   
         })
         const resData = await response.json();
         dispatch({

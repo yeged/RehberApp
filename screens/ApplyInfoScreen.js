@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback, useReducer } from "react"
-import { View, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, AsyncStorage } from "react-native"
+import React, { useEffect, useCallback, useReducer, useState } from "react"
+import { View, StyleSheet, Text, ScrollView, Dimensions, Picker, TouchableOpacity, Alert, KeyboardAvoidingView, AsyncStorage, ActivityIndicator } from "react-native"
 
 import DefaultTitle from "../components/DefaultTitle"
 import NameInput from "../components/NameInput"
@@ -8,6 +8,7 @@ import * as profileActions from "../store/actions/profile"
 import ImgPicker from "../components/ImagePicker"
 import firebase from "../firebase/firebase"
 
+import Colors from "../constants/Colors"
 
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"
@@ -37,6 +38,8 @@ const formReducer = (state, action) => {
 }
 
 const ApplyInfoScreen = props => {
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -101,7 +104,24 @@ const ApplyInfoScreen = props => {
         const response = await fetch(imagePath)
         const blob = await response.blob()
         var ref = firebase.storage().ref().child(`images/${userId}/` + `${fileName}`)
-        return ref.put(blob)
+        setIsLoading(true)
+        try {
+            ref.put(blob)
+            await firebase.storage().ref().child(`images/${userId}/${fileName}`).getDownloadURL().then(onResolve, onReject)
+
+            function onResolve(foundURL){
+                console.log(foundURL)
+                setIsLoading(false)
+                Alert.alert("Fotoğraf Yüklendi")
+            }
+            function onReject(error){
+  
+                console.log(error)
+                onResolve()
+            }
+        } catch (err) {
+            throw err
+        }
 
     })
     return (
@@ -157,7 +177,10 @@ const ApplyInfoScreen = props => {
                         onlyNumber
                         maxLength={11}
                     />
-                    <ImgPicker onImageTaken={onTakenHandler} aspect={[4,3]} style={styles.prevImg} />
+                     {isLoading ? (
+                        <ActivityIndicator size="small" color={Colors.primary} />
+                    ) :
+                    <ImgPicker onImageTaken={onTakenHandler} aspect={[4,3]} style={styles.prevImg} />}
 
                     {/* <TouchableOpacity style={{ padding: 10 }} onPress={submitHandler}><Text>Kaydet</Text></TouchableOpacity> */}
                 </View>
