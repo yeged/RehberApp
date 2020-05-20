@@ -131,7 +131,7 @@ const AddTourImgScreen = props => {
         const response = await fetch(imagePath)
         const blob = await response.blob()
         var ref = firebase.storage().ref().child(`images/${userId}/${tourId}/` + `${fileName}`)
-
+        setIsLoading(true)
         try {
             ref.put(blob)
             await firebase.storage().ref().child(`images/${userId}/${tourId}/${fileName}`).getDownloadURL().then(onResolve, onReject)
@@ -140,7 +140,7 @@ const AddTourImgScreen = props => {
                 setIsLoading(false)
             }
             function onReject(error){
-                setIsLoading(true)
+
                 console.log(error)
                 onResolve()
             }
