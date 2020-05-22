@@ -2,7 +2,7 @@ import React from "react"
 
 import { createAppContainer, createSwitchNavigator } from "react-navigation"
 import { createStackNavigator } from "react-navigation-stack"
-import {createDrawerNavigator} from "react-navigation-drawer"
+import { createDrawerNavigator } from "react-navigation-drawer"
 import { createBottomTabNavigator } from "react-navigation-tabs" // FOR IOS UPDATES LATER
 import { Ionicons } from "@expo/vector-icons"
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs"
@@ -44,29 +44,34 @@ const defaultStackNavOptions = {
 }
 const SearchNavigator = createStackNavigator({
     Search: SearchScreen,
-    SearchEngineS : {screen:SearchEngineScreen,        navigationOptions: {
-        headerShown: false
-    }},
+    SearchEngineS: {
+        screen: SearchEngineScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
     Category: CategoryScreen,
     City: CityScreen,
-    Detail: {screen:DetailScreen,
-    navigationOptions:{
-        tabBarVisible:false,
-        headerShown:false
-    }},
+    Detail: {
+        screen: DetailScreen,
+        navigationOptions: {
+            tabBarVisible: false,
+            headerShown: false
+        }
+    },
 
 }, defaultStackNavOptions)
 
 const getTabBarVisible = (route) => {
     const routeName = route.state
-      ?  route.state.routes[route.state.index].name
-      : route.params?.screen || 'Search';
-  
+        ? route.state.routes[route.state.index].name
+        : route.params?.screen || 'Search';
+
     if (routeName === 'Detail') {
-      return false;
+        return false;
     }
     return true;
-  }
+}
 
 
 const ProfileNavigator = createStackNavigator({
@@ -78,25 +83,27 @@ const ProfileNavigator = createStackNavigator({
     },
     Info: { screen: InformationScreen },
     BeGuide: { screen: LocalGuideScreen },
-    FirstCreate: {screen:FirstCreateTourScreen},
-    SecondCreate: {screen:SecondCreateTourScreen},
-    ThirdCreate: {screen:ThirdCreateTourScreen},
-    UserInput: {screen:UserInputScreen},
-    MyTours: {screen:MyToursScreen},
-    StartEdit :{screen:StartEditScreen},
-    EditTour: {screen: EditTourScreen},
-    AddTourImg: {screen:AddTourImgScreen},
-    AddProfileImg: {screen:AddProfileImgToTourScreen},
-    Add: {screen: AddCityAndCat}
+    FirstCreate: { screen: FirstCreateTourScreen },
+    SecondCreate: { screen: SecondCreateTourScreen },
+    ThirdCreate: { screen: ThirdCreateTourScreen },
+    UserInput: { screen: UserInputScreen },
+    MyTours: { screen: MyToursScreen },
+    StartEdit: { screen: StartEditScreen },
+    EditTour: { screen: EditTourScreen },
+    AddTourImg: { screen: AddTourImgScreen },
+    AddProfileImg: { screen: AddProfileImgToTourScreen },
+    Add: { screen: AddCityAndCat }
 }, defaultStackNavOptions)
 
 
 const FavoritesNavigator = createStackNavigator({
     Favorites: FavoritesScreen,
-    Detail: {screen : DetailScreen, navigationOptions:{
-        tabBarVisible:false,
-        headerShown:false
-    }}
+    Detail: {
+        screen: DetailScreen, navigationOptions: {
+            tabBarVisible: false,
+            headerShown: false
+        }
+    }
 }, defaultStackNavOptions)
 
 
@@ -143,33 +150,35 @@ const FilterNavigator = createStackNavigator({
 }, defaultStackNavOptions)
 
 const MainNavigator = createDrawerNavigator({
-    Tours:{screen:TabNav,
-    navigationOptions:{
-        drawerLabel:"Tours"
-    }},
+    Tours: {
+        screen: TabNav,
+        navigationOptions: {
+            drawerLabel: "Tours"
+        }
+    },
     Filters: FilterNavigator
 },
-{
-    contentOptions:{
-        activeTintColor: Colors.accentColor,
-        labelStyle:{
-            fontFamily:"open-sans-bold"
+    {
+        contentOptions: {
+            activeTintColor: Colors.accentColor,
+            labelStyle: {
+                fontFamily: "open-sans-bold"
+            }
         }
-    }
-})
+    })
 
 const AuthNavigator = createStackNavigator({
     Auth: AuthScreen
 }, defaultStackNavOptions)
 
 const ApplyNavigator = createStackNavigator({
-    ApplyInfo:ApplyInfoScreen,
-},defaultStackNavOptions)
+    ApplyInfo: ApplyInfoScreen,
+}, defaultStackNavOptions)
 
 const MNavigator = createSwitchNavigator({
     Startup: StartupScreen,
-    Auth:AuthNavigator,
-    ApplyInfo:ApplyNavigator,
+    Auth: AuthNavigator,
+    ApplyInfo: ApplyNavigator,
     Main: MainNavigator
 })
 

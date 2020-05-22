@@ -112,14 +112,14 @@ const MyToursScreen = props => {
         >
           <Button
             color={Colors.detailbgColor}
-            title="Edit"
+            title="Düzenle"
             onPress={() => {
               editProductHandler(itemData.item.id);
             }}
           />
           <Button
             color={Colors.detailbgColor}
-            title="Delete"
+            title="Sil"
             onPress={deleteHandler.bind(this, itemData.item.id)}
           />
         </UserTourItem>
