@@ -113,7 +113,6 @@ const AddTourImgScreen = props => {
     }, [dispatchFormState])
 
     const onTakenHandler = useCallback(async (imagePath) => {
- 
 
         const userData = await AsyncStorage.getItem("userData")
         const transformedData = JSON.parse(userData)
@@ -124,7 +123,6 @@ const AddTourImgScreen = props => {
             let deleteImg = firebase.storage().refFromURL(`${deleteFormStateImg}`)
             deleteImg.delete()
         }
-
         inputChangeHandler("images", imagePath, true)
         setIsLoading(true)
         const fileName = imagePath.split('/').pop()
